@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using GiftRegistry.WebMVC.Models;
+using GiftRegistry.Data;
 
 namespace GiftRegistry.WebMVC
 {

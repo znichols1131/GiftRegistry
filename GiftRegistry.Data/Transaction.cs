@@ -26,13 +26,12 @@ namespace GiftRegistry.Data
 
         [Required]
         [ForeignKey(nameof(Gift))]
-        public int GiftID { get; set; }
-        public Gift Gift { get; set; }
+        public int? GiftID { get; set; }        // Nullable to prevent gift from being deleted (if Giver is deleted, transaction will be deleted but not gift)   
+        public virtual Gift Gift { get; set; }
 
-        [Required]
         [ForeignKey(nameof(Giver))]
-        public int GiverID { get; set; }
-        public Person Giver { get; set; }
+        public int? GiverID { get; set; }       // Nullable to prevent giver from being deleted (if Gift is deleted, transaction will be deleted but not giver)
+        public virtual Person Giver { get; set; }
 
     }
 }

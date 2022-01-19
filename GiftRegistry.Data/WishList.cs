@@ -29,7 +29,7 @@ namespace GiftRegistry.Data
         [Required]
         [ForeignKey(nameof(Owner))]
         public int OwnerID { get; set; }
-        public Person Owner { get; set; }
+        public virtual Person Owner { get; set; }
 
         public virtual ICollection<Gift> Gifts { get; set; } = new List<Gift>();
 

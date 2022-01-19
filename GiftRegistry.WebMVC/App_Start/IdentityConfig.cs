@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using GiftRegistry.WebMVC.Models;
+using GiftRegistry.Data;
 
 namespace GiftRegistry.WebMVC
 {

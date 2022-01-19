@@ -31,7 +31,7 @@ namespace GiftRegistry.Data
         [Required]
         [ForeignKey(nameof(WishList))]
         public int WishListID { get; set; }
-        public WishList WishList { get; set; }
+        public virtual WishList WishList { get; set; }
 
         public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 
