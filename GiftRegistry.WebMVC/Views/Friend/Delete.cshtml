@@ -1,0 +1,46 @@
+﻿@model GiftRegistry.Models.FriendDetail
+
+@{
+    ViewBag.Title = "Remove Friend";
+}
+
+<h3 class="mt-4">Are you sure you want to remove this friend from your list?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Relationship)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Relationship)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.Birthdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.Birthdate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

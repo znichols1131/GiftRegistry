@@ -54,6 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Friend\FriendCreate.cs" />
+    <Compile Include="Friend\FriendDetail.cs" />
+    <Compile Include="Friend\FriendEdit.cs" />
+    <Compile Include="Friend\FriendListItem.cs" />
     <Compile Include="Person\PersonCreate.cs" />
     <Compile Include="Person\PersonDetail.cs" />
     <Compile Include="Person\PersonEdit.cs" />

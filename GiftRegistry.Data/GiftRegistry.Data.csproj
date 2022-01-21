@@ -54,11 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Friend.cs" />
     <Compile Include="Gift.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\202201192346462_init.cs" />
-    <Compile Include="Migrations\202201192346462_init.Designer.cs">
-      <DependentUpon>202201192346462_init.cs</DependentUpon>
+    <Compile Include="Migrations\202201212033009_init.cs" />
+    <Compile Include="Migrations\202201212033009_init.Designer.cs">
+      <DependentUpon>202201212033009_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
@@ -93,11 +94,6 @@
     <None Include="Scripts\bootstrap.min.js.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202201192346462_init.resx">
-      <DependentUpon>202201192346462_init.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -120,6 +116,11 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202201212033009_init.resx">
+      <DependentUpon>202201212033009_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

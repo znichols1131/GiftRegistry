@@ -77,6 +77,38 @@ namespace GiftRegistry.Services
             }
         }
 
+        public PersonDetail GetPersonByGUID()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                // If this user doesn't exist yet (new registration), create a person for them
+                if(!ctx.People.Any(e => e.PersonGUID == _userId))
+                {
+                    PersonCreate newPerson = new PersonCreate();
+                    newPerson.FirstName = "First Name";
+                    newPerson.LastName = "Last Name";
+                    newPerson.Birthdate = DateTime.Now;
+
+                    if (!CreatePerson(newPerson))
+                        return null;
+                }
+
+                var entity =
+                    ctx
+                        .People
+                        .Single(e => e.PersonGUID == _userId);
+
+                return
+                    new PersonDetail
+                    {
+                        PersonID = entity.PersonID,                        
+                        FirstName = entity.FirstName,
+                        LastName = entity.LastName,
+                        Birthdate = entity.Birthdate
+                    };
+            }
+        }
+
         public bool UpdatePerson(PersonEdit model)
         {
             using (var ctx = new ApplicationDbContext())

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<GiftRegistry.Models.FriendListItem>
+
+@{
+    ViewBag.Title = "Friends";
+}
+
+<h2>Your Friends</h2>
+
+<p>
+    @Html.ActionLink("Add Friend", "Index", "Person")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Person.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Relationship)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Person.Birthdate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Relationship)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.Birthdate)
+        </td>
+        <td>
+            @Html.ActionLink("Unfriend", "Delete", new {  id=item.FriendID })
+        </td>
+    </tr>
+}
+
+</table>

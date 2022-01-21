@@ -33,6 +33,7 @@ namespace GiftRegistry.Data
         }
 
         public DbSet<Person> People { get; set; }
+        public DbSet<Friend> Friends { get; set; }
         public DbSet<WishList> WishLists { get; set; }
         public DbSet<Gift> Gifts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }

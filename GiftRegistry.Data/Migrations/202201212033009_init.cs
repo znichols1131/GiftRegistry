@@ -8,19 +8,29 @@ namespace GiftRegistry.Data.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Gift",
+                "dbo.Friend",
                 c => new
                     {
-                        GiftID = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false),
-                        Description = c.String(maxLength: 100),
-                        SourceURL = c.String(),
-                        QtyDesired = c.Int(nullable: false),
-                        WishListID = c.Int(nullable: false),
+                        FriendID = c.Int(nullable: false, identity: true),
+                        OwnerGUID = c.Guid(nullable: false),
+                        Relationship = c.String(),
+                        PersonID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.GiftID)
-                .ForeignKey("dbo.WishList", t => t.WishListID, cascadeDelete: true)
-                .Index(t => t.WishListID);
+                .PrimaryKey(t => t.FriendID)
+                .ForeignKey("dbo.Person", t => t.PersonID, cascadeDelete: true)
+                .Index(t => t.PersonID);
+            
+            CreateTable(
+                "dbo.Person",
+                c => new
+                    {
+                        PersonID = c.Int(nullable: false, identity: true),
+                        PersonGUID = c.Guid(nullable: false),
+                        FirstName = c.String(nullable: false),
+                        LastName = c.String(nullable: false),
+                        Birthdate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.PersonID);
             
             CreateTable(
                 "dbo.Transaction",
@@ -40,19 +50,19 @@ namespace GiftRegistry.Data.Migrations
                 .Index(t => t.GiverID);
             
             CreateTable(
-                "dbo.Person",
+                "dbo.Gift",
                 c => new
                     {
-                        PersonID = c.Int(nullable: false, identity: true),
-                        PersonGUID = c.Guid(nullable: false),
-                        FirstName = c.String(nullable: false),
-                        LastName = c.String(nullable: false),
-                        Birthdate = c.DateTime(),
-                        Person_PersonID = c.Int(),
+                        GiftID = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                        Description = c.String(maxLength: 100),
+                        SourceURL = c.String(),
+                        QtyDesired = c.Int(nullable: false),
+                        WishListID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.PersonID)
-                .ForeignKey("dbo.Person", t => t.Person_PersonID)
-                .Index(t => t.Person_PersonID);
+                .PrimaryKey(t => t.GiftID)
+                .ForeignKey("dbo.WishList", t => t.WishListID, cascadeDelete: true)
+                .Index(t => t.WishListID);
             
             CreateTable(
                 "dbo.WishList",
@@ -146,29 +156,30 @@ namespace GiftRegistry.Data.Migrations
             DropForeignKey("dbo.IdentityUserLogin", "ApplicationUser_Id", "dbo.ApplicationUser");
             DropForeignKey("dbo.IdentityUserClaim", "ApplicationUser_Id", "dbo.ApplicationUser");
             DropForeignKey("dbo.IdentityUserRole", "IdentityRole_Id", "dbo.IdentityRole");
-            DropForeignKey("dbo.Gift", "WishListID", "dbo.WishList");
+            DropForeignKey("dbo.Friend", "PersonID", "dbo.Person");
             DropForeignKey("dbo.Transaction", "GiverID", "dbo.Person");
-            DropForeignKey("dbo.WishList", "OwnerID", "dbo.Person");
-            DropForeignKey("dbo.Person", "Person_PersonID", "dbo.Person");
             DropForeignKey("dbo.Transaction", "GiftID", "dbo.Gift");
+            DropForeignKey("dbo.Gift", "WishListID", "dbo.WishList");
+            DropForeignKey("dbo.WishList", "OwnerID", "dbo.Person");
             DropIndex("dbo.IdentityUserLogin", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.IdentityUserClaim", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.IdentityUserRole", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.IdentityUserRole", new[] { "IdentityRole_Id" });
             DropIndex("dbo.WishList", new[] { "OwnerID" });
-            DropIndex("dbo.Person", new[] { "Person_PersonID" });
+            DropIndex("dbo.Gift", new[] { "WishListID" });
             DropIndex("dbo.Transaction", new[] { "GiverID" });
             DropIndex("dbo.Transaction", new[] { "GiftID" });
-            DropIndex("dbo.Gift", new[] { "WishListID" });
+            DropIndex("dbo.Friend", new[] { "PersonID" });
             DropTable("dbo.IdentityUserLogin");
             DropTable("dbo.IdentityUserClaim");
             DropTable("dbo.ApplicationUser");
             DropTable("dbo.IdentityUserRole");
             DropTable("dbo.IdentityRole");
             DropTable("dbo.WishList");
-            DropTable("dbo.Person");
-            DropTable("dbo.Transaction");
             DropTable("dbo.Gift");
+            DropTable("dbo.Transaction");
+            DropTable("dbo.Person");
+            DropTable("dbo.Friend");
         }
     }
 }
