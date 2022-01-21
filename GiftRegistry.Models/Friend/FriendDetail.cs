@@ -20,5 +20,8 @@ namespace GiftRegistry.Models
 
         public int PersonID { get; set; }
         public virtual Person Person { get; set; }
+
+        [Display(Name = "Friend Name")]
+        public string PersonName { get; set; }
     }
 }

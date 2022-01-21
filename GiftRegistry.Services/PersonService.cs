@@ -42,7 +42,7 @@ namespace GiftRegistry.Services
                 var query =
                     ctx
                         .People
-                        .Where(e => e.PersonGUID == _userId)
+                        .Where(e => e.PersonGUID != _userId)
                         .Select(
                             e =>
                                 new PersonListItem

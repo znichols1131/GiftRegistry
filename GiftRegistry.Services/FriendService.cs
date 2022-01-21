@@ -75,7 +75,8 @@ namespace GiftRegistry.Services
                         OwnerGUID = entity.OwnerGUID,
                         Relationship = entity.Relationship,
                         PersonID = entity.PersonID,
-                        Person = entity.Person
+                        Person = entity.Person,
+                        PersonName = entity.Person.FullName
                     };
             }
         }

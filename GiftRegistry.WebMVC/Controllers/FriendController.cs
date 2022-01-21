@@ -74,6 +74,7 @@ namespace GiftRegistry.WebMVC.Controllers
                     OwnerGUID = detail.OwnerGUID,
                     Relationship = detail.Relationship,
                     PersonID = detail.PersonID,
+                    PersonName = detail.PersonName
                 };
 
             return View(model);

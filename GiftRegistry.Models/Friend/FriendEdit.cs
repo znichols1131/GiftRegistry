@@ -21,5 +21,8 @@ namespace GiftRegistry.Models
 
         [Required]
         public int PersonID { get; set; }
+
+        [Display(Name = "Friend Name")]
+        public string PersonName { get; set; }
     }
 }
