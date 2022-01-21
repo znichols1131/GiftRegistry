@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.navbar{
+    margin-top: -50px;
+}
+
+.MassiveDateText {
+    font-size: 72px;
+}
