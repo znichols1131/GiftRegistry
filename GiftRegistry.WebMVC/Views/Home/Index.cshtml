@@ -4,7 +4,7 @@
 
 <div class="mt-4">
     <h4>The Date Is</h4>
-    <p id="CurrentDate" class="MassiveDateText">January 21, 2022</p>
+    <p id="CurrentDate" class="MassiveDateText">@ViewBag.DateString</p>
 </div>
 
 <div>
@@ -15,10 +15,13 @@
 
 @*Javascript Date*@
 <script>
-    n = new Date();
-    y = n.getFullYear();
-    var options = { month: 'long' };
-    m = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(Xmas95);
-    d = n.getDate();
-    document.getElementById("CurrentDate").innerHTML = m + " " + d + ", " + y;
+    function UpdateDate() {
+        n = new Date();
+        y = n.getFullYear();
+        var options = { month: 'long' };
+        m = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(Xmas95);
+        d = n.getDate();
+        return (m + " " + d + ", " + y);
+    }
 </script>
+    

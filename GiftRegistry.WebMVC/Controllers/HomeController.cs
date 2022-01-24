@@ -10,6 +10,7 @@ namespace GiftRegistry.WebMVC.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.DateString = GetDateString();
             return View();
         }
 
@@ -25,6 +26,12 @@ namespace GiftRegistry.WebMVC.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        private string GetDateString()
+        {
+            DateTime today = DateTime.Now;
+            return today.ToString("MMMM dd, yyyy");
         }
     }
 }
