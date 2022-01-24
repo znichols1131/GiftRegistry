@@ -13,7 +13,7 @@ namespace GiftRegistry.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202201212033009_init"; }
+            get { return "202201242106394_init"; }
         }
         
         string IMigrationMetadata.Source

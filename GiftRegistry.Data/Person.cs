@@ -28,6 +28,7 @@ namespace GiftRegistry.Data
 
         [Display(Name = "Birthdate")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Birthdate { get; set; }
 
         public virtual ICollection<WishList> WishLists { get; set; } = new List<WishList>();
