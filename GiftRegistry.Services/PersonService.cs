@@ -57,6 +57,38 @@ namespace GiftRegistry.Services
             }
         }
 
+        public IEnumerable<PersonListItem> GetStrangers()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if (ctx.People.Any(p => p.PersonGUID == _userId))
+                {
+                    var strangers = ctx.People  .Where(e => e.PersonGUID != _userId && !ctx.Friends.Any(f => f.OwnerGUID == _userId && f.PersonID == e.PersonID))
+                                                .Select(e =>
+                                                            new PersonListItem
+                                                            {
+                                                                PersonID = e.PersonID,
+                                                                FullName = e.FirstName + " " + e.LastName,
+                                                                Birthdate = e.Birthdate
+                                                            }
+                                                );
+                    return strangers.ToArray();
+                }
+
+                var query = ctx.People  .Where(e => e.PersonGUID != _userId)
+                                    .Select(e =>
+                                                new PersonListItem
+                                                {
+                                                    PersonID = e.PersonID,
+                                                    FullName = e.FirstName + " " + e.LastName,
+                                                    Birthdate = e.Birthdate
+                                                }
+                                    );
+
+                return query.ToArray();
+            }
+        }
+
         public PersonDetail GetPersonById(int id)
         {
             using (var ctx = new ApplicationDbContext())
@@ -138,6 +170,22 @@ namespace GiftRegistry.Services
                 ctx.People.Remove(entity);
 
                 return ctx.SaveChanges() == 1;
+            }
+        }
+
+
+        private Person GetUser()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if (ctx.People.Any(p => p.PersonGUID == _userId))
+                {
+                    var user = ctx.People.Single(p => p.PersonGUID == _userId);
+
+                    return user;
+                }
+
+                return null;
             }
         }
     }

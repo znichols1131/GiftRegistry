@@ -102,7 +102,7 @@ namespace GiftRegistry.WebMVC.Controllers
         public ActionResult Index()
         {
             var service = CreatePersonService();
-            var model = service.GetPeople();
+            var model = service.GetStrangers();
             return View(model);
         }
 
