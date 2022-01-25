@@ -36,6 +36,7 @@
             @Html.DisplayFor(modelItem => item.Person.Birthdate)
         </td>
         <td>
+            @Html.ActionLink("View", "Details", "Friend", new { id = item.FriendID }, null)
             @Html.ActionLink("Edit", "Edit", new { id = item.FriendID })
             @Html.ActionLink("Unfriend", "Delete", new { id = item.FriendID })
         </td>

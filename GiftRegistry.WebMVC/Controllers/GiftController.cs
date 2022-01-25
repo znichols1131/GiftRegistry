@@ -57,6 +57,8 @@ namespace GiftRegistry.WebMVC.Controllers
             var svc = CreateGiftService();
             var model = svc.GetGiftByID(id);
 
+            ViewBag.UserGUID = Guid.Parse(User.Identity.GetUserId());
+
             return View(model);
         }
 

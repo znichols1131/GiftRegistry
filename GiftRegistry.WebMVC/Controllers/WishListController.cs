@@ -54,6 +54,8 @@ namespace GiftRegistry.WebMVC.Controllers
             var svc = CreateWishListService();
             var model = svc.GetWishListByID(id);
 
+            ViewBag.UserGUID = Guid.Parse(User.Identity.GetUserId());
+
             return View(model);
         }
 

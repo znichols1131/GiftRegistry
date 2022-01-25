@@ -34,9 +34,20 @@
             @Html.DisplayFor(model => model.QtyDesired)
         </dd>
 
+        @if (ViewBag.UserGUID != Model.WishList.OwnerGUID)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.QtyPurchased)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.QtyPurchased)
+            </dd>
+        }
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.GiftID  }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.GiftID }) |
     @Html.ActionLink("Back to Gift List", "Details", "WishList", new { id = Model.WishListID }, null)
 </p>

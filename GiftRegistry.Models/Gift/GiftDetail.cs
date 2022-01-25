@@ -24,6 +24,9 @@ namespace GiftRegistry.Models
         [Display(Name = "Qty. Desired")]
         public int QtyDesired { get; set; }
 
+        [Display(Name = "Qty. Purchased")]
+        public int QtyPurchased { get; set; }
+
         [Required]
         public int WishListID { get; set; }
         public WishList WishList { get; set; }

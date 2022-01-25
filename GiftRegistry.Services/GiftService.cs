@@ -68,6 +68,7 @@ namespace GiftRegistry.Services
                 var entity =
                     ctx
                         .Gifts
+                        .Include("WishList")
                         .Single(e => e.GiftID == id);
 
                 return
@@ -78,6 +79,7 @@ namespace GiftRegistry.Services
                         Description = entity.Description,
                         SourceURL = entity.SourceURL,
                         QtyDesired = entity.QtyDesired,
+                        QtyPurchased = entity.QtyPurchased,
                         WishListID = entity.WishListID,
                         WishList = entity.WishList
                     };

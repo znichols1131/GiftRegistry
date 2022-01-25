@@ -36,18 +36,25 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.WishListID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+@if (ViewBag.UserGUID == Model.OwnerGUID)
+{
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.WishListID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
 
 <div>
     <br />
     <h2 class="mt-4">Gifts</h2>
     <hr />
-    <p>
-        @Html.ActionLink("Add Gift", "Create", "Gift", new { id = Model.WishListID }, null)
-    </p>
+    @if (ViewBag.UserGUID == Model.OwnerGUID)
+    {
+        <p>
+            @Html.ActionLink("Add Gift", "Create", "Gift", new { id = Model.WishListID }, null)
+        </p>
+    }
     <table class="table">
         <tr>
             @{ var dummyGift = Model.Gifts.FirstOrDefault();}
@@ -57,6 +64,14 @@
             <th>
                 @Html.DisplayNameFor(model => dummyGift.QtyDesired)
             </th>
+
+            @if (ViewBag.UserGUID != Model.OwnerGUID)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => dummyGift.QtyPurchased)
+                </th>
+            }
+
             <th></th>
         </tr>
 
@@ -69,10 +84,26 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.QtyDesired)
                 </td>
+
+                @if (ViewBag.UserGUID != Model.OwnerGUID)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QtyPurchased)
+                    </td>
+                }
+
                 <td>
-                    @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, null) |
-                    @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, null) |
-                    @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, null)
+                    @if (ViewBag.UserGUID == Model.OwnerGUID)
+                    {
+                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, null) @: |
+                        @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, null) @: |
+                        @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, null)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, null) @: |
+                        @Html.ActionLink("Purchase", "Create", "Transaction", new { id = item.GiftID }, null)
+                    }
                 </td>
             </tr>
         }

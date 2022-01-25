@@ -65,6 +65,10 @@
     <Compile Include="Migrations\202201250155422_init_wishlist.Designer.cs">
       <DependentUpon>202201250155422_init_wishlist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201251858257_init_gift_qtypurchased.cs" />
+    <Compile Include="Migrations\202201251858257_init_gift_qtypurchased.Designer.cs">
+      <DependentUpon>202201251858257_init_gift_qtypurchased.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201250155422_init_wishlist.resx">
       <DependentUpon>202201250155422_init_wishlist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201251858257_init_gift_qtypurchased.resx">
+      <DependentUpon>202201251858257_init_gift_qtypurchased.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
