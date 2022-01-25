@@ -36,9 +36,8 @@
                 @Html.DisplayFor(modelItem => item.GiftCount)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.WishListID  }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.WishListID  }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.WishListID  })
+                @Html.ActionLink("View", "Details", new { id = item.WishListID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.WishListID })
             </td>
         </tr>
     }

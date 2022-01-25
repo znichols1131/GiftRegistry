@@ -96,7 +96,7 @@ namespace GiftRegistry.WebMVC.Controllers
             if (service.UpdateWishList(model))
             {
                 TempData["SaveResult"] = "Your wish list was updated.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = model.WishListID });
             }
 
             ModelState.AddModelError("", "Your wish list could not be updated.");

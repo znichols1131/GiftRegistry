@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GiftRegistry.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,7 +28,6 @@ namespace GiftRegistry.Models
         public string OwnerName { get; set; }
         public int OwnerID { get; set; }
 
-        [Display(Name = "Gift Count")]
-        public int GiftCount { get; set; }
+        public List<Gift> Gifts { get; set; }
     }
 }
