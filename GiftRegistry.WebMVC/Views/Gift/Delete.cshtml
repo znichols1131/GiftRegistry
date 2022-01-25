@@ -1,0 +1,65 @@
+﻿@model GiftRegistry.Models.GiftDetail
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 class="mt-4">Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SourceURL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceURL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QtyDesired)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QtyDesired)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WishList.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WishList.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> 
+            @Html.ActionLink("Back to Gift List", "Details", "WishList", new { id = Model.WishListID }, null)
+        </div>
+    }
+</div>

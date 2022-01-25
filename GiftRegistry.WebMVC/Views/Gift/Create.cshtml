@@ -1,15 +1,16 @@
-﻿@model GiftRegistry.Models.WishListCreate
+﻿@model GiftRegistry.Models.GiftCreate
 
 @{
     ViewBag.Title = "Create";
 }
 
-<h2>Create Wish List</h2>
+<h2>Create Gift</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.WishListID)
 
     <div class="form-horizontal">
         <hr />
@@ -32,17 +33,25 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SourceURL, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.SourceURL, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SourceURL, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.QtyDesired, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.QtyDesired, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.QtyDesired, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10 mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
-                @Html.ActionLink("Back to List", "Index")
+                @Html.ActionLink("Back to Details", "Details", "WishList", new { id = Model.WishListID }, null)
             </div>
         </div>
     </div>

@@ -58,6 +58,10 @@
     <Compile Include="Friend\FriendDetail.cs" />
     <Compile Include="Friend\FriendEdit.cs" />
     <Compile Include="Friend\FriendListItem.cs" />
+    <Compile Include="Gift\GiftCreate.cs" />
+    <Compile Include="Gift\GiftDetail.cs" />
+    <Compile Include="Gift\GiftEdit.cs" />
+    <Compile Include="Gift\GiftListItem.cs" />
     <Compile Include="Person\PersonCreate.cs" />
     <Compile Include="Person\PersonDetail.cs" />
     <Compile Include="Person\PersonEdit.cs" />
@@ -124,5 +128,6 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

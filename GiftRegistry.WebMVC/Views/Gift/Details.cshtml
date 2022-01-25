@@ -1,0 +1,42 @@
+﻿@model GiftRegistry.Models.GiftDetail
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 class="mt-4">@Model.Name</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SourceURL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceURL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QtyDesired)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QtyDesired)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.GiftID  }) |
+    @Html.ActionLink("Back to Gift List", "Details", "WishList", new { id = Model.WishListID }, null)
+</p>
