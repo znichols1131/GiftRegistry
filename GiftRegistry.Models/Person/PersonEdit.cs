@@ -21,7 +21,6 @@ namespace GiftRegistry.Models
 
         [Display(Name = "Birthdate")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Birthdate { get; set; }
     }
 }

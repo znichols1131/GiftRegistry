@@ -17,7 +17,6 @@ namespace GiftRegistry.Models
 
         [Display(Name = "Due Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DueDate { get; set; }
 
         public int OwnerID { get; set; }

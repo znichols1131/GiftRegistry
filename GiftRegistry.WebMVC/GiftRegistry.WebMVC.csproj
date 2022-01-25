@@ -278,10 +278,9 @@
     <Content Include="Views\Person\Edit.cshtml" />
     <Content Include="Views\Friend\Index.cshtml" />
     <Content Include="Views\Friend\Create.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplate\DateTime.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
     <Content Include="Views\Friend\Delete.cshtml" />
     <Content Include="Views\Friend\Edit.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplate\Date.cshtml" />
     <Content Include="Views\WishList\Index.cshtml" />
     <Content Include="Views\WishList\Create.cshtml" />
     <Content Include="Views\WishList\Details.cshtml" />
