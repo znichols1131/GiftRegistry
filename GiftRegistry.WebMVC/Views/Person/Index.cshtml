@@ -11,9 +11,6 @@
         <th>
             @Html.DisplayNameFor(model => model.FullName)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Birthdate)
-        </th>
         <th></th>
     </tr>
 
@@ -22,9 +19,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Birthdate)
             </td>
             <td>
                 @Html.ActionLink("Add Friend", "Create", "Friend", new { id = item.PersonID, name = item.FullName }, null)

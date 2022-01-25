@@ -52,7 +52,7 @@ namespace GiftRegistry.WebMVC.Controllers
         public ActionResult Edit()
         {
             var service = CreatePersonService();
-            var detail = service.GetPersonByGUID();
+            var detail = service.GetCurrentPerson();
             var model =
                 new PersonEdit
                 {

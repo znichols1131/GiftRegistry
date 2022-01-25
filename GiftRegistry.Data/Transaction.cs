@@ -14,9 +14,13 @@ namespace GiftRegistry.Data
         public int TransactionID { get; set; }
 
         [Display(Name = "Created")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}", ApplyFormatInEditMode = true)] 
         public DateTime DateCreated { get; set; }
 
         [Display(Name = "Modified")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}", ApplyFormatInEditMode = true)] 
         public DateTime? DateModified { get; set; }
 
         [Required]

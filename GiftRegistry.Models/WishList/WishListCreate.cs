@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GiftRegistry.Data
+namespace GiftRegistry.Models
 {
-    public class WishList
+    public class WishListCreate
     {
-        [Key]
-        public int WishListID { get; set; }
-
-        [Required]
-        public Guid OwnerGUID { get; set; }
-
         [Required]
         [Display(Name = "List Name")]
         [MinLength(2, ErrorMessage = "Please enter at least 2 characters.")]
@@ -28,15 +21,8 @@ namespace GiftRegistry.Data
 
         [Display(Name = "Due Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}", ApplyFormatInEditMode = true)] 
+        [DisplayFormat(DataFormatString = "{0:MMM d, yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DueDate { get; set; }
-
-        [Required]
-        [ForeignKey(nameof(Owner))]
-        public int OwnerID { get; set; }
-        public virtual Person Owner { get; set; }
-
-        public virtual ICollection<Gift> Gifts { get; set; } = new List<Gift>();
 
     }
 }

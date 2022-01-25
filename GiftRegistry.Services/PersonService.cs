@@ -109,7 +109,7 @@ namespace GiftRegistry.Services
             }
         }
 
-        public PersonDetail GetPersonByGUID()
+        public PersonDetail GetCurrentPerson()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -170,22 +170,6 @@ namespace GiftRegistry.Services
                 ctx.People.Remove(entity);
 
                 return ctx.SaveChanges() == 1;
-            }
-        }
-
-
-        private Person GetUser()
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                if (ctx.People.Any(p => p.PersonGUID == _userId))
-                {
-                    var user = ctx.People.Single(p => p.PersonGUID == _userId);
-
-                    return user;
-                }
-
-                return null;
             }
         }
     }

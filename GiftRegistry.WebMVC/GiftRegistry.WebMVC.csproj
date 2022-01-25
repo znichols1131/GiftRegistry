@@ -172,6 +172,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Controllers\WishListController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -281,6 +282,11 @@
     <Content Include="Views\Friend\Delete.cshtml" />
     <Content Include="Views\Friend\Edit.cshtml" />
     <Content Include="Views\Shared\DisplayTemplate\Date.cshtml" />
+    <Content Include="Views\WishList\Index.cshtml" />
+    <Content Include="Views\WishList\Create.cshtml" />
+    <Content Include="Views\WishList\Details.cshtml" />
+    <Content Include="Views\WishList\Edit.cshtml" />
+    <Content Include="Views\WishList\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
