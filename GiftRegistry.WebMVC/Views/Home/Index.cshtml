@@ -3,12 +3,21 @@
 }
 
 <div class="mt-4">
-    <h4>The Date Is</h4>
+    <h4 class="mt-4 mb-0">The Date Is</h4>
     <p class="MassiveDateText">@ViewBag.DateString</p>
 </div>
 
-<div>
-    <h4>Upcoming Events</h4>
-    <hr />
+@if (User.Identity.IsAuthenticated)
+{
+    <div>
+        <h4>Upcoming Events</h4>
+        <hr />
 
-</div>
+    </div>
+}
+else
+{
+    <h4 class="mt-4">Welcome to the Gift Registry, a web application where you can create and share gift lists with your friends and family!</h4>
+    <p>To access all of our features, please <a href="@Url.Action("Register", "Account", new { id = "registerLink" })">register</a> or <a href="@Url.Action("Login", "Account", new { id = "loginLink" })">log in</a> first.</p>
+    <br />
+}
