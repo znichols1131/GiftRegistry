@@ -73,6 +73,8 @@ namespace GiftRegistry.WebMVC.Controllers
                     DueDate = detail.DueDate,
                 };
 
+
+
             return View(model);
         }
 
