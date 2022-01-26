@@ -46,6 +46,9 @@ namespace GiftRegistry.Models
                                 }
                         );
 
+                if (query.Count() == 0)
+                    return 0;
+
                 return query.Sum(t => t.QtyGiven);
             }
         }

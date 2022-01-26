@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GiftRegistry.Models;
+using GiftRegistry.Services;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,8 +13,11 @@ namespace GiftRegistry.WebMVC.Controllers
     {
         public ActionResult Index()
         {
+            var service = CreateHomeService();
+            var model = service.GetEvents();
+
             ViewBag.DateString = GetDateString();
-            return View();
+            return View(model);
         }
 
         public ActionResult About()
@@ -32,6 +38,13 @@ namespace GiftRegistry.WebMVC.Controllers
         {
             DateTime today = DateTime.Now;
             return today.ToString("MMMM dd, yyyy");
+        }
+
+        private HomeService CreateHomeService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new HomeService(userId);
+            return service;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<GiftRegistry.Models.EventListItem>
+
+@{
     ViewBag.Title = "Home";
 }
 
@@ -12,8 +14,47 @@
     <div>
         <h4>Upcoming Events</h4>
         <hr />
-
     </div>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DaysRemaining)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OwnerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DaysRemaining)
+                </td>
+                <td>
+                    @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, null)
+                </td>
+            </tr>
+        }
+
+    </table>
 }
 else
 {
