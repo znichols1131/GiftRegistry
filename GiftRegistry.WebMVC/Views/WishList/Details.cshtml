@@ -102,7 +102,7 @@
                     else
                     {
                         @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, null) @: |
-                        @Html.ActionLink("Purchase", "Create", "Transaction", new { id = item.GiftID }, null)
+                        @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = item.GiftID }, null)
                     }
                 </td>
             </tr>

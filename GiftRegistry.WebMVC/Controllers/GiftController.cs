@@ -11,14 +11,6 @@ namespace GiftRegistry.WebMVC.Controllers
 {
     public class GiftController : Controller
     {
-        // GET: Gift
-        //public ActionResult Index(int wishListID)
-        //{
-        //    var service = CreateGiftService();
-        //    var model = service.GetGiftsForWishListID(wishListID);
-        //    return View(model);
-        //}
-
         // GET: Create
         public ActionResult Create(int id)
         {

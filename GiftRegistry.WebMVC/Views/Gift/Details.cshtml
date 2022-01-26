@@ -48,6 +48,7 @@
     </dl>
 </div>
 <p>
+    @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = Model.GiftID }, null) | 
     @Html.ActionLink("Edit", "Edit", new { id = Model.GiftID }) |
     @Html.ActionLink("Back to Gift List", "Details", "WishList", new { id = Model.WishListID }, null)
 </p>

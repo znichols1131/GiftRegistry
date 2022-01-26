@@ -58,6 +58,7 @@
     <Compile Include="GiftService.cs" />
     <Compile Include="PersonService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransactionService.cs" />
     <Compile Include="WishListService.cs" />
   </ItemGroup>
   <ItemGroup>

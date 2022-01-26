@@ -69,6 +69,7 @@ namespace GiftRegistry.Services
                     ctx
                         .Gifts
                         .Include("WishList")
+                        .Include("WishList.Owner")
                         .Single(e => e.GiftID == id);
 
                 return

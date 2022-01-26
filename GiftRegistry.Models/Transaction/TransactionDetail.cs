@@ -1,39 +1,32 @@
-﻿using System;
+﻿using GiftRegistry.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GiftRegistry.Data
+namespace GiftRegistry.Models
 {
-    public class Transaction
+    public class TransactionDetail
     {
-        [Key]
         public int TransactionID { get; set; }
 
         [Display(Name = "Created")]
-        [DataType(DataType.Date)]
         public DateTime DateCreated { get; set; }
 
         [Display(Name = "Modified")]
-        [DataType(DataType.Date)]
         public DateTime? DateModified { get; set; }
 
-        [Required]
         [Display(Name = "Qty. Given")]
-        [Range(0, int.MaxValue, ErrorMessage ="The quantity must be 0 or more.")]
         public int QtyGiven { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(Gift))]
         public int? GiftID { get; set; }        // Nullable to prevent gift from being deleted (if Giver is deleted, transaction will be deleted but not gift)   
-        public virtual Gift Gift { get; set; }
+        public Gift Gift { get; set; }
 
-        [ForeignKey(nameof(Giver))]
         public int? GiverID { get; set; }       // Nullable to prevent giver from being deleted (if Gift is deleted, transaction will be deleted but not giver)
-        public virtual Person Giver { get; set; }
+        public Person Giver { get; set; }
+        public string RecipientName { get; set; }
 
     }
 }

@@ -67,6 +67,10 @@
     <Compile Include="Person\PersonEdit.cs" />
     <Compile Include="Person\PersonListItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transaction\TransactionCreate.cs" />
+    <Compile Include="Transaction\TransactionDetail.cs" />
+    <Compile Include="Transaction\TransactionEdit.cs" />
+    <Compile Include="Transaction\TransactionListItem.cs" />
     <Compile Include="WishList\WishListListItem.cs" />
     <Compile Include="WishList\WishListDetail.cs" />
     <Compile Include="WishList\WishListEdit.cs" />
