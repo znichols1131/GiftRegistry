@@ -29,5 +29,25 @@ namespace GiftRegistry.Models
         public int OwnerID { get; set; }
 
         public List<Gift> Gifts { get; set; }
+
+        public int QtyPurchasedForGiftID(int giftID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Transactions
+                        .Where(e => e.GiftID == giftID)
+                        .Select(
+                            e =>
+                                new 
+                                {
+                                    QtyGiven = e.QtyGiven
+                                }
+                        );
+
+                return query.Sum(t => t.QtyGiven);
+            }
+        }
     }
 }

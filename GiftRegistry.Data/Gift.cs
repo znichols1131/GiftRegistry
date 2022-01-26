@@ -28,22 +28,11 @@ namespace GiftRegistry.Data
         [Range(0, int.MaxValue, ErrorMessage = "The quantity must be 0 or more.")]
         public int QtyDesired { get; set; }
 
-        [Display(Name = "Qty. Purchased")]
-        [Range(0, int.MaxValue, ErrorMessage = "The quantity must be 0 or more.")]
-        public int QtyPurchased 
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
         [Required]
         [ForeignKey(nameof(WishList))]
         public int WishListID { get; set; }
         public virtual WishList WishList { get; set; }
 
         public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
-
     }
 }

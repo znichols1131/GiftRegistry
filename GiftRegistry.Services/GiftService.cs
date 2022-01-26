@@ -80,7 +80,7 @@ namespace GiftRegistry.Services
                         Description = entity.Description,
                         SourceURL = entity.SourceURL,
                         QtyDesired = entity.QtyDesired,
-                        QtyPurchased = entity.QtyPurchased,
+                        QtyPurchased = QuantityPurchasedForGiftID(entity.GiftID),
                         WishListID = entity.WishListID,
                         WishList = entity.WishList
                     };
@@ -117,6 +117,19 @@ namespace GiftRegistry.Services
                 ctx.Gifts.Remove(entity);
 
                 return ctx.SaveChanges() == 1;
+            }
+        }
+
+        public int QuantityPurchasedForGiftID(int giftID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Transactions
+                        .Where(e => e.GiftID == giftID);
+
+                return query.Sum(t => t.QtyGiven);
             }
         }
     }
