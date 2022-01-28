@@ -5,10 +5,10 @@
 }
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Person", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>PersonEdit</h4>
         <hr />
@@ -40,12 +40,29 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10 mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                @Html.ActionLink("Back to Home Page", "Index", "Home")
+            @Html.LabelFor(model => model.ProfilePicture, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-offset-2 col-md-10">
+                @if (Model.ProfilePicture != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.ProfilePicture);
+                    var profilePictureSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    <img src="@profilePictureSrc" alt="Profile Picture" height=200 width=200 />
+                }
+            </div>
+            <div class="col-md-offset-2 col-md-10 mt-3 mb-4">
+                <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" />
+            </div>
+
+        </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 mt-3">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    @Html.ActionLink("Back to Home Page", "Index", "Home")
+                </div>
             </div>
         </div>
-    </div>
 }
 
 @section Scripts {

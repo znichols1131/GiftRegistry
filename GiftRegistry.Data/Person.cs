@@ -30,6 +30,9 @@ namespace GiftRegistry.Data
         [DataType(DataType.Date)]
         public DateTime? Birthdate { get; set; }
 
+        [Display(Name = "Profile Picture")]
+        public byte[] ProfilePicture { get; set; }
+
         public virtual ICollection<WishList> WishLists { get; set; } = new List<WishList>();
         public virtual ICollection<Friend> Friends { get; set; } = new List<Friend>();
         public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();

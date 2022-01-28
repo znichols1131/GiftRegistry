@@ -104,7 +104,8 @@ namespace GiftRegistry.Services
                         PersonID = entity.PersonID,
                         FirstName = entity.FirstName,
                         LastName = entity.LastName,
-                        Birthdate = entity.Birthdate
+                        Birthdate = entity.Birthdate,
+                        ProfilePicture = entity.ProfilePicture
                     };
             }
         }
@@ -120,6 +121,8 @@ namespace GiftRegistry.Services
                     newPerson.FirstName = "First Name";
                     newPerson.LastName = "Last Name";
                     newPerson.Birthdate = DateTime.Now;
+                    
+                    /////////////////// Could assign a default profile picture here
 
                     if (!CreatePerson(newPerson))
                         return null;
@@ -133,10 +136,11 @@ namespace GiftRegistry.Services
                 return
                     new PersonDetail
                     {
-                        PersonID = entity.PersonID,                        
+                        PersonID = entity.PersonID,
                         FirstName = entity.FirstName,
                         LastName = entity.LastName,
-                        Birthdate = entity.Birthdate
+                        Birthdate = entity.Birthdate,
+                        ProfilePicture = entity.ProfilePicture
                     };
             }
         }
@@ -153,6 +157,7 @@ namespace GiftRegistry.Services
                 entity.FirstName = model.FirstName;
                 entity.LastName = model.LastName;
                 entity.Birthdate = model.Birthdate;
+                entity.ProfilePicture = model.ProfilePicture;
 
                 return ctx.SaveChanges() == 1;
             }

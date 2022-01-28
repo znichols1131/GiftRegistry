@@ -3,6 +3,8 @@ using GiftRegistry.Services;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -59,7 +61,8 @@ namespace GiftRegistry.WebMVC.Controllers
                     PersonID = detail.PersonID,
                     FirstName = detail.FirstName,
                     LastName = detail.LastName,
-                    Birthdate = (detail.Birthdate is null) ? DateTime.Now : detail.Birthdate
+                    Birthdate = (detail.Birthdate is null) ? DateTime.Now : detail.Birthdate,
+                    ProfilePicture = detail.ProfilePicture
                 };
 
             return View(model);
@@ -79,6 +82,9 @@ namespace GiftRegistry.WebMVC.Controllers
             //    return View(model);
             //}
 
+            HttpPostedFileBase file = Request.Files["ImageData"];
+            model.ProfilePicture = ConvertToBytes(file);
+
             var service = CreatePersonService();
 
             if (service.UpdatePerson(model))
@@ -92,9 +98,13 @@ namespace GiftRegistry.WebMVC.Controllers
             return View(model);
         }
 
-
-
-
+        private byte[] ConvertToBytes(HttpPostedFileBase image)
+        {
+            using (var reader = new BinaryReader(image.InputStream))
+            {
+               return reader.ReadBytes(image.ContentLength);
+            }
+        }
 
         // FRIENDS LIST ONLY
 
