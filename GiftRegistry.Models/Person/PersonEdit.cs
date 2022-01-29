@@ -25,6 +25,7 @@ namespace GiftRegistry.Models
 
         [Display(Name = "Profile Picture")]
         public byte[] ProfilePicture { get; set; }
+        public byte[] OldProfilePicture { get; set; }
 
     }
 }

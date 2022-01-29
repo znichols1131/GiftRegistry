@@ -24,7 +24,7 @@ namespace GiftRegistry.Services
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    SourceURL = model.SourceURL,
+                    SourceURL = GetClickableLink(model.SourceURL),
                     QtyDesired = model.QtyDesired,
                     WishListID = model.WishListID,
                     ProductImage = model.ProductImage
@@ -101,7 +101,7 @@ namespace GiftRegistry.Services
 
                 entity.Name = model.Name;
                 entity.Description = model.Description;
-                entity.SourceURL = model.SourceURL;
+                entity.SourceURL = GetClickableLink(model.SourceURL);
                 entity.QtyDesired = model.QtyDesired;
                 entity.ProductImage = model.ProductImage;
 
@@ -138,6 +138,14 @@ namespace GiftRegistry.Services
 
                 return query.Sum(t => t.QtyGiven);
             }
+        }
+
+        private string GetClickableLink(string url)
+        {
+            if (url.StartsWith("https://") || url.StartsWith("http://") || url.StartsWith("//"))
+                return url;
+
+            return "http://" + url;
         }
     }
 }

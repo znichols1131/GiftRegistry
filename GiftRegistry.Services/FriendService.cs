@@ -43,6 +43,9 @@ namespace GiftRegistry.Services
                         .Friends
                         .Include("Person")
                         .Where(e => e.OwnerGUID == _userId)
+                        .OrderBy(f => f.Person.LastName)
+                        .ThenBy(f => f.Person.FirstName)
+                        .ThenBy(f => f.Person.Birthdate)
                         .Select(
                             e =>
                                 new FriendListItem

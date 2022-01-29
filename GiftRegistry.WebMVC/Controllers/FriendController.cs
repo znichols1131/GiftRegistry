@@ -87,7 +87,7 @@ namespace GiftRegistry.WebMVC.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            if (model.PersonID != id)
+            if (model.FriendID != id)
             {
                 ModelState.AddModelError("", "Id Mismatch");
                 return View(model);

@@ -2,7 +2,9 @@
 using GiftRegistry.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,8 +27,8 @@ namespace GiftRegistry.Services
                     PersonGUID = _userId,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    Birthdate = model.Birthdate
-                    ////////////////////////////////////////////////////////////// Could set default profile picture here
+                    Birthdate = model.Birthdate,
+                    ProfilePicture = GetDefaultProfilePicture()
                 };
 
             using (var ctx = new ApplicationDbContext())
@@ -44,6 +46,8 @@ namespace GiftRegistry.Services
                     ctx
                         .People
                         .Where(e => e.PersonGUID != _userId)
+                        .OrderBy(f => f.LastName)
+                        .ThenBy(f => f.FirstName)
                         .Select(
                             e =>
                                 new PersonListItem
@@ -63,9 +67,13 @@ namespace GiftRegistry.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                if (ctx.People.Any(p => p.PersonGUID == _userId))
+
+                // If the user has a Person associated with them, filter out any Friends from the list of Strangers
+                if (ctx.People.Any(p => p.PersonGUID == _userId) && ctx.Friends.Any(f => f.OwnerGUID == _userId))
                 {
                     var strangers = ctx.People  .Where(e => e.PersonGUID != _userId && !ctx.Friends.Any(f => f.OwnerGUID == _userId && f.PersonID == e.PersonID))
+                                                .OrderBy(f => f.LastName)
+                                                .ThenBy(f => f.FirstName)
                                                 .Select(e =>
                                                             new PersonListItem
                                                             {
@@ -75,11 +83,14 @@ namespace GiftRegistry.Services
                                                                 ProfilePicture = e.ProfilePicture
                                                             }
                                                 );
+
                     return strangers.ToArray();
                 }
 
                 var query = ctx.People  .Where(e => e.PersonGUID != _userId)
-                                    .Select(e =>
+                                        .OrderBy(f => f.LastName)
+                                        .ThenBy(f => f.FirstName)
+                                        .Select(e =>
                                                 new PersonListItem
                                                 {
                                                     PersonID = e.PersonID,
@@ -87,7 +98,7 @@ namespace GiftRegistry.Services
                                                     Birthdate = e.Birthdate,
                                                     ProfilePicture = e.ProfilePicture
                                                 }
-                                    );
+                                        );
 
                 return query.ToArray();
             }
@@ -125,8 +136,7 @@ namespace GiftRegistry.Services
                     newPerson.FirstName = "First Name";
                     newPerson.LastName = "Last Name";
                     newPerson.Birthdate = DateTime.Now;
-                    
-                    /////////////////// Could assign a default profile picture here
+                    newPerson.ProfilePicture = GetDefaultProfilePicture();
 
                     if (!CreatePerson(newPerson))
                         return null;
@@ -144,7 +154,7 @@ namespace GiftRegistry.Services
                         FirstName = entity.FirstName,
                         LastName = entity.LastName,
                         Birthdate = entity.Birthdate,
-                        ProfilePicture = entity.ProfilePicture
+                        ProfilePicture = (entity.ProfilePicture == null || entity.ProfilePicture.Length==0) ? GetDefaultProfilePicture() : entity.ProfilePicture
                     };
             }
         }
@@ -161,7 +171,7 @@ namespace GiftRegistry.Services
                 entity.FirstName = model.FirstName;
                 entity.LastName = model.LastName;
                 entity.Birthdate = model.Birthdate;
-                entity.ProfilePicture = model.ProfilePicture;
+                entity.ProfilePicture = (model.ProfilePicture is null) ? new byte[] { } : model.ProfilePicture;
 
                 return ctx.SaveChanges() == 1;
             }
@@ -179,6 +189,16 @@ namespace GiftRegistry.Services
                 ctx.People.Remove(entity);
 
                 return ctx.SaveChanges() == 1;
+            }
+        }
+
+        private byte[] GetDefaultProfilePicture()
+        {
+            // Using Doodle Ipsum for default profile pictures
+
+            using (var webClient = new WebClient())
+            {
+                return webClient.DownloadData("https://doodleipsum.com/500/avatar-3");
             }
         }
     }

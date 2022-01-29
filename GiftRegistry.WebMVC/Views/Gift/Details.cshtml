@@ -18,13 +18,16 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SourceURL)
-        </dt>
+        @if (Model.SourceURL != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.SourceURL)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.SourceURL)
-        </dd>
+            <dd>
+                <a href="@Model.SourceURL">Product Link</a>
+            </dd>
+        }
 
         <dt>
             @Html.DisplayNameFor(model => model.QtyDesired)

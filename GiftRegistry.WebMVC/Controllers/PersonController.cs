@@ -62,7 +62,8 @@ namespace GiftRegistry.WebMVC.Controllers
                     FirstName = detail.FirstName,
                     LastName = detail.LastName,
                     Birthdate = (detail.Birthdate is null) ? DateTime.Now : detail.Birthdate,
-                    ProfilePicture = detail.ProfilePicture
+                    ProfilePicture = detail.ProfilePicture,
+                    OldProfilePicture = detail.ProfilePicture
                 };
 
             return View(model);
@@ -83,7 +84,13 @@ namespace GiftRegistry.WebMVC.Controllers
             //}
 
             HttpPostedFileBase file = Request.Files["ImageData"];
-            model.ProfilePicture = ConvertToBytes(file);
+            if(file.ContentLength != 0)
+            {
+                model.ProfilePicture = ConvertToBytes(file);
+            }else
+            {
+                model.ProfilePicture = model.OldProfilePicture;
+            }
 
             var service = CreatePersonService();
 
@@ -156,5 +163,19 @@ namespace GiftRegistry.WebMVC.Controllers
             var service = new PersonService(userId);
             return service;
         }
+
+        public ActionResult GetProfilePicture(byte[] oldImage)
+        {
+            // Check if the user has uploaded any new images yet
+            HttpPostedFileBase file = Request.Files["ImageData"];
+            if (file != null && file.ContentLength != 0)
+            {
+                return File(ConvertToBytes(file), "image/png");
+            }
+
+            // If not, get the old image
+            return File(oldImage, "image/png");
+        }
+
     }
 }

@@ -9,6 +9,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.PersonID)
+    @Html.HiddenFor(model => model.OldProfilePicture)
 
     <div class="form-horizontal">
         <h4>PersonEdit</h4>
@@ -47,11 +48,11 @@
                 {
                     var base64 = Convert.ToBase64String(Model.ProfilePicture);
                     var profilePictureSrc = String.Format("data:image/gif;base64,{0}", base64);
-                    <img src="@profilePictureSrc" alt="Profile Picture" height=200 width=200 />
+                    <img id="profilePicture" src="@profilePictureSrc" alt="Profile Picture" height=200 width=200 />
                 }
             </div>
             <div class="col-md-offset-2 col-md-10 mt-3 mb-4">
-                <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" />
+                <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this); Refresh();" />
             </div>
         </div>
 
