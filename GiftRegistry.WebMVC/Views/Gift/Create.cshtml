@@ -7,7 +7,7 @@
 <h2>Create Gift</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Gift", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.WishListID)
@@ -45,6 +45,22 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.QtyDesired, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.QtyDesired, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductImage, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-offset-2 col-md-10">
+                @if (Model.ProductImage != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.ProductImage);
+                    var productImageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    <img src="@productImageSrc" alt="Product Image" height=200 width=200 />
+                }
+            </div>
+            <div class="col-md-offset-2 col-md-10 mt-3 mb-4">
+                <input type="file" name="ProductImageData" id="ProductImageData" onchange="fileCheck(this);" />
             </div>
         </div>
 

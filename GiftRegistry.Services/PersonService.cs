@@ -26,6 +26,7 @@ namespace GiftRegistry.Services
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Birthdate = model.Birthdate
+                    ////////////////////////////////////////////////////////////// Could set default profile picture here
                 };
 
             using (var ctx = new ApplicationDbContext())
@@ -49,7 +50,8 @@ namespace GiftRegistry.Services
                                 {
                                     PersonID = e.PersonID,
                                     FullName = e.FirstName + " " + e.LastName,
-                                    Birthdate = e.Birthdate
+                                    Birthdate = e.Birthdate,
+                                    ProfilePicture = e.ProfilePicture
                                 }
                         );
 
@@ -69,7 +71,8 @@ namespace GiftRegistry.Services
                                                             {
                                                                 PersonID = e.PersonID,
                                                                 FullName = e.FirstName + " " + e.LastName,
-                                                                Birthdate = e.Birthdate
+                                                                Birthdate = e.Birthdate,
+                                                                ProfilePicture = e.ProfilePicture
                                                             }
                                                 );
                     return strangers.ToArray();
@@ -81,7 +84,8 @@ namespace GiftRegistry.Services
                                                 {
                                                     PersonID = e.PersonID,
                                                     FullName = e.FirstName + " " + e.LastName,
-                                                    Birthdate = e.Birthdate
+                                                    Birthdate = e.Birthdate,
+                                                    ProfilePicture = e.ProfilePicture
                                                 }
                                     );
 

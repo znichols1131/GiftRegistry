@@ -14,7 +14,16 @@ namespace GiftRegistry.WebMVC.Controllers
         public ActionResult Index()
         {
             var service = CreateHomeService();
-            var model = service.GetEvents();
+
+            IEnumerable<EventListItem> model;
+
+            if(service is null)
+            {
+                model = null;
+            }else
+            {
+                model = service.GetEvents();
+            }
 
             ViewBag.DateString = GetDateString();
             return View(model);
@@ -42,9 +51,15 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private HomeService CreateHomeService()
         {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            var service = new HomeService(userId);
-            return service;
+            try
+            {
+                var userId = Guid.Parse(User.Identity.GetUserId());
+                var service = new HomeService(userId);
+                return service;
+            }catch
+            {
+                return null;
+            }
         }
     }
 }

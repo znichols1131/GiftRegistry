@@ -26,7 +26,8 @@ namespace GiftRegistry.Services
                     Description = model.Description,
                     SourceURL = model.SourceURL,
                     QtyDesired = model.QtyDesired,
-                    WishListID = model.WishListID
+                    WishListID = model.WishListID,
+                    ProductImage = model.ProductImage
                 };
 
             using (var ctx = new ApplicationDbContext())
@@ -53,7 +54,8 @@ namespace GiftRegistry.Services
                                     Description = e.Description,
                                     QtyDesired = e.QtyDesired,
                                     WishListID = e.WishListID,
-                                    WishList = e.WishList
+                                    WishList = e.WishList,
+                                    ProductImage = e.ProductImage
                                 }
                         );
 
@@ -82,7 +84,8 @@ namespace GiftRegistry.Services
                         QtyDesired = entity.QtyDesired,
                         QtyPurchased = QuantityPurchasedForGiftID(entity.GiftID),
                         WishListID = entity.WishListID,
-                        WishList = entity.WishList
+                        WishList = entity.WishList,
+                        ProductImage = entity.ProductImage
                     };
             }
         }
@@ -100,6 +103,7 @@ namespace GiftRegistry.Services
                 entity.Description = model.Description;
                 entity.SourceURL = model.SourceURL;
                 entity.QtyDesired = model.QtyDesired;
+                entity.ProductImage = model.ProductImage;
 
                 return ctx.SaveChanges() == 1;
             }
@@ -128,6 +132,9 @@ namespace GiftRegistry.Services
                     ctx
                         .Transactions
                         .Where(e => e.GiftID == giftID);
+
+                if (query.Count() == 0)
+                    return 0;
 
                 return query.Sum(t => t.QtyGiven);
             }

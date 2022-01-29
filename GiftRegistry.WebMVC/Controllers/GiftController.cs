@@ -3,6 +3,7 @@ using GiftRegistry.Services;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -30,6 +31,9 @@ namespace GiftRegistry.WebMVC.Controllers
             }
 
             var service = CreateGiftService();
+
+            HttpPostedFileBase file = Request.Files["ProductImageData"];
+            model.ProductImage = ConvertToBytes(file);
 
             if (service.CreateGift(model))
             {
@@ -68,7 +72,8 @@ namespace GiftRegistry.WebMVC.Controllers
                     SourceURL = detail.SourceURL,
                     QtyDesired = detail.QtyDesired,
                     WishListID = detail.WishListID,
-                    WishList = detail.WishList
+                    WishList = detail.WishList,
+                    ProductImage = detail.ProductImage
                 };
 
             return View(model);
@@ -81,13 +86,16 @@ namespace GiftRegistry.WebMVC.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            if (model.WishListID != id)
+            if (model.GiftID != id)
             {
                 ModelState.AddModelError("", "Id Mismatch");
                 return View(model);
             }
 
             var service = CreateGiftService();
+
+            HttpPostedFileBase file = Request.Files["ProductImageData"];
+            model.ProductImage = ConvertToBytes(file);
 
             if (service.UpdateGift(model))
             {
@@ -130,6 +138,14 @@ namespace GiftRegistry.WebMVC.Controllers
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new GiftService(userId);
             return service;
+        }
+
+        private byte[] ConvertToBytes(HttpPostedFileBase image)
+        {
+            using (var reader = new BinaryReader(image.InputStream))
+            {
+                return reader.ReadBytes(image.ContentLength);
+            }
         }
     }
 }

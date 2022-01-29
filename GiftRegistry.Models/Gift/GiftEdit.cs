@@ -31,5 +31,8 @@ namespace GiftRegistry.Models
         [Required]
         public int WishListID { get; set; }
         public WishList WishList { get; set; }
+
+        [Display(Name = "Product Image")]
+        public byte[] ProductImage { get; set; }
     }
 }

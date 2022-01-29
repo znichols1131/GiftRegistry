@@ -73,6 +73,10 @@
     <Compile Include="Migrations\202201281609495_image-init.Designer.cs">
       <DependentUpon>202201281609495_image-init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201291428112_gift-image-init.cs" />
+    <Compile Include="Migrations\202201291428112_gift-image-init.Designer.cs">
+      <DependentUpon>202201291428112_gift-image-init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -141,6 +145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201281609495_image-init.resx">
       <DependentUpon>202201281609495_image-init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201291428112_gift-image-init.resx">
+      <DependentUpon>202201291428112_gift-image-init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

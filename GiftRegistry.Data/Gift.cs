@@ -34,5 +34,8 @@ namespace GiftRegistry.Data
         public virtual WishList WishList { get; set; }
 
         public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+        [Display(Name = "Product Image")]
+        public byte[] ProductImage { get; set; }
     }
 }

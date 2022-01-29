@@ -17,5 +17,7 @@ namespace GiftRegistry.Models
         [Display(Name = "Birthdate")]
         public DateTime? Birthdate { get; set; }
 
+        [Display(Name = "Profile Picture")]
+        public byte[] ProfilePicture { get; set; }
     }
 }

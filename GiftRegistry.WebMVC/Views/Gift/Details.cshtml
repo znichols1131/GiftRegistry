@@ -45,10 +45,36 @@
             </dd>
         }
 
+        @if (Model.ProductImage != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductImage)
+            </dt>
+
+            <dd>
+                @{
+                    var base64 = Convert.ToBase64String(Model.ProductImage);
+                    var productImageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    <img src="@productImageSrc" alt="Product Image" height=200 width=200 />
+                }
+            </dd>
+        }
+
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = Model.GiftID }, null) | 
-    @Html.ActionLink("Edit", "Edit", new { id = Model.GiftID }) |
-    @Html.ActionLink("Back to Gift List", "Details", "WishList", new { id = Model.WishListID }, null)
-</p>
+
+@if (ViewBag.UserGUID != Model.WishList.OwnerGUID)
+{
+    <p>
+        @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = Model.GiftID }, null) |
+        @Html.ActionLink("Back to Gift List", "Details", "WishList", new { id = Model.WishListID }, null)
+    </p>
+}
+else
+{
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.GiftID }) |
+        @Html.ActionLink("Back to Gift List", "Details", "WishList", new { id = Model.WishListID }, null)
+    </p>
+}
+
