@@ -27,5 +27,7 @@ namespace GiftRegistry.Models
         public byte[] ProfilePicture { get; set; }
         public byte[] OldProfilePicture { get; set; }
 
+        public ImageUpload ImageUpload { get; set; }
+
     }
 }

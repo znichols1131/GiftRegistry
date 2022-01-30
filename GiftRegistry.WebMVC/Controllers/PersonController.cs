@@ -63,7 +63,8 @@ namespace GiftRegistry.WebMVC.Controllers
                     LastName = detail.LastName,
                     Birthdate = (detail.Birthdate is null) ? DateTime.Now : detail.Birthdate,
                     ProfilePicture = detail.ProfilePicture,
-                    OldProfilePicture = detail.ProfilePicture
+                    OldProfilePicture = detail.ProfilePicture,
+                    ImageUpload = new ImageUpload("Profile Picture", detail.ProfilePicture, true)
                 };
 
             return View(model);
@@ -162,19 +163,6 @@ namespace GiftRegistry.WebMVC.Controllers
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new PersonService(userId);
             return service;
-        }
-
-        public ActionResult GetProfilePicture(byte[] oldImage)
-        {
-            // Check if the user has uploaded any new images yet
-            HttpPostedFileBase file = Request.Files["ImageData"];
-            if (file != null && file.ContentLength != 0)
-            {
-                return File(ConvertToBytes(file), "image/png");
-            }
-
-            // If not, get the old image
-            return File(oldImage, "image/png");
         }
 
     }

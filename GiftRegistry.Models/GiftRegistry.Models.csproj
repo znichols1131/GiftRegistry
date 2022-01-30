@@ -63,6 +63,7 @@
     <Compile Include="Gift\GiftDetail.cs" />
     <Compile Include="Gift\GiftEdit.cs" />
     <Compile Include="Gift\GiftListItem.cs" />
+    <Compile Include="ImageUpload.cs" />
     <Compile Include="Person\PersonCreate.cs" />
     <Compile Include="Person\PersonDetail.cs" />
     <Compile Include="Person\PersonEdit.cs" />

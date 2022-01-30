@@ -1,0 +1,63 @@
+﻿@model GiftRegistry.Models.ImageUpload
+
+<p class="mb-0">
+    @string.Format(Model.Name)
+</p>
+
+<div class="col-md-offset-2 col-md-10">
+    @if (Model.Image != null)
+    {
+        <img id="uploadedPicture" class="mb-2" src="@Model.Image" alt="Picture for @Model.Name" height=200 width=200 />
+    }
+
+</div>
+
+<div class="col-md-offset-2 col-md-10">
+
+    <input type="file" size="45" name="imageFile" id="imageFile">
+
+    <div class="btn btn-secondary">
+        <span id="random-image-btn">Randomize</span>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript">
+
+    $(function () {
+        //Click event for the image randomize button
+
+        $(document).on("change", "#imageFile", function () {
+
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                var url;
+                reader.onload = function (e) {
+                    $('#uploadedPicture').attr('src', e.target.result);
+                    url = e.target.result;
+                }
+                reader.readAsDataURL(this.files[0]);
+
+                // Pass url back to controller here
+            }
+        });
+
+});
+
+
+</script>
+
+<script type="text/javascript">
+
+    $(function RandomizeImage() {
+        //Click event for the image randomize button
+
+        $("#random-image-btn").click(function (e) {
+            var url = "@Model.RandomImageURL" + "?rand=" + Math.random();
+            $("#uploadedPicture").attr("src", url);
+        });
+
+        // Pass url back to controller here
+    });
+</script>
