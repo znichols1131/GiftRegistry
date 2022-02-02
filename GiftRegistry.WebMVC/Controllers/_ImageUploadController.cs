@@ -50,6 +50,9 @@ namespace GiftRegistry.WebMVC.Controllers
         {
             // Get service and clear all images for this user (meant to be temporary)
             var service = CreateImageService();
+            if (service is null)
+                return null;
+
             service.DeleteImagesForUser();
 
             if (!service.CreateDefaultImage(isPerson))
@@ -63,6 +66,9 @@ namespace GiftRegistry.WebMVC.Controllers
         {
             // Get service and clear all images for this user (meant to be temporary)
             var service = CreateImageService();
+            if (service is null)
+                return null; 
+            
             service.DeleteImagesForUser();
 
             if (!service.CreateDefaultImage(_isProfilePicture))
@@ -75,28 +81,43 @@ namespace GiftRegistry.WebMVC.Controllers
         public ImageModel GetLatestImageForUser()
         {
             var service = CreateImageService();
+            if (service is null)
+                return null;
+            
             return service.GetLatestImageForUser();
         }
 
         public ImageModel GetLatestImageForUser(Guid userID)
         {
             var service = CreateImageService(userID);
+            if (service is null)
+                return null;
+            
             return service.GetLatestImageForUser();
         }
 
         public ImageModel GetImageForID(int id)
         {
             var service = CreateImageService();
+            if (service is null)
+                return null;
+            
             return service.GetImageByID(id);
         }
         public ImageModel GetImageForID(int id, Guid userID)
         {
             var service = CreateImageService(userID);
+            if (service is null)
+                return null;
+            
             return service.GetImageByID(id);
         }
 
         private ImageService CreateImageService()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null; 
+            
             Guid userId;
             try
             {
@@ -120,6 +141,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private ImageService CreateImageService(Guid userID)
         {
+            if (!User.Identity.IsAuthenticated)
+                return null; 
+            
             var service = new ImageService(userID);
             return service;
         }

@@ -15,13 +15,21 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Create
         public ActionResult Create(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             GiftCreate model = new GiftCreate();
 
             model.WishListID = id;
 
             var controller = CreateImageController();
-            model.Image = controller.CreateRandomImage();
+            if (controller != null)
+            {
+                model.Image = controller.CreateRandomImage();
+                return View(model);
+            }
 
+            model.Image = new ImageModel();
             return View(model);
         }
 
@@ -30,6 +38,9 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(GiftCreate model)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -37,6 +48,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
             // Get image
             var controller = CreateImageController();
+
             if (model.ImageID == -1)
             {
                 // Image was uploaded and doesn't exist in database yet
@@ -76,8 +88,12 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Detail
         public ActionResult Details(int id)
         {
-            var svc = CreateGiftService();
-            var model = svc.GetGiftByID(id);
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
+            var service = CreateGiftService();
+
+            var model = service.GetGiftByID(id);
 
             ViewBag.UserGUID = Guid.Parse(User.Identity.GetUserId());
 
@@ -87,7 +103,11 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Edit
         public ActionResult Edit(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
             var service = CreateGiftService();
+
             var detail = service.GetGiftByID(id);
             var model =
                 new GiftEdit
@@ -110,6 +130,9 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, GiftEdit model)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             if (!ModelState.IsValid) return View(model);
 
             if (model.GiftID != id)
@@ -120,6 +143,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
             // Get image
             var controller = CreateImageController();
+            if(controller is null)
+                return RedirectToAction("Index", "Home");
+
             if (model.ImageID == -1)
             {
                 // Image was uploaded and doesn't exist in database yet
@@ -143,6 +169,8 @@ namespace GiftRegistry.WebMVC.Controllers
             }
 
             var service = CreateGiftService();
+            if (service is null)
+                return RedirectToAction("Index", "Home");
 
             if (service.UpdateGift(model))
             {
@@ -158,8 +186,12 @@ namespace GiftRegistry.WebMVC.Controllers
         [ActionName("Delete")]
         public ActionResult Delete(int id)
         {
-            var svc = CreateGiftService();
-            var model = svc.GetGiftByID(id);
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
+            var service = CreateGiftService();
+
+            var model = service.GetGiftByID(id);
 
             return View(model);
         }
@@ -170,7 +202,11 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreateGiftService();
+
             var model = service.GetGiftByID(id);
 
             service.DeleteGift(id);
@@ -178,13 +214,6 @@ namespace GiftRegistry.WebMVC.Controllers
             TempData["SaveResult"] = "Your gift was deleted.";
 
             return RedirectToAction("Details", "WishList", new { id = model.WishListID });
-        }
-
-        private GiftService CreateGiftService()
-        {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            var service = new GiftService(userId);
-            return service;
         }
 
         private byte[] ConvertToBytes(HttpPostedFileBase image)
@@ -195,8 +224,23 @@ namespace GiftRegistry.WebMVC.Controllers
             }
         }
 
+        private GiftService CreateGiftService()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return null;
+
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new GiftService(userId);
+            return service;
+        }
+
+
+
         private PersonService CreatePersonService()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null;
+
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new PersonService(userId);
             return service;
@@ -204,6 +248,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private _ImageUploadController CreateImageController()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null;
+
             var controller = new _ImageUploadController();
             controller._isProfilePicture = false;
             return controller;

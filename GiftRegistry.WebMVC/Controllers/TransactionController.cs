@@ -14,7 +14,11 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Transaction
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreateTransactionService();
+
             var model = service.GetAllTransactionsForUser();
             return View(model);
         }
@@ -22,6 +26,9 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Create
         public ActionResult Create(int giftID)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             TransactionCreate model = new TransactionCreate();
             var transactionService = CreateTransactionService();
 
@@ -42,6 +49,9 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(TransactionCreate model)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -64,8 +74,12 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Detail
         public ActionResult Details(int id)
         {
-            var svc = CreateTransactionService();
-            var model = svc.GetTransactionByID(id);
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
+            var service = CreateTransactionService();
+
+            var model = service.GetTransactionByID(id);
 
             ViewBag.UserGUID = Guid.Parse(User.Identity.GetUserId());
 
@@ -75,7 +89,11 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Edit
         public ActionResult Edit(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreateTransactionService();
+
             var detail = service.GetTransactionByID(id);
             var model =
                 new TransactionEdit
@@ -100,6 +118,9 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, TransactionEdit model)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             if (!ModelState.IsValid) return View(model);
 
             if (model.TransactionID != id)
@@ -124,8 +145,12 @@ namespace GiftRegistry.WebMVC.Controllers
         [ActionName("Delete")]
         public ActionResult Delete(int id)
         {
-            var svc = CreateTransactionService();
-            var model = svc.GetTransactionByID(id);
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
+            var service = CreateTransactionService();
+
+            var model = service.GetTransactionByID(id);
 
             return View(model);
         }
@@ -136,7 +161,11 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreateTransactionService();
+
             var model = service.GetTransactionByID(id);
 
             service.DeleteTransaction(id);
@@ -148,6 +177,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private TransactionService CreateTransactionService()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null; 
+            
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new TransactionService(userId);
             return service;
@@ -155,6 +187,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private GiftService CreateGiftService()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null; 
+            
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new GiftService(userId);
             return service;

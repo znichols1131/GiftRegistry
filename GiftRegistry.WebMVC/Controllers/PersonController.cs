@@ -17,7 +17,11 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Edit
         public ActionResult Edit()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreatePersonService();
+
             var detail = service.GetCurrentPerson();
             var model =
                 new PersonEdit
@@ -37,11 +41,13 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PersonEdit model)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             if (!ModelState.IsValid) return View(model);
 
             var controller = CreateImageController();
-
-            if(model.ImageID == -1)
+            if (model.ImageID == -1)
             {
                 // Image was uploaded and doesn't exist in database yet
                 HttpPostedFileBase file = Request.Files["imageFile"];
@@ -64,7 +70,6 @@ namespace GiftRegistry.WebMVC.Controllers
             }
 
             var service = CreatePersonService();
-
             if (service.UpdatePerson(model))
             {
                 TempData["SaveResult"] = "Your person was updated.";
@@ -76,20 +81,16 @@ namespace GiftRegistry.WebMVC.Controllers
             return View(model);
         }
 
-        private byte[] ConvertToBytes(HttpPostedFileBase image)
-        {
-            using (var reader = new BinaryReader(image.InputStream))
-            {
-               return reader.ReadBytes(image.ContentLength);
-            }
-        }
-
         // ADD FRIENDS LIST ONLY
 
         // GET: Person
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreatePersonService();
+
             var model = service.GetStrangers();
             return View(model);
         }
@@ -97,16 +98,29 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Detail
         public ActionResult Details(int id)
         {
-            var svc = CreatePersonService();
-            var model = svc.GetPersonById(id);
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
+            var service = CreatePersonService();
+
+            var model = service.GetPersonById(id);
 
             return View(model);
         }
 
-
+        private byte[] ConvertToBytes(HttpPostedFileBase image)
+        {
+            using (var reader = new BinaryReader(image.InputStream))
+            {
+                return reader.ReadBytes(image.ContentLength);
+            }
+        }
 
         private PersonService CreatePersonService()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null; 
+            
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new PersonService(userId);
             return service;
@@ -114,6 +128,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private _ImageUploadController CreateImageController()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null; 
+            
             var controller = new _ImageUploadController();
             controller._isProfilePicture = true;
             return controller;

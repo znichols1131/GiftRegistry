@@ -14,7 +14,11 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Friend
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreateFriendService();
+
             var model = service.GetFriends();
             return View(model);
         }
@@ -22,6 +26,9 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Create
         public ActionResult Create(int id, string name)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
             FriendCreate model = new FriendCreate();
 
             model.PersonID = id;
@@ -35,6 +42,9 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(FriendCreate model)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -56,8 +66,12 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Detail
         public ActionResult Details(int id)
         {
-            var svc = CreateFriendService();
-            var model = svc.GetFriendByID(id);
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
+            var service = CreateFriendService();
+
+            var model = service.GetFriendByID(id);
 
             return View(model);
         }
@@ -65,7 +79,11 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Edit
         public ActionResult Edit(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreateFriendService();
+
             var detail = service.GetFriendByID(id);
             var model =
                 new FriendEdit
@@ -85,6 +103,9 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, FriendEdit model)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             if (!ModelState.IsValid) return View(model);
 
             if (model.FriendID != id)
@@ -94,7 +115,6 @@ namespace GiftRegistry.WebMVC.Controllers
             }
 
             var service = CreateFriendService();
-
             if (service.UpdateFriend(model))
             {
                 TempData["SaveResult"] = "Your friend was updated.";
@@ -109,8 +129,12 @@ namespace GiftRegistry.WebMVC.Controllers
         [ActionName("Delete")]
         public ActionResult Delete(int id)
         {
-            var svc = CreateFriendService();
-            var model = svc.GetFriendByID(id);
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
+            var service = CreateFriendService();
+
+            var model = service.GetFriendByID(id);
 
             return View(model);
         }
@@ -121,6 +145,9 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home"); 
+            
             var service = CreateFriendService();
 
             service.DeleteFriend(id);
@@ -132,6 +159,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private FriendService CreateFriendService()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null;
+
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new FriendService(userId);
             return service;

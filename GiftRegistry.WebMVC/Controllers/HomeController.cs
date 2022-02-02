@@ -14,7 +14,6 @@ namespace GiftRegistry.WebMVC.Controllers
         public ActionResult Index()
         {
             var service = CreateHomeService();
-
             IEnumerable<EventListItem> model;
 
             if(service is null)
@@ -51,6 +50,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private HomeService CreateHomeService()
         {
+            if (!User.Identity.IsAuthenticated)
+                return null;
+
             try
             {
                 var userId = Guid.Parse(User.Identity.GetUserId());
