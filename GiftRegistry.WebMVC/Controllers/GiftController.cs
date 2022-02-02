@@ -16,7 +16,12 @@ namespace GiftRegistry.WebMVC.Controllers
         public ActionResult Create(int id)
         {
             GiftCreate model = new GiftCreate();
+
             model.WishListID = id;
+
+            var controller = CreateImageController();
+            model.Image = controller.CreateRandomImage();
+
             return View(model);
         }
 
@@ -30,10 +35,31 @@ namespace GiftRegistry.WebMVC.Controllers
                 return View(model);
             }
 
-            var service = CreateGiftService();
+            // Get image
+            var controller = CreateImageController();
+            if (model.ImageID == -1)
+            {
+                // Image was uploaded and doesn't exist in database yet
+                HttpPostedFileBase file = Request.Files["imageFile"];
+                if (file != null && file.ContentLength != 0)
+                {
+                    // Valid image file uploaded
+                    ImageModel newImage = new ImageModel();
+                    newImage.ImageData = ConvertToBytes(file);
+                    model.Image = newImage;
+                }
+                else
+                {
+                    // Invalid, get a default image
+                    model.Image = controller.CreateRandomImage();
+                }
+            }
+            else
+            {
+                model.Image = controller.GetImageForID(model.ImageID, Guid.Parse(User.Identity.GetUserId()));
+            }
 
-            HttpPostedFileBase file = Request.Files["ProductImageData"];
-            model.ProductImage = ConvertToBytes(file);
+            var service = CreateGiftService();
 
             if (service.CreateGift(model))
             {
@@ -73,7 +99,7 @@ namespace GiftRegistry.WebMVC.Controllers
                     QtyDesired = detail.QtyDesired,
                     WishListID = detail.WishListID,
                     WishList = detail.WishList,
-                    ProductImage = detail.ProductImage
+                    Image = detail.Image
                 };
 
             return View(model);
@@ -92,10 +118,31 @@ namespace GiftRegistry.WebMVC.Controllers
                 return View(model);
             }
 
-            var service = CreateGiftService();
+            // Get image
+            var controller = CreateImageController();
+            if (model.ImageID == -1)
+            {
+                // Image was uploaded and doesn't exist in database yet
+                HttpPostedFileBase file = Request.Files["imageFile"];
+                if (file != null && file.ContentLength != 0)
+                {
+                    // Valid image file uploaded
+                    ImageModel newImage = new ImageModel();
+                    newImage.ImageData = ConvertToBytes(file);
+                    model.Image = newImage;
+                }
+                else
+                {
+                    // Invalid, get a default image
+                    model.Image = controller.CreateRandomImage();
+                }
+            }
+            else
+            {
+                model.Image = controller.GetImageForID(model.ImageID, Guid.Parse(User.Identity.GetUserId()));
+            }
 
-            HttpPostedFileBase file = Request.Files["ProductImageData"];
-            model.ProductImage = ConvertToBytes(file);
+            var service = CreateGiftService();
 
             if (service.UpdateGift(model))
             {
@@ -146,6 +193,20 @@ namespace GiftRegistry.WebMVC.Controllers
             {
                 return reader.ReadBytes(image.ContentLength);
             }
+        }
+
+        private PersonService CreatePersonService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new PersonService(userId);
+            return service;
+        }
+
+        private _ImageUploadController CreateImageController()
+        {
+            var controller = new _ImageUploadController();
+            controller._isProfilePicture = false;
+            return controller;
         }
     }
 }

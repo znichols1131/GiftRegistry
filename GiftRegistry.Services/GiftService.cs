@@ -27,7 +27,7 @@ namespace GiftRegistry.Services
                     SourceURL = GetClickableLink(model.SourceURL),
                     QtyDesired = model.QtyDesired,
                     WishListID = model.WishListID,
-                    ProductImage = model.ProductImage
+                    ProductImage = model.Image.ImageData
                 };
 
             using (var ctx = new ApplicationDbContext())
@@ -85,7 +85,7 @@ namespace GiftRegistry.Services
                         QtyPurchased = QuantityPurchasedForGiftID(entity.GiftID),
                         WishListID = entity.WishListID,
                         WishList = entity.WishList,
-                        ProductImage = entity.ProductImage
+                        Image = (entity.ProductImage == null || entity.ProductImage.Length == 0) ? CreateDefaultImageModel() : CreateImageModelForBytes(entity.ProductImage)
                     };
             }
         }
@@ -103,7 +103,7 @@ namespace GiftRegistry.Services
                 entity.Description = model.Description;
                 entity.SourceURL = GetClickableLink(model.SourceURL);
                 entity.QtyDesired = model.QtyDesired;
-                entity.ProductImage = model.ProductImage;
+                entity.ProductImage = model.Image.ImageData;
 
                 return ctx.SaveChanges() == 1;
             }
@@ -146,6 +146,45 @@ namespace GiftRegistry.Services
                 return url;
 
             return "http://" + url;
+        }
+
+
+
+
+        private ImageService CreateImageService()
+        {
+            var service = new ImageService(_userId);
+            return service;
+        }
+
+        private ImageModel CreateImageModelForBytes(byte[] input)
+        {
+            var service = CreateImageService();
+
+            service.DeleteImagesForUser();
+
+            var model = new ImageModel();
+            model.ImageData = input;
+            model.OwnerGUID = _userId;
+
+            if (!service.CreateImage(model))
+                return null;
+
+            return service.GetLatestImageForUser();
+        }
+
+        private ImageModel CreateDefaultImageModel()
+        {
+            var service = CreateImageService();
+
+            service.DeleteImagesForUser();
+
+            if (!service.CreateDefaultImage(false))
+                return null;
+
+            var image = service.GetLatestImageForUser();
+
+            return image;
         }
     }
 }

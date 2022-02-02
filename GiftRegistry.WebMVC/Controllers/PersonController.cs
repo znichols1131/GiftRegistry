@@ -14,42 +14,6 @@ namespace GiftRegistry.WebMVC.Controllers
     [Authorize]
     public class PersonController : Controller
     {
-        // MAIN USER ONLY
-
-        //// GET: Create
-        //public ActionResult Create()
-        //{
-        //    PersonCreate model = new PersonCreate();
-        //    model.Birthdate = DateTime.Now;
-
-        //    return View(model);
-        //}
-
-        //// POST: Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(PersonCreate model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        model.Birthdate = (model.Birthdate is null) ? DateTime.Now : model.Birthdate;
-        //        return View(model);
-        //    }
-
-        //    var service = CreatePersonService();
-
-        //    if (service.CreatePerson(model))
-        //    {
-        //        TempData["SaveResult"] = "Your person was created.";
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    ModelState.AddModelError("", "Person could not be created.");
-
-        //    model.Birthdate = (model.Birthdate is null) ? DateTime.Now : model.Birthdate;
-        //    return View(model);
-        //}
-
         // GET: Edit
         public ActionResult Edit()
         {
@@ -139,30 +103,7 @@ namespace GiftRegistry.WebMVC.Controllers
             return View(model);
         }
 
-        //// GET: Delete
-        //[ActionName("Delete")]
-        //public ActionResult Delete(int id)
-        //{
-        //    var svc = CreatePersonService();
-        //    var model = svc.GetPersonById(id);
 
-        //    return View(model);
-        //}
-
-        //// POST: Delete
-        //[HttpPost]
-        //[ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeletePost(int id)
-        //{
-        //    var service = CreatePersonService();
-
-        //    service.DeletePerson(id);
-
-        //    TempData["SaveResult"] = "Your person was deleted.";
-
-        //    return RedirectToAction("Index");
-        //}
 
         private PersonService CreatePersonService()
         {

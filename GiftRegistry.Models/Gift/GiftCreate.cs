@@ -29,6 +29,7 @@ namespace GiftRegistry.Models
         public int WishListID { get; set; }
 
         [Display(Name = "Product Image")]
-        public byte[] ProductImage { get; set; }
+        public ImageModel Image { get; set; }
+        public int ImageID { get; set; }
     }
 }

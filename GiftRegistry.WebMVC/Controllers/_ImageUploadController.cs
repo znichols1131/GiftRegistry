@@ -14,10 +14,21 @@ namespace GiftRegistry.WebMVC.Controllers
     public class _ImageUploadController : Controller
     {
         public bool _isProfilePicture { get; set; }
+        private Guid _userGUID;
 
         public _ImageUploadController()
         {
             _isProfilePicture = true;
+
+            if(User != null)
+            {
+                try { _userGUID = Guid.Parse(User.Identity.GetUserId()); } catch { }
+            }
+        }
+        public _ImageUploadController(Guid userGUID)
+        {
+            _isProfilePicture = true;
+            _userGUID = userGUID;
         }
 
         [HttpGet]
@@ -104,7 +115,23 @@ namespace GiftRegistry.WebMVC.Controllers
 
         private ImageService CreateImageService()
         {
-            var userId = Guid.Parse(User.Identity.GetUserId());
+            Guid userId;
+            try
+            {
+                if (User != null)
+                {
+                    userId = Guid.Parse(User.Identity.GetUserId());
+                }
+                else
+                {
+                    userId = _userGUID;
+                }
+            }
+            catch
+            {
+                userId = _userGUID;
+            }            
+
             var service = new ImageService(userId);
             return service;
         }

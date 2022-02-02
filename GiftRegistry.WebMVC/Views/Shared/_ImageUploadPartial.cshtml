@@ -42,26 +42,6 @@
                 // Pass url back to controller here
             }
 
-            @*var myFile = $('#imageFile').prop('files')[0];
-
-            $.ajax({
-                type: "POST",
-                url: "@(Url.Action("CreateUploadedImageJSON", "_ImageUpload"))",
-                data: new FormData(myFile),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-
-                    var imageData = data.imageSrc;
-                    $('#uploadedPicture').attr('src', imageData);
-
-                    $("#ImageIDField").val(data.ImageID);
-                },
-                error: function () {
-                    alert("Error");
-                }
-            });*@
-
-
         });
     });
 

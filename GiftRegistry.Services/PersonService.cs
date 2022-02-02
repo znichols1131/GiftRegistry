@@ -194,15 +194,6 @@ namespace GiftRegistry.Services
             }
         }
 
-        private byte[] GetDefaultProfilePicture()
-        {
-            // Using Doodle Ipsum for default profile pictures
-
-            using (var webClient = new WebClient())
-            {
-                return webClient.DownloadData("https://doodleipsum.com/500/avatar-3");
-            }
-        }
         private ImageService CreateImageService()
         {
             var service = new ImageService(_userId);
