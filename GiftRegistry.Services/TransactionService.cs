@@ -154,7 +154,21 @@ namespace GiftRegistry.Services
                 var entity =
                     ctx
                         .Transactions
-                        .Single(e => e.TransactionID == id && e.Giver.PersonGUID == _userId);
+                        .Include("Gift")
+                        .Include("Gift.WishList")
+                        .Include("Gift.WishList.Owner")
+                        .Single(e => e.TransactionID == id && (e.Giver.PersonGUID == _userId || e.Gift.WishList.OwnerGUID == _userId));
+
+                // Before deleting transaction, we want to notify buyers that their transaction was deleted
+                var service = CreateNotificationService();
+                NotificationDetail model = new NotificationDetail()
+                {
+                    NotificationType = NotificationType.ReadOnlyMessage,
+                    Message = $"Your transaction for {entity.Gift.Name} (qty. {entity.QtyGiven}) was cancelled. {entity.Gift.WishList.Owner.FullName} removed this item from their wish list.",
+                    RecipientID = (int)entity.GiverID,
+                    SenderID = (int)entity.Gift.WishList.OwnerID
+                };
+                service.CreateNotification(model);
 
                 ctx.Transactions.Remove(entity);
 
@@ -174,6 +188,12 @@ namespace GiftRegistry.Services
 
                 return -1;
             }
+        }
+
+        private NotificationService CreateNotificationService()
+        {
+            var service = new NotificationService(_userId);
+            return service;
         }
     }
 }

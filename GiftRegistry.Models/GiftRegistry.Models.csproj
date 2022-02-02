@@ -65,6 +65,8 @@
     <Compile Include="Gift\GiftListItem.cs" />
     <Compile Include="ImageModel.cs" />
     <Compile Include="ImageUpload.cs" />
+    <Compile Include="Notification\NotificationDetail.cs" />
+    <Compile Include="Notification\NotificationListItem.cs" />
     <Compile Include="Person\PersonCreate.cs" />
     <Compile Include="Person\PersonDetail.cs" />
     <Compile Include="Person\PersonEdit.cs" />

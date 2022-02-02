@@ -9,14 +9,12 @@ using System.Web.Mvc;
 
 namespace GiftRegistry.WebMVC.Controllers
 {
+    [Authorize]
     public class WishListController : Controller
     {
         // GET: WishList
         public ActionResult Index()
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateWishListService();
 
             var model = service.GetWishListsForCurrentUser();
@@ -25,10 +23,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Create
         public ActionResult Create()
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             return View();
         }
 
@@ -36,10 +31,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(WishListCreate model)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -60,10 +52,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Detail
         public ActionResult Details(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateWishListService();
             
             var model = service.GetWishListByID(id);
@@ -75,10 +64,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Edit
         public ActionResult Edit(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateWishListService();
             
             var detail = service.GetWishListByID(id);
@@ -102,10 +88,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, WishListEdit model)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             if (!ModelState.IsValid) return View(model);
 
             if (model.WishListID != id)
@@ -129,10 +112,7 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Delete
         [ActionName("Delete")]
         public ActionResult Delete(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateWishListService();
 
             var model = service.GetWishListByID(id);
@@ -145,12 +125,8 @@ namespace GiftRegistry.WebMVC.Controllers
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateWishListService();
-
             service.DeleteWishList(id);
 
             TempData["SaveResult"] = "Your wish list was deleted.";

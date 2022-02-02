@@ -1,0 +1,45 @@
+﻿@model GiftRegistry.Models.NotificationDetail
+
+@{
+    ViewBag.Title = "Notification";
+}
+
+<h2 class="mt-4">Notification</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        @if (Model.DateUpdated != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.DateUpdated)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DateUpdated)
+            </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Delete", "Delete", new {  id = Model.NotificationID  }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -136,7 +136,15 @@ namespace GiftRegistry.Services
                 var entity =
                     ctx
                         .WishLists
+                        .Include("Gifts")
                         .Single(e => e.WishListID == id && e.OwnerGUID == _userId);
+
+                // Don't rely on cascade deleting. We want to send notification to buyers whose transactions will be deleted
+                var giftService = CreateGiftService();
+                foreach(var gift in entity.Gifts)
+                {
+                    giftService.DeleteGift(gift.GiftID);
+                }
 
                 ctx.WishLists.Remove(entity);
 
@@ -156,6 +164,11 @@ namespace GiftRegistry.Services
 
                 return -1;
             }
+        }
+        private GiftService CreateGiftService()
+        {
+            var service = new GiftService(_userId);
+            return service;
         }
     }
 }

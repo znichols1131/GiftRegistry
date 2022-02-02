@@ -10,14 +10,12 @@ using System.Web.Mvc;
 
 namespace GiftRegistry.WebMVC.Controllers
 {
+    [Authorize]
     public class GiftController : Controller
     {
         // GET: Create
         public ActionResult Create(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             GiftCreate model = new GiftCreate();
 
             model.WishListID = id;
@@ -37,10 +35,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(GiftCreate model)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -88,9 +83,6 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Detail
         public ActionResult Details(int id)
         {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
-
             var service = CreateGiftService();
 
             var model = service.GetGiftByID(id);
@@ -103,9 +95,6 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Edit
         public ActionResult Edit(int id)
         {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
-
             var service = CreateGiftService();
 
             var detail = service.GetGiftByID(id);
@@ -129,10 +118,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, GiftEdit model)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             if (!ModelState.IsValid) return View(model);
 
             if (model.GiftID != id)
@@ -185,10 +171,7 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Delete
         [ActionName("Delete")]
         public ActionResult Delete(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateGiftService();
 
             var model = service.GetGiftByID(id);
@@ -201,10 +184,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateGiftService();
 
             var model = service.GetGiftByID(id);

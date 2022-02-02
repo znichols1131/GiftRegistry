@@ -1,0 +1,29 @@
+﻿@model IEnumerable<GiftRegistry.Models.NotificationListItem>
+
+@{
+    ViewBag.Title = "Notifications";
+}
+
+<h2 class="mt-4">Notifications</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Message)
+        </td>
+        <td>
+            @Html.ActionLink("View", "Details", new {  id=item.NotificationID  }) |
+            @Html.ActionLink("Delete", "Delete", new {  id=item.NotificationID  })
+        </td>
+    </tr>
+}
+
+</table>

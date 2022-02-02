@@ -16,10 +16,7 @@ namespace GiftRegistry.WebMVC.Controllers
     {
         // GET: Edit
         public ActionResult Edit()
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreatePersonService();
 
             var detail = service.GetCurrentPerson();
@@ -40,10 +37,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PersonEdit model)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             if (!ModelState.IsValid) return View(model);
 
             var controller = CreateImageController();
@@ -85,10 +79,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Person
         public ActionResult Index()
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreatePersonService();
 
             var model = service.GetStrangers();
@@ -97,10 +88,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Detail
         public ActionResult Details(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreatePersonService();
 
             var model = service.GetPersonById(id);

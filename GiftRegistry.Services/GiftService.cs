@@ -111,15 +111,34 @@ namespace GiftRegistry.Services
 
         public bool DeleteGift(int id)
         {
+            List<Transaction> transactions;
             using (var ctx = new ApplicationDbContext())
             {
                 var entity =
                     ctx
                         .Gifts
+                        .Include("Transactions")
+                        .Single(e => e.GiftID == id && e.WishList.OwnerGUID == _userId);
+
+                transactions = entity.Transactions.ToList();
+            }
+
+            // Don't rely on cascade deleting. We want to send notification to buyers whose transactions will be deleted
+            var transactionService = CreateTransactionService();
+            foreach (var transaction in transactions)
+            {
+                transactionService.DeleteTransaction(transaction.TransactionID);
+            }
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Gifts
+                        .Include("Transactions")
                         .Single(e => e.GiftID == id && e.WishList.OwnerGUID == _userId);
 
                 ctx.Gifts.Remove(entity);
-
                 return ctx.SaveChanges() == 1;
             }
         }
@@ -185,6 +204,12 @@ namespace GiftRegistry.Services
             var image = service.GetLatestImageForUser();
 
             return image;
+        }
+
+        private TransactionService CreateTransactionService()
+        {
+            var service = new TransactionService(_userId);
+            return service;
         }
     }
 }

@@ -9,14 +9,12 @@ using System.Web.Mvc;
 
 namespace GiftRegistry.WebMVC.Controllers
 {
+    [Authorize]
     public class TransactionController : Controller
     {
         // GET: Transaction
         public ActionResult Index()
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateTransactionService();
 
             var model = service.GetAllTransactionsForUser();
@@ -25,10 +23,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Create
         public ActionResult Create(int giftID)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             TransactionCreate model = new TransactionCreate();
             var transactionService = CreateTransactionService();
 
@@ -48,10 +43,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(TransactionCreate model)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -73,10 +65,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Detail
         public ActionResult Details(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateTransactionService();
 
             var model = service.GetTransactionByID(id);
@@ -88,10 +77,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Edit
         public ActionResult Edit(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateTransactionService();
 
             var detail = service.GetTransactionByID(id);
@@ -117,10 +103,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, TransactionEdit model)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             if (!ModelState.IsValid) return View(model);
 
             if (model.TransactionID != id)
@@ -144,10 +127,7 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Delete
         [ActionName("Delete")]
         public ActionResult Delete(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateTransactionService();
 
             var model = service.GetTransactionByID(id);
@@ -160,10 +140,7 @@ namespace GiftRegistry.WebMVC.Controllers
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeletePost(int id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home"); 
-            
+        {            
             var service = CreateTransactionService();
 
             var model = service.GetTransactionByID(id);
