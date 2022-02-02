@@ -58,9 +58,12 @@
 
          $("#random-image-btn").click(function (e) {
 
+             var isPerson = $('#ImageIDField').hasClass("person-image");
+
              $.ajax({
                 type: "GET",
-                url: "@(Url.Action("CreateRandomImageJSON", "_ImageUpload"))",
+                 url: "@(Url.Action("CreateRandomImageJSON", "_ImageUpload"))",
+                 data: {isPerson: isPerson},
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
 

@@ -32,9 +32,9 @@ namespace GiftRegistry.WebMVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult CreateRandomImageJSON()
+        public JsonResult CreateRandomImageJSON(bool isPerson)
         {
-            ImageModel model = CreateRandomImage();
+            ImageModel model = CreateRandomImage(isPerson);
             if (model is null)
                 return Json(null, JsonRequestBehavior.AllowGet);
 
@@ -44,6 +44,19 @@ namespace GiftRegistry.WebMVC.Controllers
             var jsonModel = Json(newModel, JsonRequestBehavior.AllowGet);
 
             return jsonModel;
+        }
+
+        public ImageModel CreateRandomImage(bool isPerson)
+        {
+            // Get service and clear all images for this user (meant to be temporary)
+            var service = CreateImageService();
+            service.DeleteImagesForUser();
+
+            if (!service.CreateDefaultImage(isPerson))
+            {
+                return null;
+            }
+            return service.GetLatestImageForUser();
         }
 
         public ImageModel CreateRandomImage()
@@ -57,37 +70,6 @@ namespace GiftRegistry.WebMVC.Controllers
                 return null;
             }
             return service.GetLatestImageForUser();
-        }
-
-        [HttpPost]
-        public JsonResult CreateUploadedImageJSON(HttpPostedFileBase file)
-        {
-            // Get service and clear all images for this user (meant to be temporary)
-            var service = CreateImageService();
-            service.DeleteImagesForUser();
-
-            ImageModel model = new ImageModel();
-
-            // Try to get uploaded file, otherwise get a random image
-            if (file != null && file.ContentLength != 0)
-            {
-                model.ImageData = ConvertToBytes(file);
-            }
-            else
-            {
-                if (!service.CreateDefaultImage(_isProfilePicture))
-                {
-                    return Json(null, JsonRequestBehavior.AllowGet);
-                }
-                model = service.GetLatestImageForUser();
-            }
-
-            var imageSrc = String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(model.ImageData));
-            var newModel = new { model.ImageID, imageSrc };
-
-            var jsonModel = Json(newModel, JsonRequestBehavior.AllowGet);
-
-            return jsonModel;
         }
 
         public ImageModel GetLatestImageForUser()
