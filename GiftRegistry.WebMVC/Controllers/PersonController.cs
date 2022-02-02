@@ -84,7 +84,7 @@ namespace GiftRegistry.WebMVC.Controllers
             }
         }
 
-        // FRIENDS LIST ONLY
+        // ADD FRIENDS LIST ONLY
 
         // GET: Person
         public ActionResult Index()

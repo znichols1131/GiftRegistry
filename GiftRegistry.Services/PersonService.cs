@@ -63,7 +63,7 @@ namespace GiftRegistry.Services
             }
         }
 
-        public IEnumerable<PersonListItem> GetStrangers()
+        public IEnumerable<PersonListItem_Stranger> GetStrangers()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -75,11 +75,10 @@ namespace GiftRegistry.Services
                                                 .OrderBy(f => f.LastName)
                                                 .ThenBy(f => f.FirstName)
                                                 .Select(e =>
-                                                            new PersonListItem
+                                                            new PersonListItem_Stranger
                                                             {
                                                                 PersonID = e.PersonID,
                                                                 FullName = e.FirstName + " " + e.LastName,
-                                                                Birthdate = e.Birthdate,
                                                                 ProfilePicture = e.ProfilePicture
                                                             }
                                                 );
@@ -91,11 +90,10 @@ namespace GiftRegistry.Services
                                         .OrderBy(f => f.LastName)
                                         .ThenBy(f => f.FirstName)
                                         .Select(e =>
-                                                new PersonListItem
+                                                new PersonListItem_Stranger
                                                 {
                                                     PersonID = e.PersonID,
                                                     FullName = e.FirstName + " " + e.LastName,
-                                                    Birthdate = e.Birthdate,
                                                     ProfilePicture = e.ProfilePicture
                                                 }
                                         );
