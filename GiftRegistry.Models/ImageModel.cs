@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace GiftRegistry.Models
 {
-    public class ImageUpload
+    public class ImageModel
     {
-        public string Name { get; set; }
+        public int ImageID { get; set; }
 
-        public string Image { get; set; }
+        [Required]
+        public Guid OwnerGUID { get; set; }
 
+        [Required]
+        public byte[] ImageData { get; set; }
     }
 }

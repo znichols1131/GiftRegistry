@@ -62,10 +62,8 @@ namespace GiftRegistry.WebMVC.Controllers
                     FirstName = detail.FirstName,
                     LastName = detail.LastName,
                     Birthdate = (detail.Birthdate is null) ? DateTime.Now : detail.Birthdate,
-                    ProfilePicture = detail.ProfilePicture,
-                    OldProfilePicture = detail.ProfilePicture,
-                    ImageUpload = new ImageUpload("Profile Picture", detail.ProfilePicture, true)
-                };
+                    Image = detail.Image
+                };       
 
             return View(model);
         }
@@ -77,20 +75,28 @@ namespace GiftRegistry.WebMVC.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            //if (model.PersonID != id)
-            //{
-            //    ModelState.AddModelError("", "Id Mismatch");
-            //    model.Birthdate = (model.Birthdate is null) ? DateTime.Now : model.Birthdate;
-            //    return View(model);
-            //}
+            var controller = CreateImageController();
 
-            HttpPostedFileBase file = Request.Files["ImageData"];
-            if(file.ContentLength != 0)
+            if(model.ImageID == -1)
             {
-                model.ProfilePicture = ConvertToBytes(file);
-            }else
+                // Image was uploaded and doesn't exist in database yet
+                HttpPostedFileBase file = Request.Files["imageFile"];
+                if (file != null && file.ContentLength != 0)
+                {
+                    // Valid image file uploaded
+                    ImageModel newImage = new ImageModel();
+                    newImage.ImageData = ConvertToBytes(file);
+                    model.Image = newImage;
+                }
+                else
+                {
+                    // Invalid, get a default image
+                    model.Image = controller.CreateRandomImage();
+                }
+            }
+            else
             {
-                model.ProfilePicture = model.OldProfilePicture;
+                model.Image = controller.GetImageForID(model.ImageID, Guid.Parse(User.Identity.GetUserId()));
             }
 
             var service = CreatePersonService();
@@ -165,5 +171,11 @@ namespace GiftRegistry.WebMVC.Controllers
             return service;
         }
 
+        private _ImageUploadController CreateImageController()
+        {
+            var controller = new _ImageUploadController();
+            controller._isProfilePicture = true;
+            return controller;
+        }
     }
 }

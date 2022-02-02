@@ -37,6 +37,7 @@ namespace GiftRegistry.Data
         public DbSet<WishList> WishLists { get; set; }
         public DbSet<Gift> Gifts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<CustomImage> Images { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

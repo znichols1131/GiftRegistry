@@ -28,7 +28,7 @@ namespace GiftRegistry.Services
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Birthdate = model.Birthdate,
-                    ProfilePicture = GetDefaultProfilePicture()
+                    ProfilePicture = CreateDefaultImageModel().ImageData
                 };
 
             using (var ctx = new ApplicationDbContext())
@@ -120,7 +120,7 @@ namespace GiftRegistry.Services
                         FirstName = entity.FirstName,
                         LastName = entity.LastName,
                         Birthdate = entity.Birthdate,
-                        ProfilePicture = entity.ProfilePicture
+                        Image = (entity.ProfilePicture == null || entity.ProfilePicture.Length == 0) ? CreateDefaultImageModel() : CreateImageModelForBytes(entity.ProfilePicture)
                     };
             }
         }
@@ -136,7 +136,7 @@ namespace GiftRegistry.Services
                     newPerson.FirstName = "First Name";
                     newPerson.LastName = "Last Name";
                     newPerson.Birthdate = DateTime.Now;
-                    newPerson.ProfilePicture = GetDefaultProfilePicture();
+                    newPerson.ProfilePicture = CreateDefaultImageModel().ImageData;
 
                     if (!CreatePerson(newPerson))
                         return null;
@@ -147,6 +147,8 @@ namespace GiftRegistry.Services
                         .People
                         .Single(e => e.PersonGUID == _userId);
 
+                var imageModel = (entity.ProfilePicture == null || entity.ProfilePicture.Length == 0) ? CreateDefaultImageModel() : CreateImageModelForBytes(entity.ProfilePicture);
+
                 return
                     new PersonDetail
                     {
@@ -154,7 +156,7 @@ namespace GiftRegistry.Services
                         FirstName = entity.FirstName,
                         LastName = entity.LastName,
                         Birthdate = entity.Birthdate,
-                        ProfilePicture = (entity.ProfilePicture == null || entity.ProfilePicture.Length==0) ? GetDefaultProfilePicture() : entity.ProfilePicture
+                        Image = imageModel
                     };
             }
         }
@@ -171,7 +173,7 @@ namespace GiftRegistry.Services
                 entity.FirstName = model.FirstName;
                 entity.LastName = model.LastName;
                 entity.Birthdate = model.Birthdate;
-                entity.ProfilePicture = (model.ProfilePicture is null) ? new byte[] { } : model.ProfilePicture;
+                entity.ProfilePicture = model.Image.ImageData;
 
                 return ctx.SaveChanges() == 1;
             }
@@ -200,6 +202,41 @@ namespace GiftRegistry.Services
             {
                 return webClient.DownloadData("https://doodleipsum.com/500/avatar-3");
             }
+        }
+        private ImageService CreateImageService()
+        {
+            var service = new ImageService(_userId);
+            return service;
+        }
+
+        private ImageModel CreateImageModelForBytes(byte[] input)
+        {
+            var service = CreateImageService();
+
+            service.DeleteImagesForUser();
+
+            var model = new ImageModel();
+            model.ImageData = input;
+            model.OwnerGUID = _userId;
+
+            if (!service.CreateImage(model))
+                return null;
+
+            return service.GetLatestImageForUser();
+        }
+
+        private ImageModel CreateDefaultImageModel()
+        {
+            var service = CreateImageService();
+
+            service.DeleteImagesForUser();
+
+            if (!service.CreateDefaultImage(true))
+                return null;
+
+            var image = service.GetLatestImageForUser();
+
+            return image;
         }
     }
 }

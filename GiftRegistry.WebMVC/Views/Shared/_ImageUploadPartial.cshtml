@@ -1,20 +1,18 @@
-﻿@model GiftRegistry.Models.ImageUpload
-
-<p class="mb-0">
-    @string.Format(Model.Name)
-</p>
+﻿@model GiftRegistry.Models.ImageModel
 
 <div class="col-md-offset-2 col-md-10">
-    @if (Model.Image != null)
+    @if (Model.ImageData != null)
     {
-        <img id="uploadedPicture" class="mb-2" src="@Model.Image" alt="Picture for @Model.Name" height=200 width=200 />
+        var base64 = Convert.ToBase64String(Model.ImageData);
+        var imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+        <img id="uploadedPicture" class="mb-2" src="@imageSrc" alt="Uploaded image" height=200 width=200 />
     }
 
 </div>
 
 <div class="col-md-offset-2 col-md-10">
 
-    <input type="file" size="45" name="imageFile" id="imageFile">
+    <input type="file" size="45" name="imageFile" id="imageFile" class="btn btn-light">
 
     <div class="btn btn-secondary">
         <span id="random-image-btn">Randomize</span>
@@ -26,25 +24,46 @@
 <script type="text/javascript">
 
     $(function () {
-        //Click event for the image randomize button
-
         $(document).on("change", "#imageFile", function () {
+
+            // Call image controller to read file and return ImageID
+            // Update ImageID field
+            // Update image src
 
             if (this.files && this.files[0]) {
                 var reader = new FileReader();
                 var url;
                 reader.onload = function (e) {
                     $('#uploadedPicture').attr('src', e.target.result);
-                    url = e.target.result;
+                    $("#ImageIDField").val("-1");
+
                 }
                 reader.readAsDataURL(this.files[0]);
-
                 // Pass url back to controller here
             }
+
+            @*var myFile = $('#imageFile').prop('files')[0];
+
+            $.ajax({
+                type: "POST",
+                url: "@(Url.Action("CreateUploadedImageJSON", "_ImageUpload"))",
+                data: new FormData(myFile),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    var imageData = data.imageSrc;
+                    $('#uploadedPicture').attr('src', imageData);
+
+                    $("#ImageIDField").val(data.ImageID);
+                },
+                error: function () {
+                    alert("Error");
+                }
+            });*@
+
+
         });
-
-});
-
+    });
 
 </script>
 
@@ -53,11 +72,30 @@
     $(function RandomizeImage() {
         //Click event for the image randomize button
 
-        $("#random-image-btn").click(function (e) {
-            var url = "@Model.RandomImageURL" + "?rand=" + Math.random();
-            $("#uploadedPicture").attr("src", url);
+        // Call image controller to get random image and return ImageID
+        // Update ImageID field
+        // Update image src
+
+         $("#random-image-btn").click(function (e) {
+
+             $.ajax({
+                type: "GET",
+                url: "@(Url.Action("CreateRandomImageJSON", "_ImageUpload"))",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    var imageData = data.imageSrc;
+                    $('#uploadedPicture').attr('src', imageData);
+
+                    $("#ImageIDField").val(data.ImageID);
+                },
+                error: function () {
+                    alert("Error");
+                }
+            });
+
         });
 
-        // Pass url back to controller here
+
     });
 </script>

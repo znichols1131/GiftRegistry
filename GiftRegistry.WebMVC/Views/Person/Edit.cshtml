@@ -9,7 +9,6 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.PersonID)
-    @Html.HiddenFor(model => model.OldProfilePicture)
 
     <div class="form-horizontal">
         <h4>PersonEdit</h4>
@@ -43,19 +42,25 @@
         <div class="form-group">
             @*@Html.LabelFor(model => model.ProfilePicture, htmlAttributes: new { @class = "control-label col-md-2" })*@
 
-            @Html.Partial("_ImageUploadPartial", Model.ImageUpload)
+            @*@Html.HiddenFor(model => model.ImageID, new { @class = "form-control", id = "ImageIDField" })*@
+            @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control", id = "ImageIDField" })
+
+            <p class="mb-0">
+                @string.Format("Profile Picture")
+            </p>
+            @Html.Partial("_ImageUploadPartial", Model.Image)
 
             @*<div class="col-md-offset-2 col-md-10">
-                @if (Model.ProfilePicture != null)
-                {
-                    var base64 = Convert.ToBase64String(Model.ProfilePicture);
-                    var profilePictureSrc = String.Format("data:image/gif;base64,{0}", base64);
-                    <img id="profilePicture" src="@profilePictureSrc" alt="Profile Picture" height=200 width=200 />
-                }
-            </div>
-            <div class="col-md-offset-2 col-md-10 mt-3 mb-4">
-                <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this); Refresh();" />
-            </div>*@
+            @if (Model.ProfilePicture != null)
+            {
+                var base64 = Convert.ToBase64String(Model.ProfilePicture);
+                var profilePictureSrc = String.Format("data:image/gif;base64,{0}", base64);
+                <img id="profilePicture" src="@profilePictureSrc" alt="Profile Picture" height=200 width=200 />
+            }
+        </div>
+        <div class="col-md-offset-2 col-md-10 mt-3 mb-4">
+            <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this); Refresh();" />
+        </div>*@
         </div>
 
         <div class="form-group">

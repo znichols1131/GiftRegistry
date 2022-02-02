@@ -24,10 +24,9 @@ namespace GiftRegistry.Models
         public DateTime? Birthdate { get; set; }
 
         [Display(Name = "Profile Picture")]
-        public byte[] ProfilePicture { get; set; }
-        public byte[] OldProfilePicture { get; set; }
+        public ImageModel Image { get; set; }
 
-        public ImageUpload ImageUpload { get; set; }
+        public int ImageID { get; set; }
 
     }
 }

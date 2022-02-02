@@ -57,6 +57,7 @@
     <Compile Include="Friend.cs" />
     <Compile Include="Gift.cs" />
     <Compile Include="IdentityModels.cs" />
+    <Compile Include="CustomImage.cs" />
     <Compile Include="Migrations\202201242106394_init.cs" />
     <Compile Include="Migrations\202201242106394_init.Designer.cs">
       <DependentUpon>202201242106394_init.cs</DependentUpon>
@@ -76,6 +77,10 @@
     <Compile Include="Migrations\202201291428112_gift-image-init.cs" />
     <Compile Include="Migrations\202201291428112_gift-image-init.Designer.cs">
       <DependentUpon>202201291428112_gift-image-init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201312154286_gift-image2-init.cs" />
+    <Compile Include="Migrations\202201312154286_gift-image2-init.Designer.cs">
+      <DependentUpon>202201312154286_gift-image2-init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Person.cs" />
@@ -148,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201291428112_gift-image-init.resx">
       <DependentUpon>202201291428112_gift-image-init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201312154286_gift-image2-init.resx">
+      <DependentUpon>202201312154286_gift-image2-init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

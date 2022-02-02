@@ -58,6 +58,7 @@
     <Compile Include="FriendService.cs" />
     <Compile Include="GiftService.cs" />
     <Compile Include="HomeService.cs" />
+    <Compile Include="ImageService.cs" />
     <Compile Include="PersonService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionService.cs" />
