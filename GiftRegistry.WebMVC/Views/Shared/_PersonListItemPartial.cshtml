@@ -1,0 +1,48 @@
+﻿@model GiftRegistry.Models.PersonListItem_Stranger
+
+<div class="col column-gallery">
+    <div class="card h-100">
+
+        @if (Model.ProfilePicture != null)
+        {
+            var base64 = Convert.ToBase64String(Model.ProfilePicture);
+            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            <img src="@imgSrc" class="card-img-top mx-auto" alt="Friend Profile Picture">
+        }
+
+        <div class="card-body pt-0">
+            <h5 class="card-title">@Model.FullName</h5>
+        </div>
+
+        <div class="card-footer">
+            <div class="d-flex justify-content-center">
+
+                @Html.ActionLink("Add Friend", "Create", "Friend", new { id = Model.PersonID, name = Model.FullName }, new { @class = "btn btn-primary btn-action" })
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .card-img-top {
+        object-fit: scale-down;
+        height: 250px;
+        width: 250px;
+        margin: 10px 10px 10px 10px;
+    }
+
+    .card-title {
+    }
+
+    .card-text {
+        margin-bottom: 0px;
+    }
+
+    .btn.btn-action {
+        margin-left: 2px;
+        margin-right: 2px;
+        height: auto;
+    }
+</style>

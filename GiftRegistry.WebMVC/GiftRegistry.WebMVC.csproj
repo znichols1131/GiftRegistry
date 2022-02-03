@@ -305,6 +305,7 @@
     <Content Include="Views\Notification\Details.cshtml" />
     <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Shared\_FriendListItemPartial.cshtml" />
+    <Content Include="Views\Shared\_PersonListItemPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

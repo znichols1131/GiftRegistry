@@ -4,26 +4,13 @@
     ViewBag.Title = "Add Friend";
 }
 
-<h2>Add Friend</h2>
+<h2 class="mt-4">Add Friends</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FullName)
-        </th>
-        <th></th>
-    </tr>
+<div class="row row-gallery row-cols-1 row-cols-md-3 g-4 mb-2">
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.ActionLink("Add Friend", "Create", "Friend", new { id = item.PersonID, name = item.FullName }, null)
-            </td>
-        </tr>
+        @Html.Partial("_PersonListItemPartial", item)
     }
 
-</table>
+</div> 
