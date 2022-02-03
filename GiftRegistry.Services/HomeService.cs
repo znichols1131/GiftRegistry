@@ -28,7 +28,7 @@ namespace GiftRegistry.Services
                     ctx
                         .Friends
                         .Include("Person")
-                        .Where(e => e.OwnerGUID == _userId)
+                        .Where(e => e.OwnerGUID == _userId && !ctx.Friends.Any(f => f.OwnerGUID == _userId && f.PersonID == e.PersonID && f.IsPending))
                         .Select(e =>
                                 new
                                 {

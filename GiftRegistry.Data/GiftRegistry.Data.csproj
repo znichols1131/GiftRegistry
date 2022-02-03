@@ -86,6 +86,10 @@
     <Compile Include="Migrations\202202021956224_notifications-added-init.Designer.cs">
       <DependentUpon>202202021956224_notifications-added-init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202030017388_friend-requests-added-init.cs" />
+    <Compile Include="Migrations\202202030017388_friend-requests-added-init.Designer.cs">
+      <DependentUpon>202202030017388_friend-requests-added-init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Person.cs" />
@@ -164,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202202021956224_notifications-added-init.resx">
       <DependentUpon>202202021956224_notifications-added-init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202030017388_friend-requests-added-init.resx">
+      <DependentUpon>202202030017388_friend-requests-added-init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -21,5 +21,8 @@ namespace GiftRegistry.Models
 
         [Display(Name = "Friend Name")]
         public string PersonName { get; set; }
+
+        [Display(Name = "Friend Request Is Pending")]
+        public bool IsPending { get; set; }
     }
 }

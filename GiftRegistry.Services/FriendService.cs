@@ -23,9 +23,40 @@ namespace GiftRegistry.Services
                 new Friend()
                 {
                     OwnerGUID = _userId,
+                    IsPending = model.IsPending,
                     Relationship = model.Relationship,
                     PersonID = model.PersonID
                 };
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.Friends.Add(entity);
+                return ctx.SaveChanges() == 1;
+            }
+        }
+
+        public bool SendFriendRequest(FriendCreate model)
+        {
+            var entity =
+                new Friend()
+                {
+                    OwnerGUID = _userId,
+                    Relationship = model.Relationship,
+                    PersonID = model.PersonID,
+                    IsPending = true
+                };
+
+            var currentUser = GetCurrentUser();
+            var notification = new NotificationDetail()
+            {
+                NotificationType = NotificationType.FriendRequest,
+                Message = $"{currentUser.FirstName} {currentUser.LastName} sent you a friend request.",
+                RecipientID = model.PersonID,
+                SenderID = currentUser.PersonID
+            };
+            var service = CreateNotificationService();
+            if (!service.CreateNotification(notification))
+                return false;
 
             using (var ctx = new ApplicationDbContext())
             {
@@ -54,7 +85,8 @@ namespace GiftRegistry.Services
                                     OwnerGUID = e.OwnerGUID,
                                     Relationship = e.Relationship,
                                     PersonID = e.PersonID,
-                                    Person = e.Person
+                                    Person = e.Person,
+                                    IsPending = e.IsPending
                                 }
                         );
 
@@ -70,7 +102,7 @@ namespace GiftRegistry.Services
                     ctx
                         .Friends
                         .Include("Person.WishLists")
-                        .Single(e => e.FriendID == id && e.OwnerGUID == _userId);
+                        .Single(e => e.FriendID == id && (e.OwnerGUID == _userId || e.Person.PersonGUID == _userId));
 
                 return
                     new FriendDetail
@@ -80,7 +112,8 @@ namespace GiftRegistry.Services
                         Relationship = entity.Relationship,
                         PersonID = entity.PersonID,
                         Person = entity.Person,
-                        PersonName = entity.Person.FullName
+                        PersonName = entity.Person.FullName,
+                        IsPending = entity.IsPending
                     };
             }
         }
@@ -92,7 +125,7 @@ namespace GiftRegistry.Services
                 var entity =
                     ctx
                         .Friends
-                        .Single(e => e.FriendID == model.FriendID && e.OwnerGUID == _userId);
+                        .Single(e => e.FriendID == model.FriendID && (e.OwnerGUID == _userId || e.Person.PersonGUID == _userId));
 
                 entity.Relationship = model.Relationship;
 
@@ -100,18 +133,128 @@ namespace GiftRegistry.Services
             }
         }
 
+        public int AcceptFriendRequest(Person sender, Person recipient)
+        {
+            // Update sender's Friend model to no longer be pending
+            using (var ctx = new ApplicationDbContext())
+            {
+                if (ctx.Friends.Any(e => e.OwnerGUID == sender.PersonGUID && e.PersonID == recipient.PersonID))
+                {
+                    var pendingFriend = ctx
+                        .Friends
+                        .Single(e => e.OwnerGUID == sender.PersonGUID && e.PersonID == recipient.PersonID);
+
+                    pendingFriend.IsPending = false;
+
+                    if (ctx.SaveChanges() == 0) return -1;
+                }
+            }
+
+            // Create a new friend for Recipient and enter in the values from Sender
+            FriendCreate createModel = new FriendCreate()
+            {
+                OwnerGUID = recipient.PersonGUID,
+                PersonID = sender.PersonID,
+                IsPending = false
+            };
+            if (!CreateFriend(createModel)) return -1;
+
+            // Return new friend ID
+            using (var ctx = new ApplicationDbContext())
+            {
+                if(ctx.Friends.Any(e => e.OwnerGUID == recipient.PersonGUID && e.PersonID == sender.PersonID))
+                {
+                    var entity = ctx
+                                    .Friends
+                                    .Single(e => e.OwnerGUID == recipient.PersonGUID && e.PersonID == sender.PersonID);
+
+                    return entity.FriendID;
+                }
+            }
+
+            return -1;
+        }
+
+        public bool DenyFriendRequest(Person sender, Person recipient)
+        {
+            // Delete the recipient from the sender's friends (if it was still pending)
+            DeleteFriendship(sender.PersonGUID, recipient.PersonID);
+            return true;
+        }
+
         public bool DeleteFriend(int id)
+        {
+            // This method is called by PERSON A to delete a friendship with PERSON B.
+            // However, we must delete the reciprocal friendship of PERSON B with PERSON A (if it exists and is not pending).
+
+            FriendDetail friendship = GetFriendByID(id);
+
+            // If friend was pending, delete notification before recipient can accept it
+            if(friendship.IsPending)
+            {
+                var service = CreateNotificationService();
+                service.DeleteNotificationForPendingFriend(friendship);
+            }
+
+            var personService = CreatePersonService();
+            int personAID = personService.GetPersonByGUID(friendship.OwnerGUID).PersonID;
+
+            // Delete reciprocal first (may not exist)
+            DeleteFriendship(friendship.Person.PersonGUID, personAID);
+
+            // Now delete the expected friendship
+            return DeleteFriendship(friendship.OwnerGUID, friendship.PersonID);
+        }
+
+        public bool DeleteFriendship(Guid senderGUID, int recipientID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if(ctx.Friends.Any(e => e.OwnerGUID == senderGUID && e.PersonID == recipientID))
+                {
+                    var entity = ctx
+                                    .Friends
+                                    .Single(e => e.OwnerGUID == senderGUID && e.PersonID == recipientID);
+
+                    ctx.Friends.Remove(entity);
+
+                    return ctx.SaveChanges() == 1;
+                }
+
+                return false;
+            }
+        }
+
+        private NotificationService CreateNotificationService()
+        {
+            var service = new NotificationService(_userId);
+            return service;
+        }
+
+        private PersonService CreatePersonService()
+        {
+            var service = new PersonService(_userId);
+            return service;
+        }
+
+        private PersonDetail GetCurrentUser()
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var entity =
                     ctx
-                        .Friends
-                        .Single(e => e.FriendID == id && e.OwnerGUID == _userId);
+                        .People
+                        .Single(e => e.PersonGUID == _userId);
 
-                ctx.Friends.Remove(entity);
-
-                return ctx.SaveChanges() == 1;
+                return
+                    new PersonDetail
+                    {
+                        PersonID = entity.PersonID,
+                        FirstName = entity.FirstName,
+                        LastName = entity.LastName,
+                        Birthdate = entity.Birthdate,
+                        Image = new ImageModel() { ImageData = entity.ProfilePicture }
+                    };
             }
         }
     }

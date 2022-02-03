@@ -14,16 +14,35 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Message)
-        </td>
-        <td>
-            @Html.ActionLink("View", "Details", new {  id=item.NotificationID  }) |
-            @Html.ActionLink("Delete", "Delete", new {  id=item.NotificationID  })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            @if (item.NotificationType == GiftRegistry.Data.NotificationType.ReadOnlyMessage)
+            {
+                <td>
+                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                </td>
+            }
+            else if (item.NotificationType == GiftRegistry.Data.NotificationType.FriendRequest)
+            {
+                <td>
+                    @Html.ActionLink("Accept", "AcceptFriendRequest", new { id = item.NotificationID }) |
+                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }) |
+                    @Html.ActionLink("Ignore", "DenyFriendRequest", new { id = item.NotificationID })
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                </td>
+            }
+        </tr>
+    }
 
 </table>

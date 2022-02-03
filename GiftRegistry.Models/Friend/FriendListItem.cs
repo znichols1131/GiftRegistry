@@ -18,6 +18,9 @@ namespace GiftRegistry.Models
         [Display(Name = "Relationship")]
         public string Relationship { get; set; }
 
+        [Display(Name = "Friend Request Is Pending")]
+        public bool IsPending { get; set; }
+
         public int PersonID { get; set; }
         public virtual Person Person { get; set; }
     }

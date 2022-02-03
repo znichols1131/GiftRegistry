@@ -10,6 +10,17 @@
     <hr />
     <dl class="dl-horizontal">
 
+        @if (Model.IsPending)
+        {
+            <dt>
+                @Html.DisplayName("Status")
+            </dt>
+
+            <dd>
+                Request Pending
+            </dd>
+        }
+
         <dt>
             @Html.DisplayNameFor(model => model.Relationship)
         </dt>
@@ -18,51 +29,57 @@
             @Html.DisplayFor(model => model.Relationship)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Person.Birthdate)
-        </dt>
+        @if (!Model.IsPending)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Person.Birthdate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Person.Birthdate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Person.Birthdate)
+            </dd>
+        }
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.FriendID  }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 
-<div>
-    <br />
-    <h2 class="mt-4">Gift Lists</h2>
-    <hr />
-    <table class="table">
-        <tr>
-            @{ var dummyWishList = Model.Person.WishLists.FirstOrDefault();}
-            <th>
-                @Html.DisplayNameFor(model => dummyWishList.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => dummyWishList.DueDate)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model.Person.WishLists)
-        {
+@if (!Model.IsPending)
+{
+    <div>
+        <br />
+        <h2 class="mt-4">Gift Lists</h2>
+        <hr />
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DueDate)
-                </td>
-                <td>
-                    @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, null)
-                </td>
+                @{ var dummyWishList = Model.Person.WishLists.FirstOrDefault();}
+                <th>
+                    @Html.DisplayNameFor(model => dummyWishList.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => dummyWishList.DueDate)
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
-</div>
+            @foreach (var item in Model.Person.WishLists)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DueDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, null)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+}

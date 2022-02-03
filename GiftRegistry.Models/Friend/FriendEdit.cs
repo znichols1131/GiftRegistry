@@ -19,6 +19,9 @@ namespace GiftRegistry.Models
         [MinLength(2, ErrorMessage = "Please enter at least 2 characters.")]
         public string Relationship { get; set; }
 
+        [Display(Name = "Friend Request Is Pending")]
+        public bool IsPending { get; set; }
+
         [Required]
         public int PersonID { get; set; }
 

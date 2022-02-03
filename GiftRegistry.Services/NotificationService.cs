@@ -60,7 +60,8 @@ namespace GiftRegistry.Services
                                     SenderID = e.SenderID,
                                     Sender = e.Sender
                                 }
-                        );
+                        )
+                        .OrderByDescending(e => e.DateUpdated == null ? e.DateCreated : e.DateUpdated);
 
                 return query.ToArray();
             }
@@ -125,6 +126,63 @@ namespace GiftRegistry.Services
 
                 return ctx.SaveChanges() == 1;
             }
+        }
+
+        public bool DeleteNotificationForPendingFriend(FriendDetail friendship)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if(ctx.Notifications.Any(e => e.NotificationType == NotificationType.FriendRequest && e.Sender.PersonGUID == friendship.OwnerGUID && e.RecipientID == friendship.PersonID))
+                {
+                    var entity = ctx
+                                    .Notifications
+                                    .Single(e => e.NotificationType == NotificationType.FriendRequest && 
+                                                e.Sender.PersonGUID == friendship.OwnerGUID && 
+                                                e.RecipientID == friendship.PersonID);
+
+                    ctx.Notifications.Remove(entity);
+
+                    return ctx.SaveChanges() == 1;
+                }
+
+                // Nothing to delete
+                return true;
+            }
+        }
+
+        public int AcceptFriendRequest(int notificationID)
+        {
+            // Get original friend request
+            var originalRequest = GetNotificationByID(notificationID);
+
+            // Fulfill original friend request
+            var service = CreateFriendService();
+            int friendID = service.AcceptFriendRequest(originalRequest.Sender, originalRequest.Recipient);
+            if(friendID < 0) return -1;
+
+            // Delete notification
+            if (!DeleteNotification(notificationID)) return -1;
+
+            return friendID;
+        }
+
+        public void DenyFriendRequest(int notificationID)
+        {
+            // Get original friend request
+            var originalRequest = GetNotificationByID(notificationID);
+
+            // Deny original friend request
+            var service = CreateFriendService();
+            if (!service.DenyFriendRequest(originalRequest.Sender, originalRequest.Recipient)) return;
+
+            // Delete notification
+            DeleteNotification(notificationID);
+        }
+
+        private FriendService CreateFriendService()
+        {
+            var service = new FriendService(_userId);
+            return service;
         }
     }
 }

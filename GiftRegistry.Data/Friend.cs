@@ -24,5 +24,9 @@ namespace GiftRegistry.Data
         [ForeignKey(nameof(Person))]
         public int PersonID { get; set; }
         public virtual Person Person { get; set; }
+
+        [Required]
+        [Display(Name = "Friend Request Is Pending")]
+        public bool IsPending { get; set; }
     }
 }

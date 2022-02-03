@@ -71,7 +71,8 @@ namespace GiftRegistry.Services
                 // If the user has a Person associated with them, filter out any Friends from the list of Strangers
                 if (ctx.People.Any(p => p.PersonGUID == _userId) && ctx.Friends.Any(f => f.OwnerGUID == _userId))
                 {
-                    var strangers = ctx.People  .Where(e => e.PersonGUID != _userId && !ctx.Friends.Any(f => f.OwnerGUID == _userId && f.PersonID == e.PersonID))
+                    var strangers = ctx.People  .Where(e => e.PersonGUID != _userId && 
+                                                            !ctx.Friends.Any(f => f.OwnerGUID == _userId && f.PersonID == e.PersonID))
                                                 .OrderBy(f => f.LastName)
                                                 .ThenBy(f => f.FirstName)
                                                 .Select(e =>
@@ -123,29 +124,14 @@ namespace GiftRegistry.Services
             }
         }
 
-        public PersonDetail GetCurrentPerson()
+        public PersonDetail GetPersonByGUID(Guid guid)
         {
             using (var ctx = new ApplicationDbContext())
             {
-                // If this user doesn't exist yet (new registration), create a person for them
-                if(!ctx.People.Any(e => e.PersonGUID == _userId))
-                {
-                    PersonCreate newPerson = new PersonCreate();
-                    newPerson.FirstName = "First Name";
-                    newPerson.LastName = "Last Name";
-                    newPerson.Birthdate = DateTime.Now;
-                    newPerson.ProfilePicture = CreateDefaultImageModel().ImageData;
-
-                    if (!CreatePerson(newPerson))
-                        return null;
-                }
-
                 var entity =
                     ctx
                         .People
-                        .Single(e => e.PersonGUID == _userId);
-
-                var imageModel = (entity.ProfilePicture == null || entity.ProfilePicture.Length == 0) ? CreateDefaultImageModel() : CreateImageModelForBytes(entity.ProfilePicture);
+                        .Single(e => e.PersonGUID == guid);
 
                 return
                     new PersonDetail
@@ -154,9 +140,14 @@ namespace GiftRegistry.Services
                         FirstName = entity.FirstName,
                         LastName = entity.LastName,
                         Birthdate = entity.Birthdate,
-                        Image = imageModel
+                        Image = (entity.ProfilePicture == null || entity.ProfilePicture.Length == 0) ? CreateDefaultImageModel() : CreateImageModelForBytes(entity.ProfilePicture)
                     };
             }
+        }
+
+        public PersonDetail GetCurrentPerson()
+        {
+            return GetPersonByGUID(_userId);
         }
 
         public bool UpdatePerson(PersonEdit model)

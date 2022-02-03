@@ -44,13 +44,14 @@ namespace GiftRegistry.WebMVC.Controllers
 
             var service = CreateFriendService();
 
-            if (service.CreateFriend(model))
+            // We won't actually create a friend here, we'll send a friend request
+            if (service.SendFriendRequest(model))
             {
-                TempData["SaveResult"] = "Your friend was created.";
+                TempData["SaveResult"] = "Your friend request was sent.";
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", "Friend could not be created.");
+            ModelState.AddModelError("", "Friend request could not be created.");
 
             return View(model);
         }

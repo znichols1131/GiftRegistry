@@ -9,6 +9,17 @@
     <hr />
     <dl class="dl-horizontal">
 
+        @if (Model.IsPending)
+        {
+            <dt>
+                @Html.DisplayName("Status")
+            </dt>
+
+            <dd>
+                Request Pending
+            </dd>
+        }
+
         <dt>
             @Html.DisplayNameFor(model => model.Person.FullName)
         </dt>
@@ -35,12 +46,23 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Unfriend" class="btn btn-danger" />
-            @Html.ActionLink("Back to List", "Index")
-        </div>
+        if (Model.IsPending)
+        {
+            <div class="form-actions no-color">
+                <input type="submit" value="Cancel Request" class="btn btn-danger" />
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+        else
+        {
+            <div class="form-actions no-color">
+                <input type="submit" value="Unfriend" class="btn btn-danger" />
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
     }
 </div>
