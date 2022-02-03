@@ -110,6 +110,26 @@ namespace GiftRegistry.Services
             }
         }
 
+        public ImageModel GetProfileImageForUser()
+        {
+            try
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    if (ctx.People.Any(e => e.PersonGUID == _userId))
+                    {
+                        Person user = ctx.People.First(e => e.PersonGUID == _userId);
+
+                        if (user.ProfilePicture != null)
+                            return new ImageModel() { ImageData = user.ProfilePicture };
+                    }
+                }
+            }
+            catch { }
+
+            return CreateAndReturnRandomImage(true);
+        }
+
         public bool DeleteImage(int id)
         {
             try

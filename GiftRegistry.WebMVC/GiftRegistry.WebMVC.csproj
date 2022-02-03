@@ -277,7 +277,7 @@
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_DropDownPartial.cshtml" />
     <Content Include="Views\Person\Index.cshtml" />
     <Content Include="Views\Person\Edit.cshtml" />
     <Content Include="Views\Friend\Index.cshtml" />

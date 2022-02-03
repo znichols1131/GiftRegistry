@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GiftRegistry.WebMVC.Models;
 using GiftRegistry.Data;
+using GiftRegistry.Services;
+using GiftRegistry.Models;
 
 namespace GiftRegistry.WebMVC.Controllers
 {
@@ -384,6 +386,30 @@ namespace GiftRegistry.WebMVC.Controllers
 
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
+        }
+
+        //
+        // Get: /Account/GetProfilePicture
+        [HttpGet]
+        [ActionName("GetProfilePicture")]
+        public JsonResult GetProfilePicture()
+        {
+            var service = CreateImageService();
+            var model = service.GetProfileImageForUser();
+
+            var imageSrc = String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(model.ImageData));
+            var newModel = new { imageSrc };
+
+            var jsonModel = Json(newModel, JsonRequestBehavior.AllowGet);
+
+            return jsonModel;
+        }
+
+        private ImageService CreateImageService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ImageService(userId);
+            return service;
         }
 
         //
