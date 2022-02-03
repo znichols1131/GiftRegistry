@@ -50,6 +50,15 @@ namespace GiftRegistry.Services
             }
         }
 
+        public ImageModel CreateAndReturnRandomImage(bool isProfilePicture)
+        {
+            if (!DeleteImagesForUser()) return null;
+
+            if (!CreateDefaultImage(isProfilePicture)) return null;
+            
+            return GetLatestImageForUser();
+        }
+
         public ImageModel GetImageByID(int id)
         {
             try

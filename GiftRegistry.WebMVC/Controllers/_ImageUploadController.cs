@@ -66,16 +66,7 @@ namespace GiftRegistry.WebMVC.Controllers
         {
             // Get service and clear all images for this user (meant to be temporary)
             var service = CreateImageService();
-            if (service is null)
-                return null; 
-            
-            service.DeleteImagesForUser();
-
-            if (!service.CreateDefaultImage(_isProfilePicture))
-            {
-                return null;
-            }
-            return service.GetLatestImageForUser();
+            return service.CreateAndReturnRandomImage(_isProfilePicture);
         }
 
         public ImageModel GetLatestImageForUser()

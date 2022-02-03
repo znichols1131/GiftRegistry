@@ -20,10 +20,10 @@ namespace GiftRegistry.WebMVC.Controllers
 
             model.WishListID = id;
 
-            var controller = CreateImageController();
-            if (controller != null)
+            var imageService = CreateImageService();
+            if (imageService != null)
             {
-                model.Image = controller.CreateRandomImage();
+                model.Image = imageService.CreateAndReturnRandomImage(false);
                 return View(model);
             }
 
@@ -42,7 +42,7 @@ namespace GiftRegistry.WebMVC.Controllers
             }
 
             // Get image
-            var controller = CreateImageController();
+            var imageService = CreateImageService();
 
             if (model.ImageID == -1)
             {
@@ -58,12 +58,12 @@ namespace GiftRegistry.WebMVC.Controllers
                 else
                 {
                     // Invalid, get a default image
-                    model.Image = controller.CreateRandomImage();
+                    model.Image = imageService.CreateAndReturnRandomImage(false);
                 }
             }
             else
             {
-                model.Image = controller.GetImageForID(model.ImageID, Guid.Parse(User.Identity.GetUserId()));
+                model.Image = imageService.GetImageByID(model.ImageID);
             }
 
             var service = CreateGiftService();
@@ -128,8 +128,8 @@ namespace GiftRegistry.WebMVC.Controllers
             }
 
             // Get image
-            var controller = CreateImageController();
-            if(controller is null)
+            var imageService = CreateImageService();
+            if(imageService is null)
                 return RedirectToAction("Index", "Home");
 
             if (model.ImageID == -1)
@@ -146,12 +146,12 @@ namespace GiftRegistry.WebMVC.Controllers
                 else
                 {
                     // Invalid, get a default image
-                    model.Image = controller.CreateRandomImage();
+                    model.Image = imageService.CreateAndReturnRandomImage(false);
                 }
             }
             else
             {
-                model.Image = controller.GetImageForID(model.ImageID, Guid.Parse(User.Identity.GetUserId()));
+                model.Image = imageService.GetImageByID(model.ImageID);
             }
 
             var service = CreateGiftService();
@@ -226,14 +226,11 @@ namespace GiftRegistry.WebMVC.Controllers
             return service;
         }
 
-        private _ImageUploadController CreateImageController()
+        private ImageService CreateImageService()
         {
-            if (!User.Identity.IsAuthenticated)
-                return null;
-
-            var controller = new _ImageUploadController();
-            controller._isProfilePicture = false;
-            return controller;
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ImageService(userId);
+            return service;
         }
     }
 }

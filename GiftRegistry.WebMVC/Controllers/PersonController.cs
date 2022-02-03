@@ -40,7 +40,7 @@ namespace GiftRegistry.WebMVC.Controllers
         {            
             if (!ModelState.IsValid) return View(model);
 
-            var controller = CreateImageController();
+            var imageService = CreateImageService();
             if (model.ImageID == -1)
             {
                 // Image was uploaded and doesn't exist in database yet
@@ -55,12 +55,12 @@ namespace GiftRegistry.WebMVC.Controllers
                 else
                 {
                     // Invalid, get a default image
-                    model.Image = controller.CreateRandomImage();
+                    model.Image = imageService.CreateAndReturnRandomImage(true);
                 }
             }
             else
             {
-                model.Image = controller.GetImageForID(model.ImageID, Guid.Parse(User.Identity.GetUserId()));
+                model.Image = imageService.GetImageByID(model.ImageID);
             }
 
             var service = CreatePersonService();
@@ -114,14 +114,11 @@ namespace GiftRegistry.WebMVC.Controllers
             return service;
         }
 
-        private _ImageUploadController CreateImageController()
+        private ImageService CreateImageService()
         {
-            if (!User.Identity.IsAuthenticated)
-                return null; 
-            
-            var controller = new _ImageUploadController();
-            controller._isProfilePicture = true;
-            return controller;
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ImageService(userId);
+            return service;
         }
     }
 }
