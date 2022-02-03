@@ -67,6 +67,23 @@ namespace GiftRegistry.Services
             }
         }
 
+        public int GetNotificationCountForUser()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if(ctx.Notifications.Include("Recipient").Any(e => e.Recipient.PersonGUID == _userId))
+                {
+                    return ctx
+                                .Notifications
+                                .Include("Recipient")
+                                .Where(e => e.Recipient.PersonGUID == _userId)
+                                .Count();
+                }
+            }
+
+            return 0;
+        }
+
         public NotificationDetail GetNotificationByID(int id)
         {
             using (var ctx = new ApplicationDbContext())

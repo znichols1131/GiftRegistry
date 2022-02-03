@@ -389,6 +389,29 @@ namespace GiftRegistry.WebMVC.Controllers
         }
 
         //
+        // Get: /Account/GetNotificationCount
+        [HttpGet]
+        [ActionName("GetNotificationCount")]
+        public JsonResult GetNotificationCount()
+        {
+            var service = CreateNotificationService();
+            var notificationCount = service.GetNotificationCountForUser();
+
+            var newModel = new { notificationCount };
+
+            var jsonModel = Json(newModel, JsonRequestBehavior.AllowGet);
+
+            return jsonModel;
+        }
+
+        private NotificationService CreateNotificationService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new NotificationService(userId);
+            return service;
+        }
+
+        //
         // Get: /Account/GetProfilePicture
         [HttpGet]
         [ActionName("GetProfilePicture")]

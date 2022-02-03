@@ -10,7 +10,9 @@
 
         <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img id="profilePictureDropdown" class="profile-picture-dropdown" src="" alt="Dropdown Menu" />Me
+                <img id="profilePictureDropdown" class="profile-picture-dropdown" src="" alt="Dropdown Menu" />
+                <span id="nav-notification-indicator" class="position-absolute translate-middle badge smaller-badge bg-danger"></span>
+                Me
             </a>
 
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -19,7 +21,8 @@
                 {<a class="dropdown-item" href="@Url.Action("Edit", "Person")">Account Info</a>}
                 <a class="dropdown-item" href="@Url.Action("Index", "Manage", new { title = "Manage" })">Security</a>
                 @if (User.Identity.IsAuthenticated)
-                {<a class="dropdown-item" href="@Url.Action("Index", "Notification")">Notifications</a>}
+                {<a class="dropdown-item" href="@Url.Action("Index", "Notification")">Notifications 
+                <span id="nav-dropdown-notification-indicator" class="badge smaller-badge bg-danger"></span></a>}
                 @if (User.Identity.IsAuthenticated)
                 {<a class="dropdown-item" href="@Url.Action("Index", "Transaction")">Transactions</a>}
                 <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log Off</a>
@@ -72,11 +75,46 @@ else
                 }
         });
 
+        $.ajax({
+                type: "GET",
+                 url: "@(Url.Action("GetNotificationCount", "Account"))",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var notificationCount = data.notificationCount;
+                    if (notificationCount > 0) {
+                        $('#nav-notification-indicator').show();
+                        $('#nav-dropdown-notification-indicator').show();
+                        $('#nav-notification-indicator').text(notificationCount);
+                        $('#nav-dropdown-notification-indicator').text(notificationCount);
+                    } else {
+                        $('#nav-notification-indicator').hide();
+                        $('#nav-dropdown-notification-indicator').hide();
+                    }
+                },
+                error: function () {
+                    alert("Could not get notifications.");
+                }
+        });
+
     });
 
 </script>
 
 <style>
+
+    #nav-notification-indicator {
+        top: 10px;
+        left: 50px;
+    }
+
+    #nav-dropdown-notification-indicator {
+
+    }
+
+    .badge.smaller-badge {
+        font-size: 0.6em;
+    }
+
     .profile-picture-dropdown {
         height: 30px;
         border-radius: 50%;
