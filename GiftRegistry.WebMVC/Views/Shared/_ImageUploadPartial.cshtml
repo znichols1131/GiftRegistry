@@ -1,53 +1,59 @@
 ﻿@model GiftRegistry.Models.ImageModel
 
-<div class="col-md-offset-2 col-md-10">
-    @if (Model.ImageData != null)
-    {
-        var base64 = Convert.ToBase64String(Model.ImageData);
-        var imageSrc = String.Format("data:image/gif;base64,{0}", base64);
-        <img id="uploadedPicture" class="mb-2" src="@imageSrc" alt="Uploaded image" height=200 width=200 />
-    }
+<div class="row d-flex justify-content-center">
+    <div class="col-6">
 
-</div>
+        <div class="">
+            @if (Model.ImageData != null)
+            {
+                var base64 = Convert.ToBase64String(Model.ImageData);
+                var imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                <img id="uploadedPicture" class="mb-2" src="@imageSrc" alt="Uploaded image" />
+            }
 
-<div class="col-md-offset-2 col-md-10">
+        </div>
 
-    <input type="file" size="45" name="imageFile" id="imageFile" class="btn btn-light">
+        <div class="text-center">
 
-    <div class="btn btn-secondary">
-        <span id="random-image-btn">Randomize</span>
+            <input type="file" id="imageFile" name="imageFile" style="display: none;" />
+            <input type="button" class="btn btn-outline-secondary" value="Upload" onclick="document.getElementById('imageFile').click();" />
+
+            <div class="btn btn-outline-secondary">
+                <span id="random-image-btn">Randomize</span>
+            </div>
+        </div>
     </div>
 </div>
 
-@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(function () {
-        $(document).on("change", "#imageFile", function () {
+        $(function () {
+            $(document).on("change", "#imageFile", function () {
 
-            // Call image controller to read file and return ImageID
-            // Update ImageID field
-            // Update image src
+                // Call image controller to read file and return ImageID
+                // Update ImageID field
+                // Update image src
 
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                var url;
-                reader.onload = function (e) {
-                    $('#uploadedPicture').attr('src', e.target.result);
-                    $("#ImageIDField").val("-1");
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    var url;
+                    reader.onload = function (e) {
+                        $('#uploadedPicture').attr('src', e.target.result);
+                        $("#ImageIDField").val("-1");
 
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                    // Pass url back to controller here
                 }
-                reader.readAsDataURL(this.files[0]);
-                // Pass url back to controller here
-            }
 
+            });
         });
-    });
 
-</script>
+    </script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     $(function RandomizeImage() {
         //Click event for the image randomize button
@@ -81,4 +87,13 @@
 
 
     });
-</script>
+    </script>
+
+    <style>
+
+        #uploadedPicture {
+            width: 300px;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
