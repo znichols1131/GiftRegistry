@@ -101,6 +101,7 @@ namespace GiftRegistry.Services
                 var entity =
                     ctx
                         .Friends
+                        .Include("Person")
                         .Include("Person.WishLists")
                         .Single(e => e.FriendID == id && (e.OwnerGUID == _userId || e.Person.PersonGUID == _userId));
 

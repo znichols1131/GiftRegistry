@@ -1,0 +1,69 @@
+﻿@model GiftRegistry.Models.FriendListItem
+
+<div class="col column-gallery">
+    <div class="card h-100">
+
+        @if (Model.Person.ProfilePicture != null)
+        {
+            var base64 = Convert.ToBase64String(Model.Person.ProfilePicture);
+            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            <img src="@imgSrc" class="card-img-top mx-auto" alt="Friend Profile Picture">
+        }
+
+        <div class="card-body pt-0">
+            <h5 class="card-title">@Model.Person.FullName</h5>
+
+            @if (Model.IsPending)
+            {
+                <p class="card-text">@Model.Relationship (Friend Request Pending)</p>
+            }
+            else
+            {
+                <p class="card-text">@Model.Relationship</p>
+                <p class="card-text">Birthday: @Model.Person.Birthdate</p>
+            }
+        </div>
+
+        <div class="card-footer">
+            <div class="d-flex justify-content-center">
+
+                @if (Model.IsPending)
+                {
+                    @Html.ActionLink("View", "Details", "Friend", new { id = Model.FriendID }, new { @class = "btn btn-outline-secondary btn-action" })
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-outline-secondary btn-action" })
+                    @Html.ActionLink("Cancel Request", "Delete", new { id = Model.FriendID }, new { @class = "btn btn-danger btn-action" })
+                }
+                else
+                {
+                    @Html.ActionLink("View", "Details", "Friend", new { id = Model.FriendID }, new { @class = "btn btn-outline-secondary btn-action" })
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-outline-secondary btn-action" })
+                    @Html.ActionLink("Unfriend", "Delete", new { id = Model.FriendID }, new { @class = "btn btn-danger btn-action" })
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .card-img-top {
+        object-fit: scale-down;
+        height: 250px;
+        width: 250px;
+        margin: 10px 10px 10px 10px;
+    }
+
+    .card-title {
+    }
+
+    .card-text {
+        margin-bottom: 0px;
+    }
+
+    .btn.btn-action {
+        margin-left: 2px;
+        margin-right: 2px;
+        height: auto;
+    }
+</style>

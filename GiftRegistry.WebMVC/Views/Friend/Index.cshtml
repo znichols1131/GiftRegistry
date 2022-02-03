@@ -10,58 +10,13 @@
     @Html.ActionLink("Add Friend", "Index", "Person")
 </p>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Person.FullName)
-        </th>
-        <th></th>
-        <th>
-            @Html.DisplayNameFor(model => model.Relationship)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Person.Birthdate)
-        </th>
-        <th></th>
-    </tr>
+
+<div class="row row-gallery row-cols-1 row-cols-md-3 g-4 mb-2">
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Person.FullName)
-            </td>
-            <td>
-                @if (item.IsPending)
-                {
-                    @String.Format("Request Pending")
-                }
-
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Relationship)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Person.Birthdate)
-            </td>
-            @if (item.IsPending)
-            {
-                <td>
-                    @Html.ActionLink("View", "Details", "Friend", new { id = item.FriendID }, null)
-                    @Html.ActionLink("Edit", "Edit", new { id = item.FriendID })
-                    @Html.ActionLink("Cancel Request", "Delete", new { id = item.FriendID })
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.ActionLink("View", "Details", "Friend", new { id = item.FriendID }, null)
-                    @Html.ActionLink("Edit", "Edit", new { id = item.FriendID })
-                    @Html.ActionLink("Unfriend", "Delete", new { id = item.FriendID })
-                </td>
-            }
-
-        </tr>
+        @Html.Partial("_FriendListItemPartial", item)
     }
 
-</table>
+</div> 
+

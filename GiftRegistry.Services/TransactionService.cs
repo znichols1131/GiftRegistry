@@ -163,7 +163,7 @@ namespace GiftRegistry.Services
                 var service = CreateNotificationService();
                 NotificationDetail model = new NotificationDetail()
                 {
-                    NotificationType = NotificationType.ReadOnlyMessage,
+                    NotificationType = NotificationType.ReadOnlyNegative,
                     Message = $"Your transaction for {entity.Gift.Name} (qty. {entity.QtyGiven}) was cancelled. {entity.Gift.WishList.Owner.FullName} removed this item from their wish list.",
                     RecipientID = (int)entity.GiverID,
                     SenderID = (int)entity.Gift.WishList.OwnerID

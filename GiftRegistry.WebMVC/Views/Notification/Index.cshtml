@@ -16,33 +16,58 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr class="@GetClassForNotification(item.NotificationType)">
+
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
             </td>
             @if (item.NotificationType == GiftRegistry.Data.NotificationType.ReadOnlyMessage)
             {
                 <td>
-                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID }, new { @class = "btn btn-danger float-end btn-notification" })
+                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }, new { @class = "btn btn-outline-secondary float-end btn-notification" })
                 </td>
             }
             else if (item.NotificationType == GiftRegistry.Data.NotificationType.FriendRequest)
             {
                 <td>
-                    @Html.ActionLink("Accept", "AcceptFriendRequest", new { id = item.NotificationID }) |
-                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }) |
-                    @Html.ActionLink("Ignore", "DenyFriendRequest", new { id = item.NotificationID })
+                    @Html.ActionLink("Ignore", "DenyFriendRequest", new { id = item.NotificationID }, new { @class = "btn btn-danger float-end btn-notification" })
+                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }, new { @class = "btn btn-outline-secondary float-end btn-notification" })
+                    @Html.ActionLink("Accept", "AcceptFriendRequest", new { id = item.NotificationID }, new { @class = "btn btn-success float-end btn-notification" })
                 </td>
             }
             else
             {
                 <td>
-                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID }, new { @class = "btn btn-danger float-end btn-notification" })
+                    @Html.ActionLink("View", "Details", new { id = item.NotificationID }, new { @class = "btn btn-outline-secondary float-end btn-notification" })
                 </td>
             }
         </tr>
     }
 
 </table>
+
+@functions{
+    public string GetClassForNotification(GiftRegistry.Data.NotificationType nType)
+    {
+        switch (nType)
+        {
+            case GiftRegistry.Data.NotificationType.ReadOnlyNegative:
+                return "table-danger";
+            case GiftRegistry.Data.NotificationType.ReadOnlyPositive:
+                return "table-success";
+            default:
+                return "";
+        }
+    }
+}
+
+<style>
+
+    .btn.btn-notification {
+        margin-left: 2px;
+        margin-right: 2px;
+        height: auto;
+    }
+</style>

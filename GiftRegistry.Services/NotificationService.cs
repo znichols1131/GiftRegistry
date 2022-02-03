@@ -180,6 +180,18 @@ namespace GiftRegistry.Services
             // Delete notification
             if (!DeleteNotification(notificationID)) return -1;
 
+            // Send notification back to sender
+            var newNotification = new NotificationDetail()
+            {
+                NotificationType = NotificationType.ReadOnlyMessage,
+                Message = $"{originalRequest.Recipient.FullName} accepted your friend request.",
+                Sender = originalRequest.Recipient,
+                SenderID = originalRequest.RecipientID,
+                Recipient = originalRequest.Sender,
+                RecipientID = (int)originalRequest.SenderID
+            };
+            CreateNotification(newNotification);
+
             return friendID;
         }
 

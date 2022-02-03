@@ -45,6 +45,8 @@ namespace GiftRegistry.Data
     public enum NotificationType
     {
         ReadOnlyMessage = 0,
-        FriendRequest = 1
+        FriendRequest = 1,
+        ReadOnlyNegative = 2,
+        ReadOnlyPositive = 3
     }
 }
