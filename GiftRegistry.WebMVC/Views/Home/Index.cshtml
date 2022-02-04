@@ -3,15 +3,27 @@
 @{
     ViewBag.Title = "Home";
 }
+<div class="row mt-4">
 
-<div class="mt-4">
-    <h4 class="mt-4 mb-0">The Date Is</h4>
-    <p class="MassiveDateText">@ViewBag.DateString</p>
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4">
+            <h4 class="Massive-Lead-In-Text">The Date Is</h4>
+            <p class="Massive-Date-Text">@ViewBag.DateString</p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="text-center">
+            <img id="event-image" src="~/Images/Events.svg" alt="Events image" />
+        </div>
+    </div>
+
 </div>
+
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div>
+    <div class="pt-5">
         <h4>Upcoming Events</h4>
         <hr />
     </div>
@@ -22,7 +34,7 @@
     }
     else
     {
-        <table class="table">
+        <table class="table mb-4">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.EventName)
@@ -42,20 +54,20 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.EventName)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.OwnerName)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.EventDate)
                     </td>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.DaysRemaining)
                     </td>
-                    <td>
-                        @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, null)
+                    <td class="align-middle">
+                        @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, new { @class = "btn btn-secondary" })
                     </td>
                 </tr>
             }
@@ -68,12 +80,31 @@
 else
 {
     <h4 class="mt-4">Welcome to the Gift Registry, a web application where you can create and share gift lists with your friends and family!</h4>
-    <p>To access all of our features, please <a href="@Url.Action("Register", "Account", new { id = "registerLink" })">register</a> or <a href="@Url.Action("Login", "Account", new { id = "loginLink" })">log in</a> first.</p>
+    <p class="mt-2">To access all of our features, please <a href="@Url.Action("Register", "Account", new { id = "registerLink" })">register</a> or <a href="@Url.Action("Login", "Account", new { id = "loginLink" })">log in</a> first.</p>
     <br />
 }
 
 <style>
-    .MassiveDateText {
+
+    body {
+        color: #2E2E2E;
+    }
+
+    h4 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 32px;
+    }
+
+    #event-image {
+        width: 25vw;
+        height: auto;
+        padding: 50px;
+    }
+
+    .Massive-Date-Text {
         font-size: 72px;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
 </style>

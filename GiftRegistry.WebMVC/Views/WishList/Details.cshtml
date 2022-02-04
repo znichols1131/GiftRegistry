@@ -79,31 +79,32 @@
         {
             var qtyPurchased = Model.QtyPurchasedForGiftID(item.GiftID);
             <tr>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.QtyDesired)
                 </td>
 
                 @if (ViewBag.UserGUID != Model.OwnerGUID)
                 {
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => qtyPurchased)
                     </td>
                 }
 
-                <td>
+                <td class="align-middle">
                     @if (ViewBag.UserGUID == Model.OwnerGUID)
                     {
-                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, null) @: |
-                        @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, null) @: |
-                        @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, null)
+                        @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, new { @class = "btn btn-danger float-end btn-list-item" })
+                        @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, new { @class = "btn btn-outline-secondary float-end btn-list-item" })
+                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-outline-secondary float-end btn-list-item" })
+
                     }
                     else
                     {
-                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, null) @: |
-                        @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = item.GiftID }, null)
+                        @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = item.GiftID }, new { @class = "btn btn-success float-end btn-list-item" })
+                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-outline-secondary float-end btn-list-item" })
                     }
                 </td>
             </tr>
@@ -112,3 +113,11 @@
     </table>
 </div>
 
+<style>
+
+    .btn.btn-list-item {
+        margin-left: 2px;
+        margin-right: 2px;
+        height: auto;
+    }
+</style>

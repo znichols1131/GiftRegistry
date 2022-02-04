@@ -18,19 +18,19 @@
     {
         <tr class="@GetClassForNotification(item.NotificationType)">
 
-            <td>
+            <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.Message)
             </td>
             @if (item.NotificationType == GiftRegistry.Data.NotificationType.ReadOnlyMessage)
             {
-                <td>
+                <td class="align-middle">
                     @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID }, new { @class = "btn btn-danger float-end btn-notification" })
                     @Html.ActionLink("View", "Details", new { id = item.NotificationID }, new { @class = "btn btn-outline-secondary float-end btn-notification" })
                 </td>
             }
             else if (item.NotificationType == GiftRegistry.Data.NotificationType.FriendRequest)
             {
-                <td>
+                <td class="align-middle">
                     @Html.ActionLink("Ignore", "DenyFriendRequest", new { id = item.NotificationID }, new { @class = "btn btn-danger float-end btn-notification" })
                     @Html.ActionLink("View", "Details", new { id = item.NotificationID }, new { @class = "btn btn-outline-secondary float-end btn-notification" })
                     @Html.ActionLink("Accept", "AcceptFriendRequest", new { id = item.NotificationID }, new { @class = "btn btn-success float-end btn-notification" })
@@ -38,7 +38,7 @@
             }
             else
             {
-                <td>
+                <td class="align-middle">
                     @Html.ActionLink("Delete", "Delete", new { id = item.NotificationID }, new { @class = "btn btn-danger float-end btn-notification" })
                     @Html.ActionLink("View", "Details", new { id = item.NotificationID }, new { @class = "btn btn-outline-secondary float-end btn-notification" })
                 </td>

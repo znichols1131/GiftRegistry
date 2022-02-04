@@ -26,18 +26,18 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.DueDate)
             </td>
-            <td>
+            <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.GiftCount)
             </td>
-            <td>
-                @Html.ActionLink("View", "Details", new { id = item.WishListID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.WishListID })
+            <td class="align-middle">
+                @Html.ActionLink("View", "Details", new { id = item.WishListID }, new { @class = "btn btn-secondary" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.WishListID }, new { @class = "btn btn-danger" })
             </td>
         </tr>
     }
