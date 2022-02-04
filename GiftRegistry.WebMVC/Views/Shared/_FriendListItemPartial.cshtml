@@ -29,15 +29,15 @@
 
                 @if (Model.IsPending)
                 {
-                    @Html.ActionLink("View", "Details", "Friend", new { id = Model.FriendID }, new { @class = "btn btn-outline-secondary btn-action" })
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-outline-secondary btn-action" })
-                    @Html.ActionLink("Cancel Request", "Delete", new { id = Model.FriendID }, new { @class = "btn btn-danger btn-action" })
+                    @Html.ActionLink("View", "Details", "Friend", new { id = Model.FriendID }, new { @class = "btn btn-gray-light btn-action" })
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-gray-light btn-action" })
+                    @Html.ActionLink("Cancel Request", "Delete", new { id = Model.FriendID }, new { @class = "btn btn-red btn-action" })
                 }
                 else
                 {
-                    @Html.ActionLink("View", "Details", "Friend", new { id = Model.FriendID }, new { @class = "btn btn-outline-secondary btn-action" })
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-outline-secondary btn-action" })
-                    @Html.ActionLink("Unfriend", "Delete", new { id = Model.FriendID }, new { @class = "btn btn-danger btn-action" })
+                    @Html.ActionLink("View", "Details", "Friend", new { id = Model.FriendID }, new { @class = "btn btn-gray-light btn-action" })
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-gray-light btn-action" })
+                    @Html.ActionLink("Unfriend", "Delete", new { id = Model.FriendID }, new { @class = "btn btn-red btn-action" })
                 }
 
             </div>
@@ -61,9 +61,4 @@
         margin-bottom: 0px;
     }
 
-    .btn.btn-action {
-        margin-left: 2px;
-        margin-right: 2px;
-        height: auto;
-    }
 </style>

@@ -37,7 +37,7 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
+        <footer class="text-center">
             <p>&copy; @DateTime.Now.Year - BeeGifted by Zach Nichols</p>
         </footer>
     </div>
@@ -47,35 +47,3 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
-<style>
-    .navbar {
-        margin-top: -50px;
-    }
-
-    .navbar.navbar-custom {
-        background-color: #2E2E2E;
-    }
-
-        .navbar .navbar-nav > li.open > a:hover,
-        .navbar .navbar-nav > li.open > a:focus {
-            background-color: red;
-        }
-
-    .navbar-brand {
-        color: #E0B940;
-    }
-
-    .navbar-brand:hover {
-        color: #FFFFFF;
-    }
-
-    .nav-link {
-        color: #FFFFFF;
-    }
-
-    .nav-link:hover {
-        color: #E0B940;
-    }
-
-</style>

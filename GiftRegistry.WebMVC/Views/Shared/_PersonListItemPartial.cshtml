@@ -17,7 +17,7 @@
         <div class="card-footer">
             <div class="d-flex justify-content-center">
 
-                @Html.ActionLink("Add Friend", "Create", "Friend", new { id = Model.PersonID, name = Model.FullName }, new { @class = "btn btn-primary btn-action" })
+                @Html.ActionLink("Add Friend", "Create", "Friend", new { id = Model.PersonID, name = Model.FullName }, new { @class = "btn btn-gold btn-action" })
 
             </div>
         </div>
@@ -40,9 +40,4 @@
         margin-bottom: 0px;
     }
 
-    .btn.btn-action {
-        margin-left: 2px;
-        margin-right: 2px;
-        height: auto;
-    }
 </style>

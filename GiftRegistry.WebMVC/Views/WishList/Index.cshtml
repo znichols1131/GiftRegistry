@@ -36,8 +36,8 @@
                 @Html.DisplayFor(modelItem => item.GiftCount)
             </td>
             <td class="align-middle">
-                @Html.ActionLink("View", "Details", new { id = item.WishListID }, new { @class = "btn btn-secondary" })
-                @Html.ActionLink("Delete", "Delete", new { id = item.WishListID }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("View", "Details", new { id = item.WishListID }, new { @class = "btn btn-gray-light" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.WishListID }, new { @class = "btn btn-red" })
             </td>
         </tr>
     }

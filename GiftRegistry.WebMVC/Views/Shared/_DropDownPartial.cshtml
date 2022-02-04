@@ -10,8 +10,8 @@
 
         <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img id="profilePictureDropdown" class="profile-picture-dropdown" src="" alt="Dropdown Menu" />
-                <span id="nav-notification-indicator" class="position-absolute translate-middle badge smaller-badge bg-danger"></span>
+                <img id="profilePictureDropdown" class="profile-picture-dropdown" src="~/Images/DefaultAvatar.png" alt="Dropdown Menu" />
+                <span id="nav-notification-indicator" class="position-absolute translate-middle badge smaller-badge bg-red"></span>
                 Me
             </a>
 
@@ -22,7 +22,7 @@
                 <a class="dropdown-item" href="@Url.Action("Index", "Manage", new { title = "Manage" })">Security</a>
                 @if (User.Identity.IsAuthenticated)
                 {<a class="dropdown-item" href="@Url.Action("Index", "Notification")">Notifications 
-                <span id="nav-dropdown-notification-indicator" class="badge smaller-badge bg-danger"></span></a>}
+                <span id="nav-dropdown-notification-indicator" class="badge smaller-badge bg-red"></span></a>}
                 @if (User.Identity.IsAuthenticated)
                 {<a class="dropdown-item" href="@Url.Action("Index", "Transaction")">Transactions</a>}
                 <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log Off</a>
@@ -87,37 +87,3 @@ else
     });
 
 </script>
-
-<style>
-
-    #nav-notification-indicator {
-        top: 10px;
-        left: 50px;
-    }
-
-    #nav-dropdown-notification-indicator {
-
-    }
-
-    .dropdown-menu,
-    .dropdown-item {
-        background-color: #F1F2F3;
-        color: #2E2E2E;
-    }
-
-    .dropdown-item:hover {
-        background-color: #8F8F8F;
-        color: #F1F2F3;
-    }
-
-    .badge.smaller-badge {
-        font-size: 0.6em;
-    }
-
-    .profile-picture-dropdown {
-        height: 30px;
-        border-radius: 50%;
-        margin-right: 10px;
-    }
-
-</style>
