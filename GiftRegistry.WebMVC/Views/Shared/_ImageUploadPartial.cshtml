@@ -25,35 +25,35 @@
     </div>
 </div>
 
-    @Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jquery")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        $(function () {
-            $(document).on("change", "#imageFile", function () {
+    $(function () {
+        $(document).on("change", "#imageFile", function () {
 
-                // Call image controller to read file and return ImageID
-                // Update ImageID field
-                // Update image src
+            // Call image controller to read file and return ImageID
+            // Update ImageID field
+            // Update image src
 
-                if (this.files && this.files[0]) {
-                    var reader = new FileReader();
-                    var url;
-                    reader.onload = function (e) {
-                        $('#uploadedPicture').attr('src', e.target.result);
-                        $("#ImageIDField").val("-1");
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                var url;
+                reader.onload = function (e) {
+                    $('#uploadedPicture').attr('src', e.target.result);
+                    $("#ImageIDField").val("-1");
 
-                    }
-                    reader.readAsDataURL(this.files[0]);
-                    // Pass url back to controller here
                 }
+                reader.readAsDataURL(this.files[0]);
+                // Pass url back to controller here
+            }
 
-            });
         });
+    });
 
-    </script>
+</script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     $(function RandomizeImage() {
         //Click event for the image randomize button
@@ -87,14 +87,13 @@
 
 
     });
-    </script>
+</script>
 
-    <style>
-
-        #uploadedPicture {
-            width: 300px;
-            height: auto;
-            margin-top: 20px;
-            border-radius: 18px;
-        }
-    </style>
+<style>
+    #uploadedPicture {
+        width: 300px;
+        height: auto;
+        margin-top: 20px;
+        border-radius: 18px;
+    }
+</style>
