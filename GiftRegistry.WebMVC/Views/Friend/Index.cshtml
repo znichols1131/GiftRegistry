@@ -10,7 +10,7 @@
     <div class="col-md-auto pl-0 mr-1">
         @using (Html.BeginForm("Index", "Friend", FormMethod.Get))
         {
-            @Html.TextBox("search", null, new { @onblur = "return check(this);" }) <input id="searchField" class="btn btn-gray-light search-button mr-1 ml-0" type="submit" value="" placeholder="Search..." />
+            @Html.TextBox("search", null, new { @id = "searchField", @onblur = "return check(this);", @placeholder = "Search..." }) <input class="btn btn-gray-light search-button mr-1 ml-0" type="submit" value="" />
         }
     </div>
 
@@ -48,6 +48,15 @@ else
 }
 
 <script>
+
+    $(document).ready(function () {
+        if (document.getElementById("searchField").value != "") {
+            document.getElementById("clearButton").disabled = false;
+        }
+        else {
+            document.getElementById("clearButton").disabled = true;
+        }
+    });
 
     function check(obj) {
         if (obj.value.trim() != "") {

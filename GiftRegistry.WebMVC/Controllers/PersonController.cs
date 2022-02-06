@@ -78,11 +78,12 @@ namespace GiftRegistry.WebMVC.Controllers
         // ADD FRIENDS LIST ONLY
 
         // GET: Person
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {            
             var service = CreatePersonService();
 
-            var model = service.GetStrangers();
+            var model = (string.IsNullOrWhiteSpace(search)) ? service.GetStrangers() : service.GetStrangersForSearchString(search);
+
             return View(model);
         }
 

@@ -103,6 +103,53 @@ namespace GiftRegistry.Services
             }
         }
 
+        public IEnumerable<PersonListItem_Stranger> GetStrangersForSearchString(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return null;
+
+            input = input.Trim();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+
+                // If the user has a Person associated with them, filter out any Friends from the list of Strangers
+                if (ctx.People.Any(p => p.PersonGUID == _userId) && ctx.Friends.Any(f => f.OwnerGUID == _userId))
+                {
+                    var strangers = ctx.People.Where(e => e.PersonGUID != _userId &&
+                                                          !ctx.Friends.Any(f => f.OwnerGUID == _userId && f.PersonID == e.PersonID) &&
+                                                          (e.FirstName.ToLower().Contains(input.ToLower()) || e.LastName.ToLower().Contains(input.ToLower())))
+                                                .OrderBy(f => f.LastName)
+                                                .ThenBy(f => f.FirstName)
+                                                .Select(e =>
+                                                            new PersonListItem_Stranger
+                                                            {
+                                                                PersonID = e.PersonID,
+                                                                FullName = e.FirstName + " " + e.LastName,
+                                                                ProfilePicture = e.ProfilePicture
+                                                            }
+                                                );
+
+                    return strangers.ToArray();
+                }
+
+                var query = ctx.People.Where(e => e.PersonGUID != _userId &&
+                                            (e.FirstName.ToLower().Contains(input.ToLower()) || e.LastName.ToLower().Contains(input.ToLower())))
+                                        .OrderBy(f => f.LastName)
+                                        .ThenBy(f => f.FirstName)
+                                        .Select(e =>
+                                                new PersonListItem_Stranger
+                                                {
+                                                    PersonID = e.PersonID,
+                                                    FullName = e.FirstName + " " + e.LastName,
+                                                    ProfilePicture = e.ProfilePicture
+                                                }
+                                        );
+
+                return query.ToArray();
+            }
+        }
+
         public PersonDetail GetPersonById(int id)
         {
             using (var ctx = new ApplicationDbContext())
