@@ -13,11 +13,12 @@ namespace GiftRegistry.WebMVC.Controllers
     public class FriendController : Controller
     {
         // GET: Friend
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {            
             var service = CreateFriendService();
 
-            var model = service.GetFriends();
+            var model = (string.IsNullOrWhiteSpace(search)) ? service.GetFriends() : service.GetFriendsForSearchString(search);
+
             return View(model);
         }
 
@@ -65,29 +66,6 @@ namespace GiftRegistry.WebMVC.Controllers
 
             return View(model);
         }
-
-        ////
-        //// Get: /Account/GetProfilePicture
-        //[HttpGet]
-        //[ActionName("GetProfilePicture")]
-        //public JsonResult GetProfilePicture(int personID)
-        //{
-        //    var service = CreateImageService();
-        //    var model = service.GetProfileImageForUser();
-
-        //    var imageSrc = String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(model.ImageData));
-        //    var newModel = new { imageSrc };
-
-        //    var jsonModel = Json(newModel, JsonRequestBehavior.AllowGet);
-
-        //    return jsonModel;
-        //}
-        //private ImageService CreateImageService()
-        //{
-        //    var userId = Guid.Parse(User.Identity.GetUserId());
-        //    var service = new ImageService(userId);
-        //    return service;
-        //}
 
         // GET: Edit
         public ActionResult Edit(int id)

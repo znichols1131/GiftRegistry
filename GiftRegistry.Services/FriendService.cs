@@ -94,6 +94,40 @@ namespace GiftRegistry.Services
             }
         }
 
+        public IEnumerable<FriendListItem> GetFriendsForSearchString(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return null;
+
+            input = input.Trim();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Friends
+                        .Include("Person")
+                        .Where(e => e.OwnerGUID == _userId && (e.Person.FirstName.ToLower().Contains(input.ToLower()) || e.Person.LastName.ToLower().Contains(input.ToLower())))
+                        .OrderBy(f => f.Person.LastName)
+                        .ThenBy(f => f.Person.FirstName)
+                        .ThenBy(f => f.Person.Birthdate)
+                        .Select(
+                            e =>
+                                new FriendListItem
+                                {
+                                    FriendID = e.FriendID,
+                                    OwnerGUID = e.OwnerGUID,
+                                    Relationship = e.Relationship,
+                                    PersonID = e.PersonID,
+                                    Person = e.Person,
+                                    IsPending = e.IsPending
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
         public FriendDetail GetFriendByID(int id)
         {
             using (var ctx = new ApplicationDbContext())
