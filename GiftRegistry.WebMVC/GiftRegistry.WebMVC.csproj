@@ -205,10 +205,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\CampFire.svg" />
+    <Content Include="Images\Coffee.svg" />
     <Content Include="Images\DefaultAvatar.png" />
     <Content Include="Images\EmptyCart.svg" />
     <Content Include="Images\Events.svg" />
+    <Content Include="Images\Filter.svg" />
     <Content Include="Images\Fishing.svg" />
+    <Content Include="Images\Friendship.svg" />
+    <Content Include="Images\Neighbors.svg" />
     <Content Include="Images\Notification_Man1.svg" />
     <Content Include="Images\Notification_Man2.svg" />
     <Content Include="Images\Notification_Woman1.svg" />

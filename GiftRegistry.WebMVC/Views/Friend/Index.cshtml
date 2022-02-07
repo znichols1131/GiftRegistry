@@ -4,6 +4,28 @@
     ViewBag.Title = "Friends";
 }
 
+<div class="row mt-4">
+
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4 gray-box">
+            <h4>Check it out, it's your friends!</h4>
+            <p class="mt-3">You'll see all of your current and pending friends below. These are the people who can see your wish lists, just like you can view theirs through their profile. Don't see one of your friends yet?</p>
+
+            <div class="mt-3">
+                @Html.ActionLink("Add A Friend", "Index", "Person", null, new { @class = "btn btn-gray-dark" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="text-center">
+            <img id="feature-image" src="~/Images/Friendship.svg" alt="Wish list image" />
+        </div>
+    </div>
+
+</div>
+
+
 <h2 class="mt-4">Your Friends</h2>
 
 <div class="mt-3 row justify-content-md-start">
@@ -21,11 +43,7 @@
         }
     </div>
 
-    <div class="col-md-auto px-0 mx-2">
-        
-        @Html.ActionLink("Add Friend", "Index", "Person", null, new { @class = "btn btn-gold" })
-
-    </div>
+    
 </div>
 
 
@@ -71,6 +89,16 @@ else
 
 <style>
 
+    body {
+        color: #2E2E2E;
+    }
+
+    h4 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 32px;
+    }
+
     input[type=text] {
         float: left;
         padding: 6px 6px 6px 10px;
@@ -78,6 +106,12 @@ else
         border-radius: 2px;
         margin-right: 8px;
         font-size: 17px;
+    }
+
+    #feature-image {
+        width: 25vw;
+        height: auto;
+        padding: 50px;
     }
 
     .search-button {
@@ -91,4 +125,22 @@ else
     .button-disabled {
         cursor: text;
     }
+
+    .Massive-Text {
+        font-size: 72px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #2E2E2E
+    }
+
+    div.gray-box {
+        background-color: #F1F2F3;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .gold-text {
+        color: #E0B840;
+    }
+
 </style>
