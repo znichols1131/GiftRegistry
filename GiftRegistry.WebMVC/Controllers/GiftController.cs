@@ -108,7 +108,8 @@ namespace GiftRegistry.WebMVC.Controllers
                     QtyDesired = detail.QtyDesired,
                     WishListID = detail.WishListID,
                     WishList = detail.WishList,
-                    Image = detail.Image
+                    Image = detail.Image,
+                    ImageID = detail.Image.ImageID
                 };
 
             return View(model);

@@ -27,7 +27,8 @@ namespace GiftRegistry.WebMVC.Controllers
                     FirstName = detail.FirstName,
                     LastName = detail.LastName,
                     Birthdate = (detail.Birthdate is null) ? DateTime.Now : detail.Birthdate,
-                    Image = detail.Image
+                    Image = detail.Image,
+                    ImageID = detail.Image.ImageID
                 };       
 
             return View(model);

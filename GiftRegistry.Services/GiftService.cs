@@ -103,7 +103,9 @@ namespace GiftRegistry.Services
                 entity.Description = model.Description;
                 entity.SourceURL = GetClickableLink(model.SourceURL);
                 entity.QtyDesired = model.QtyDesired;
-                entity.ProductImage = model.Image.ImageData;
+
+                if(model.Image != null)
+                    entity.ProductImage = model.Image.ImageData;
 
                 return ctx.SaveChanges() == 1;
             }
