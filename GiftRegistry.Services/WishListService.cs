@@ -107,7 +107,8 @@ namespace GiftRegistry.Services
                         Description = entity.Description,
                         DueDate = entity.DueDate,
                         OwnerName = entity.Owner.FullName,
-                        Gifts = entity.Gifts.ToList()
+                        Gifts = entity.Gifts.ToList(),
+                        GiftCount = entity.Gifts.Count
                     };
             }
         }

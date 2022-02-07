@@ -28,6 +28,9 @@ namespace GiftRegistry.Models
         public string OwnerName { get; set; }
         public int OwnerID { get; set; }
 
+        [Display(Name = "Gift Count")]
+        public int GiftCount { get; set; }
+
         public List<Gift> Gifts { get; set; }
 
         public int QtyPurchasedForGiftID(int giftID)
