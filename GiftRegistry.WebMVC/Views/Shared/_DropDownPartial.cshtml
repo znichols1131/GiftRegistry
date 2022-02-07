@@ -72,8 +72,14 @@ else
                     if (notificationCount > 0) {
                         $('#nav-notification-indicator').show();
                         $('#nav-dropdown-notification-indicator').show();
-                        $('#nav-notification-indicator').text(notificationCount);
-                        $('#nav-dropdown-notification-indicator').text(notificationCount);
+
+                        if (notificationCount > 3) {
+                            $('#nav-notification-indicator').text("3+");
+                            $('#nav-dropdown-notification-indicator').text("3+");
+                        } else {
+                            $('#nav-notification-indicator').text(notificationCount);
+                            $('#nav-dropdown-notification-indicator').text(notificationCount);
+                        }
                     } else {
                         $('#nav-notification-indicator').hide();
                         $('#nav-dropdown-notification-indicator').hide();
