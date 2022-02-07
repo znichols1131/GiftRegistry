@@ -4,7 +4,27 @@
     ViewBag.Title = "Transactions";
 }
 
+<div class="row mt-4">
+
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4 gray-box">
+            <h4>These are your transactions!</h4>
+            <p class="mt-2">It's where we keep track of the gifts you get for friends and family. To create a transaction, simply claim a gift on someone else's wish list!</p>
+
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="text-center">
+            <img id="feature-image" src="~/Images/EmptyCart.svg" alt="Transactions image" />
+        </div>
+    </div>
+
+</div>
+
 <h2 class="mt-4">Your Transactions</h2>
+
+<hr />
 
 <table class="table">
     <tr>
@@ -53,3 +73,39 @@
     }
 
 </table>
+
+<style>
+
+    body {
+        color: #2E2E2E;
+    }
+
+    h4 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 32px;
+    }
+
+    #feature-image {
+        width: 25vw;
+        height: auto;
+        padding: 50px;
+    }
+
+    .Massive-Text {
+        font-size: 72px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #2E2E2E
+    }
+
+    div.gray-box {
+        background-color: #F1F2F3;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .gold-text {
+        color: #E0B840;
+    }
+</style>
