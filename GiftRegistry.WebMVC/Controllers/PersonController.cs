@@ -97,6 +97,22 @@ namespace GiftRegistry.WebMVC.Controllers
             return View(model);
         }
 
+        // GET: Detail
+        [HttpGet]
+        [ActionName("FriendDetails")]
+        public ActionResult FriendDetails(int personID)
+        {
+            var service = CreateFriendService();
+
+            var friendID = service.GetFriendIDByPersonID(personID);
+
+            if(friendID != -1)
+                return RedirectToAction("Details", "Friend", new { id = friendID });
+
+            // Worst case
+            return RedirectToAction("Index", "Friend");
+        }
+
         private byte[] ConvertToBytes(HttpPostedFileBase image)
         {
             using (var reader = new BinaryReader(image.InputStream))
@@ -112,6 +128,16 @@ namespace GiftRegistry.WebMVC.Controllers
             
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new PersonService(userId);
+            return service;
+        }
+
+        private FriendService CreateFriendService()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return null;
+
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new FriendService(userId);
             return service;
         }
 

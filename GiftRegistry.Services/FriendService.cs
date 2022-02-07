@@ -153,6 +153,28 @@ namespace GiftRegistry.Services
             }
         }
 
+        public int GetFriendIDByPersonID(int personID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if(ctx.Friends.Include("Person").Any(e => e.OwnerGUID == _userId && e.Person.PersonID == personID))
+                {
+                    var entity =
+                        ctx
+                            .Friends
+                            .Include("Person")
+                            .Include("Person.WishLists")
+                            .Where(e => e.OwnerGUID == _userId && e.Person.PersonID == personID)
+                            .Select(e => e.FriendID)
+                            .FirstOrDefault();
+
+                    return entity;
+                }
+            }
+
+            return -1;
+        }
+
         public bool UpdateFriend(FriendEdit model)
         {
             using (var ctx = new ApplicationDbContext())

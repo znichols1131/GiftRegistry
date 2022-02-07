@@ -213,10 +213,13 @@
     <Content Include="Images\Filter.svg" />
     <Content Include="Images\Fishing.svg" />
     <Content Include="Images\Friendship.svg" />
+    <Content Include="Images\Gift1.svg" />
+    <Content Include="Images\Gift2.svg" />
     <Content Include="Images\Neighbors.svg" />
     <Content Include="Images\Notification_Man1.svg" />
     <Content Include="Images\Notification_Man2.svg" />
     <Content Include="Images\Notification_Woman1.svg" />
+    <Content Include="Images\Reading.svg" />
     <Content Include="Images\SearchIcon.png" />
     <Content Include="Images\TimeManagement.svg" />
     <Content Include="Images\ToyCar.svg" />

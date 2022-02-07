@@ -4,57 +4,72 @@
     ViewBag.Title = "Details";
 }
 
-<h2 class="mt-4">@Model.Name</h2>
+<div class="row mt-4">
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
+    <div class="col-md-6 align-self-end py-4">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+        <div class="mt-4 gray-box row justify-content-between">
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+            <div class="col-auto me-auto">
+                <h4>@Model.Name</h4>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DueDate)
-        </dt>
+                <div class="mt-3">
+                    @if (Model.Description != null && Model.Description.Length > 0)
+                    {
+                        <p>Description: @Model.Description</p>
+                    }
 
-        <dd>
-            @Html.DisplayFor(model => model.DueDate)
-        </dd>
+                    <p>Date: @Html.DisplayFor(model => model.DueDate)</p>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.OwnerName)
-        </dt>
+                    @if (ViewBag.UserGUID != Model.OwnerGUID)
+                    {
+                        <p>List Owner: @Model.OwnerName</p>
+                    }
 
-        <dd>
-            @Html.DisplayFor(model => model.OwnerName)
-        </dd>
+                </div>
 
-    </dl>
+                <div class="mt-3">
+                    @if (ViewBag.UserGUID == Model.OwnerGUID)
+                    {
+                        @Html.ActionLink("Add A Gift", "Create", "Gift", new { id = Model.WishListID }, new { @class = "btn btn-gold" })
+                        @Html.ActionLink("Edit Info", "Edit", "WishList", new { id = Model.WishListID }, new { @class = "btn btn-gray-dark mx-2" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("View Profile", "FriendDetails", "Person", new { personID = Model.OwnerID }, new { @class = "btn btn-gray-dark" })
+                    }
+                </div>
+            </div>
+            
+            <div class="col-auto  d-flex flex-column justify-content-center">
+                <div class="d-flex align-items-center p-0">
+                    @if (Model.OwnerImage != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.OwnerImage);
+                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+                    <a id="list-owner-img-wrapper" href="@Url.Action("FriendDetails", "Person", new { personID = Model.OwnerID })">
+                        <img src="@imgSrc" id="list-owner-img" class="mx-auto my-auto d-block align-middle" alt="List Owner Profile Picture">
+                    </a>
+                    }
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="text-center">
+            <img id="feature-image" src="~/Images/Gift2.svg" alt="Transactions image" />
+        </div>
+    </div>
+
 </div>
 
-@if (ViewBag.UserGUID == Model.OwnerGUID)
-{
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.WishListID }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-}
 
 <div>
     <br />
     <h2 class="mt-4">Gifts</h2>
     <hr />
-    @if (ViewBag.UserGUID == Model.OwnerGUID)
-    {
-        <p>
-            @Html.ActionLink("Add Gift", "Create", "Gift", new { id = Model.WishListID }, null)
-        </p>
-    }
     <table class="table">
         <tr>
             @{ var dummyGift = Model.Gifts.FirstOrDefault();}
@@ -96,15 +111,15 @@
                 <td class="align-middle">
                     @if (ViewBag.UserGUID == Model.OwnerGUID)
                     {
-                        @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, new { @class = "btn btn-danger float-end btn-list-item" })
-                        @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, new { @class = "btn btn-outline-secondary float-end btn-list-item" })
-                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-outline-secondary float-end btn-list-item" })
+                        @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, new { @class = "btn btn-red float-end btn-list-item" })
+                        @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
+                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
 
                     }
                     else
                     {
-                        @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = item.GiftID }, new { @class = "btn btn-success float-end btn-list-item" })
-                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-outline-secondary float-end btn-list-item" })
+                        @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = item.GiftID }, new { @class = "btn btn-gold float-end btn-list-item" })
+                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
                     }
                 </td>
             </tr>
@@ -115,9 +130,55 @@
 
 <style>
 
+    body {
+        color: #2E2E2E;
+    }
+
+    h4 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 32px;
+    }
+
+    #feature-image {
+        width: 25vw;
+        height: auto;
+        padding: 50px;
+    }
+
+    #list-owner-img {
+        height: 100%;
+        width: auto;
+        border-radius: 50%;
+        padding: 0px;
+        margin: 0px;
+        vertical-align: middle;
+    }
+
+    #list-owner-img-wrapper {
+        height: 80%;
+    }
+
     .btn.btn-list-item {
         margin-left: 2px;
         margin-right: 2px;
         height: auto;
+    }
+
+    .Massive-Text {
+        font-size: 72px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #2E2E2E
+    }
+
+    div.gray-box {
+        background-color: #F1F2F3;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .gold-text {
+        color: #E0B840;
     }
 </style>

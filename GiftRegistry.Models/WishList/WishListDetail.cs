@@ -31,6 +31,9 @@ namespace GiftRegistry.Models
         [Display(Name = "Gift Count")]
         public int GiftCount { get; set; }
 
+        [Display(Name = "List Owner's Picture")]
+        public byte[] OwnerImage { get; set; }
+
         public List<Gift> Gifts { get; set; }
 
         public int QtyPurchasedForGiftID(int giftID)

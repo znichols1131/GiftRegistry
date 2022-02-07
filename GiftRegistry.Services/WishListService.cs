@@ -95,6 +95,7 @@ namespace GiftRegistry.Services
                 var entity =
                     ctx
                         .WishLists
+                        .Include("Owner")
                         .Single(e => e.WishListID == id);
 
                 return
@@ -107,6 +108,7 @@ namespace GiftRegistry.Services
                         Description = entity.Description,
                         DueDate = entity.DueDate,
                         OwnerName = entity.Owner.FullName,
+                        OwnerImage = entity.Owner.ProfilePicture,
                         Gifts = entity.Gifts.ToList(),
                         GiftCount = entity.Gifts.Count
                     };
