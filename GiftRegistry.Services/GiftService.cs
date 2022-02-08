@@ -52,6 +52,7 @@ namespace GiftRegistry.Services
                                     GiftID = e.GiftID,
                                     Name = e.Name,
                                     Description = e.Description,
+                                    SourceURL = e.SourceURL,
                                     QtyDesired = e.QtyDesired,
                                     WishListID = e.WishListID,
                                     WishList = e.WishList,
@@ -163,6 +164,9 @@ namespace GiftRegistry.Services
 
         private string GetClickableLink(string url)
         {
+            if (string.IsNullOrWhiteSpace(url))
+                return null;
+
             if (url.StartsWith("https://") || url.StartsWith("http://") || url.StartsWith("//"))
                 return url;
 

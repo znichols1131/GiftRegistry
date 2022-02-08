@@ -18,6 +18,9 @@ namespace GiftRegistry.Models
         [Display(Name = "Description")]
         public string Description { get; set; }
 
+        [Display(Name = "Link")]
+        public string SourceURL { get; set; }
+
         [Display(Name = "Qty. Desired")]
         public int QtyDesired { get; set; }
 

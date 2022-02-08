@@ -1,0 +1,114 @@
+﻿@model GiftRegistry.Models.GiftListItem
+
+<div class="col column-gallery">
+    <div class="card h-100">
+
+        @if (Model.ProductImage != null)
+        {
+            var base64 = Convert.ToBase64String(Model.ProductImage);
+            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            <img src="@imgSrc" class="card-img-top mx-auto" alt="Gift Picture">
+        }
+
+    <div class="card-body pt-0">
+        <h5 class="card-title">@Model.Name</h5>
+
+        @if (!String.IsNullOrWhiteSpace(Model.SourceURL))
+        {
+            <p class="card-text">@Html.DisplayNameFor(m => m.Description): @Model.Description</p>
+        }
+
+        @if (!String.IsNullOrWhiteSpace(Model.SourceURL))
+        {
+            <p class="card-text mt-1"><a href="@Model.SourceURL" target="_blank">Click here to go to product.</a></p>
+        }
+
+        @if (!((bool)ViewData["isGiftOwner"]))
+        {
+            var qtyPurchased = (int)ViewData["qtyPurchased"];
+
+            if (Model.QtyDesired > 0)
+            {
+                var progressFraction = 100 * ((double)qtyPurchased) / ((double)Model.QtyDesired);
+
+                <div class="text-center">
+                    <p class="card-text mt-3">@qtyPurchased of @Model.QtyDesired purchased</p>
+                </div>
+                <div class="progress">
+
+                    <div class="@((progressFraction>=100) ? "progress-bar-complete" : "progress-bar") progress-bar-striped" role="progressbar" style="width: @progressFraction%" aria-valuenow=@qtyPurchased aria-valuemin="0" aria-valuemax=@Model.QtyDesired></div>
+                </div>
+            }
+            else
+            {
+                var progressFraction = (qtyPurchased > 0) ? 50 : 0;
+
+                <div class="text-center">
+                    <p class="card-text mt-3">@qtyPurchased of unlimited purchased</p>
+                </div>
+                <div class="progress">
+
+                    <div class="@((progressFraction>=100) ? "progress-bar-complete" : "progress-bar") progress-bar-striped" role="progressbar" style="width: @progressFraction%" aria-valuenow=@qtyPurchased aria-valuemin="0" aria-valuemax=@Model.QtyDesired></div>
+                </div>
+            }
+        }
+        else
+        {
+            if (Model.QtyDesired > 0)
+            {
+                <p class="card-text mt-1">@Html.DisplayNameFor(m => m.QtyDesired): @Model.QtyDesired</p>
+            }
+            else
+            {
+                <p class="card-text mt-1">@Html.DisplayNameFor(m => m.QtyDesired): Unlimited</p>
+            }
+        }
+
+    </div>
+
+        <div class="card-footer">
+            <div class="d-flex justify-content-center">
+
+                @if ((bool)ViewData["isGiftOwner"])
+                {
+                    @Html.ActionLink("View", "Details", "Gift", new { id = Model.GiftID }, new { @class = "btn btn-gray-light btn-list-item" })
+                    @Html.ActionLink("Edit", "Edit", "Gift", new { id = Model.GiftID }, new { @class = "btn btn-gray-light btn-list-item" })
+                    @Html.ActionLink("Delete", "Delete", "Gift", new { id = Model.GiftID }, new { @class = "btn btn-red btn-list-item" })
+
+                }
+                else
+                {
+                    @Html.ActionLink("View", "Details", "Gift", new { id = Model.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
+                    @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = Model.GiftID }, new { @class = "btn btn-gold float-end btn-list-item" })
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .card-img-top {
+        object-fit: scale-down;
+        height: 250px;
+        width: 250px;
+        margin: 10px 10px 10px 10px;
+    }
+
+    .card-title {
+    }
+
+    .card-text {
+        margin-bottom: 0px;
+    }
+
+    .progress-bar {
+        background-color: #e0b940;
+    }
+
+    .progress-bar-complete {
+        background-color: #629460;
+    }
+
+</style>

@@ -13,7 +13,7 @@
     <div class="form-horizontal row d-flex justify-content-center">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="col-6">
+        <div class="col-6 mt-3">
 
             @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control person-image", id = "ImageIDField" })
             @Html.Partial("_ImageUploadPartial", Model.Image)

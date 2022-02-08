@@ -67,17 +67,18 @@
 
             @foreach (var item in Model.Person.WishLists)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DueDate)
-                    </td>
-                    <td>
-                        @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, null)
-                    </td>
-                </tr>
+        <tr>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.DueDate)
+            </td>
+            <td class="align-middle">
+                @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
+
+            </td>
+        </tr>
             }
 
         </table>

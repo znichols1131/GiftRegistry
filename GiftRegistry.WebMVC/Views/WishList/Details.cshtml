@@ -40,7 +40,7 @@
                     }
                 </div>
             </div>
-            
+
             <div class="col-auto  d-flex flex-column justify-content-center">
                 <div class="d-flex align-items-center p-0">
                     @if (Model.OwnerImage != null)
@@ -48,11 +48,11 @@
                         var base64 = Convert.ToBase64String(Model.OwnerImage);
                         var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
 
-                    <a id="list-owner-img-wrapper" href="@Url.Action("FriendDetails", "Person", new { personID = Model.OwnerID })">
-                        <img src="@imgSrc" id="list-owner-img" class="mx-auto my-auto d-block align-middle" alt="List Owner Profile Picture">
-                    </a>
+                        <a id="list-owner-img-wrapper" href="@Url.Action("FriendDetails", "Person", new { personID = Model.OwnerID })">
+                            <img src="@imgSrc" id="list-owner-img" class="mx-auto my-auto d-block align-middle" alt="List Owner Profile Picture">
+                        </a>
                     }
-                </div>                
+                </div>
             </div>
         </div>
     </div>
@@ -70,62 +70,81 @@
     <br />
     <h2 class="mt-4">Gifts</h2>
     <hr />
-    <table class="table">
-        <tr>
-            @{ var dummyGift = Model.Gifts.FirstOrDefault();}
-            <th>
-                @Html.DisplayNameFor(model => dummyGift.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => dummyGift.QtyDesired)
-            </th>
 
-            @if (ViewBag.UserGUID != Model.OwnerGUID)
+    @if (Model.Gifts is null || Model.Gifts.Count() == 0)
+    {
+        <p class="my-4">We couldn't find any gifts for this wish list. Try checking back later!</p>
+    }
+    else
+    {
+        <div id="friendList" class="row row-gallery row-cols-1 row-cols-md-3 g-4 mb-2">
+
+            @foreach (var item in Model.Gifts)
             {
-                <th>
-                    @Html.DisplayName("Qty. Purchased")
-                </th>
+                var qtyPurchased = Model.QtyPurchasedForGiftID(item.GiftID);
+                @Html.Partial("_GiftItemPartial", item, new ViewDataDictionary { { "isGiftOwner", ViewBag.UserGUID == Model.OwnerGUID }, { "qtyPurchased", qtyPurchased } })
             }
 
-            <th></th>
-        </tr>
+        </div>
+    }
 
-        @foreach (var item in Model.Gifts)
-        {
-            var qtyPurchased = Model.QtyPurchasedForGiftID(item.GiftID);
+
+    @*<table class="table">
             <tr>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.QtyDesired)
-                </td>
+                @{ var dummyGift = Model.Gifts.FirstOrDefault();}
+                <th>
+                    @Html.DisplayNameFor(model => dummyGift.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => dummyGift.QtyDesired)
+                </th>
 
                 @if (ViewBag.UserGUID != Model.OwnerGUID)
                 {
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => qtyPurchased)
-                    </td>
+                    <th>
+                        @Html.DisplayName("Qty. Purchased")
+                    </th>
                 }
 
-                <td class="align-middle">
-                    @if (ViewBag.UserGUID == Model.OwnerGUID)
-                    {
-                        @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, new { @class = "btn btn-red float-end btn-list-item" })
-                        @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
-                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
-
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = item.GiftID }, new { @class = "btn btn-gold float-end btn-list-item" })
-                        @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
-                    }
-                </td>
+                <th></th>
             </tr>
-        }
 
-    </table>
+            @foreach (var item in Model.Gifts)
+            {
+                var qtyPurchased = Model.QtyPurchasedForGiftID(item.GiftID);
+                <tr>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.QtyDesired)
+                    </td>
+
+                    @if (ViewBag.UserGUID != Model.OwnerGUID)
+                    {
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => qtyPurchased)
+                        </td>
+                    }
+
+                    <td class="align-middle">
+                        @if (ViewBag.UserGUID == Model.OwnerGUID)
+                        {
+                            @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, new { @class = "btn btn-red float-end btn-list-item" })
+                            @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
+                            @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
+
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = item.GiftID }, new { @class = "btn btn-gold float-end btn-list-item" })
+                            @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>*@
 </div>
 
 <style>

@@ -98,20 +98,36 @@ namespace GiftRegistry.Services
                         .Include("Owner")
                         .Single(e => e.WishListID == id);
 
-                return
-                    new WishListDetail
+                var result = new WishListDetail
+                {
+                    WishListID = entity.WishListID,
+                    OwnerID = entity.OwnerID,
+                    OwnerGUID = entity.OwnerGUID,
+                    Name = entity.Name,
+                    Description = entity.Description,
+                    DueDate = entity.DueDate,
+                    OwnerName = entity.Owner.FullName,
+                    OwnerImage = entity.Owner.ProfilePicture,
+                    Gifts = new List<GiftListItem>(),
+                    GiftCount = entity.Gifts.Count
+                };
+
+                foreach (var gift in entity.Gifts)
+                {
+                    result.Gifts.Add(new GiftListItem
                     {
-                        WishListID = entity.WishListID,
-                        OwnerID = entity.OwnerID,
-                        OwnerGUID = entity.OwnerGUID,
-                        Name = entity.Name,
-                        Description = entity.Description,
-                        DueDate = entity.DueDate,
-                        OwnerName = entity.Owner.FullName,
-                        OwnerImage = entity.Owner.ProfilePicture,
-                        Gifts = entity.Gifts.ToList(),
-                        GiftCount = entity.Gifts.Count
-                    };
+                        GiftID = gift.GiftID,
+                        Name = gift.Name,
+                        Description = gift.Description,
+                        SourceURL = gift.SourceURL,
+                        QtyDesired = gift.QtyDesired,
+                        WishListID = gift.WishListID,
+                        WishList = gift.WishList,
+                        ProductImage = gift.ProductImage
+                    });
+                }
+
+                return result;
             }
         }
 
@@ -144,7 +160,7 @@ namespace GiftRegistry.Services
 
                 // Don't rely on cascade deleting. We want to send notification to buyers whose transactions will be deleted
                 var giftService = CreateGiftService();
-                foreach(var gift in entity.Gifts)
+                foreach (var gift in entity.Gifts)
                 {
                     giftService.DeleteGift(gift.GiftID);
                 }
@@ -159,7 +175,7 @@ namespace GiftRegistry.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                if(ctx.People.Any(p => p.PersonGUID == _userId))
+                if (ctx.People.Any(p => p.PersonGUID == _userId))
                 {
                     var user = ctx.People.Single(p => p.PersonGUID == _userId);
                     return user.PersonID;
