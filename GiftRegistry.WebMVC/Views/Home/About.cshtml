@@ -1,7 +1,92 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<div class="row mt-4">
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4 gray-box">
+            <h4>Hey, I'm Zach! I created BeeGifted.</h4>
+            <p class="mt-3">
+                My goal was to create a website to take the stress and confusion out of creating, distributing, and coordinating gift lists.
+            </p>
+            <p class="mt-3">
+                It seems like someone always forgets to coordinate, and then it's on the recipient to tell them "Thanks, but I already have that!"
+                Gift registries and virtual wish lists aren't new ideas, but I never found one I really liked. So I made one!
+            </p>
+            <p class="mt-3">
+                Feel free to tell me how I did or how I could improve BeeGifted. Your feedback really matters to me! And if you're curious, take a look at my other projects on my portfolio website.
+            </p>
+            <div class="mt-3">
+                @Html.ActionLink("Contact Me", "Contact", "Home", null, new { @class = "btn btn-gold btn-action" })
+                <a href="https://znichols1131.github.io/Portfolio/" class="btn btn-gray-dark" target="_blank">My Portfolio</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="text-center">
+            <img id="feature-image" src="~/Images/Programmer.svg" alt="Creator image" />
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="text-center">
+            <img id="feature-image" src="~/Images/Thanks1.svg" alt="Thanks to collaborators image" />
+        </div>
+    </div>
+
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4 gray-box">
+            <h4>Let's give credit where credit is due.</h4>
+            <ul>
+                <li class="mt-3">
+                    The color scheme for BeeGifted was inspired by <a href="https://mindhive.us/" target="_blank">Dabble's MindHive</a>.
+                </li>
+                <li class="mt-3">
+                    Most of the wonderful art found throughout BeeGifted comes from <a href="https://undraw.co/" target="_blank">Katerina Limpitsouni's unDraw open-source illustrations</a>.
+                </li>
+                <li class="mt-3">
+                    The charming default images for profiles and gifts come from <a href="https://doodleipsum.com/" target="_blank">Blush's Doodle Ipsum and their artists</a>.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    body {
+        color: #2E2E2E;
+    }
+
+    h4 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 32px;
+    }
+
+    #feature-image {
+        width: 25vw;
+        height: auto;
+        padding: 50px;
+    }
+
+    .Massive-Text {
+        font-size: 72px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #2E2E2E
+    }
+
+    div.gray-box {
+        background-color: #F1F2F3;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .gold-text {
+        color: #E0B840;
+    }
+</style>

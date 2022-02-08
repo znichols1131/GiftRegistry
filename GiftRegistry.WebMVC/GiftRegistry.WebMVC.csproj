@@ -205,6 +205,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Awards.svg" />
     <Content Include="Images\CampFire.svg" />
     <Content Include="Images\Coffee.svg" />
     <Content Include="Images\DefaultAvatar.png" />
@@ -215,12 +216,16 @@
     <Content Include="Images\Friendship.svg" />
     <Content Include="Images\Gift1.svg" />
     <Content Include="Images\Gift2.svg" />
+    <Content Include="Images\Idea.svg" />
     <Content Include="Images\Neighbors.svg" />
     <Content Include="Images\Notification_Man1.svg" />
     <Content Include="Images\Notification_Man2.svg" />
     <Content Include="Images\Notification_Woman1.svg" />
+    <Content Include="Images\Programmer.svg" />
     <Content Include="Images\Reading.svg" />
     <Content Include="Images\SearchIcon.png" />
+    <Content Include="Images\Thanks1.svg" />
+    <Content Include="Images\Thanks2.svg" />
     <Content Include="Images\TimeManagement.svg" />
     <Content Include="Images\ToyCar.svg" />
     <Content Include="Images\Wishlist.svg" />
