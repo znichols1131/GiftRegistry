@@ -20,7 +20,7 @@
 
         @if (!String.IsNullOrWhiteSpace(Model.SourceURL))
         {
-            <p class="card-text mt-1"><a href="@Model.SourceURL" target="_blank">Click here to go to product.</a></p>
+            <p class="card-text mt-1"><a href="@Model.SourceURL" class="custom-link" target="_blank">Click here to go to product.</a></p>
         }
 
         @if (!((bool)ViewData["isGiftOwner"]))

@@ -208,6 +208,7 @@
     <Content Include="Images\Awards.svg" />
     <Content Include="Images\CampFire.svg" />
     <Content Include="Images\Coffee.svg" />
+    <Content Include="Images\ContactMe.svg" />
     <Content Include="Images\DefaultAvatar.png" />
     <Content Include="Images\EmptyCart.svg" />
     <Content Include="Images\Events.svg" />
@@ -217,6 +218,7 @@
     <Content Include="Images\Gift1.svg" />
     <Content Include="Images\Gift2.svg" />
     <Content Include="Images\Idea.svg" />
+    <Content Include="Images\Idea2.svg" />
     <Content Include="Images\Neighbors.svg" />
     <Content Include="Images\Notification_Man1.svg" />
     <Content Include="Images\Notification_Man2.svg" />

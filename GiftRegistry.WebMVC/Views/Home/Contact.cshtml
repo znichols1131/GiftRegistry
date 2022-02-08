@@ -1,17 +1,142 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<div class="row mt-4">
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4 gray-box">
+            <h4>Did you like BeeGifted? See a problem?</h4>
+            <p class="mt-3">
+                You can leave your BeeGifted feedback in the Contact Me form below. Your opinions really matter to me, and I'll take a look as soon as I can!
+            </p>
+            <p class="mt-3">
+                If you want to reach me regarding other projects, please check out the Contact Me form on my portfolio website.
+            </p>
+            <div class="mt-3">
+                <a href="https://znichols1131.github.io/Portfolio/#Contact" class="btn btn-gray-dark" target="_blank">My Portfolio</a>
+            </div>
+        </div>
+    </div>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+    <div class="col-md-6">
+        <div class="text-center">
+            <img class="feature-image" src="~/Images/Idea2.svg" alt="Ideas image" />
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="text-center">
+            <img class="feature-image" src="~/Images/ContactMe.svg" alt="Contact me image" />
+        </div>
+    </div>
+
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4 gray-box">
+
+            <h4 class="mb-4 d-flex justify-content-center">Contact Me</h4>
+
+            <form action="https://formspree.io/f/mnqwprey" method="POST">
+                <div class="mb-3 container">
+                    <div class="row align-items-start">
+                        <div class="col-md-6 col-sm-12 mb-2">
+                            <label for="input-contact-name" class="form-label">Name</label>
+                            <input class="form-control" id="input-contact-name" name="name" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid name.
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-2">
+                            <label for="input-contact-email" class="form-label">Email</label>
+                            <input type="email" name="_replyto" class="form-control" id="input-contact-email" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid email.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 container">
+                    <div class="row align-items-start">
+                        <div>
+                            <label for="input-contact-message" class="form-label">Message</label>
+                            <div class="col-12">
+                                <textarea class="form-control rounded-0" name="message" id="input-contact-message" rows="3" required></textarea>
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a message before hitting send.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-1 container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button class="btn btn-gold" type="submit" onclick="validateFields();">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+</script>
+
+<style>
+
+    body {
+        color: #2E2E2E;
+    }
+
+    h4 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 32px;
+    }
+
+    .feature-image {
+        width: 25vw;
+        height: auto;
+        padding: 50px;
+    }
+
+    textarea {
+        font-size: 20px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .Massive-Text {
+        font-size: 72px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #2E2E2E
+    }
+
+    div.gray-box {
+        background-color: #F1F2F3;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .gold-text {
+        color: #E0B840;
+    }
+
+</style>

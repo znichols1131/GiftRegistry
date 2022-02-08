@@ -41,7 +41,9 @@
         @RenderBody()
         <hr />
         <footer class="text-center">
-            <p>&copy; @DateTime.Now.Year - BeeGifted by Zach Nichols</p>
+            <p class="mb-0">&copy; @DateTime.Now.Year - BeeGifted by Zach Nichols</p>
+            <p class="mt-1">@Html.ActionLink("About", "About", "Home", null, new { @class = "custom-link" }) | 
+            @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "custom-link" })</p>
         </footer>
     </div>
 
@@ -50,3 +52,9 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<style>
+
+    
+
+</style>
