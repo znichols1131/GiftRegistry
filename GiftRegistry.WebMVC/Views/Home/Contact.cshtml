@@ -42,7 +42,7 @@
                     <div class="row align-items-start">
                         <div class="col-md-6 col-sm-12 mb-2">
                             <label for="input-contact-name" class="form-label">Name</label>
-                            <input class="form-control" id="input-contact-name" name="name" required>
+                            <input class="form-control" id="input-contact-name" name="name" required onblur="return CheckForm();">
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12 mb-2">
                             <label for="input-contact-email" class="form-label">Email</label>
-                            <input type="email" name="_replyto" class="form-control" id="input-contact-email" required>
+                            <input type="email" name="_replyto" class="form-control" id="input-contact-email" required onblur="return CheckForm();">
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
@@ -68,7 +68,7 @@
                         <div>
                             <label for="input-contact-message" class="form-label">Message</label>
                             <div class="col-12">
-                                <textarea class="form-control rounded-0" name="message" id="input-contact-message" rows="3" required></textarea>
+                                <textarea class="form-control rounded-0" name="message" id="input-contact-message" rows="3" required onblur="return CheckForm();"></textarea>
                             </div>
                             <div class="valid-feedback">
                                 Looks good!
@@ -83,7 +83,7 @@
                 <div class="mb-1 container">
                     <div class="row justify-content-center">
                         <div class="col-12 d-flex justify-content-center">
-                            <button class="btn btn-gold" type="submit" onclick="validateFields();">Submit</button>
+                            <button id="submit-form-button" class="btn btn-gray-dark" type="submit">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -95,6 +95,16 @@
 
 <script>
 
+    $(document).ready(CheckForm());
+
+    function CheckForm() {
+
+        var shouldEnable = (document.getElementById("input-contact-name").value.trim() != "");
+        shouldEnable = shouldEnable && (document.getElementById("input-contact-email").value.trim() != "");
+        shouldEnable = shouldEnable && (document.getElementById("input-contact-message").value.trim() != "");
+
+        document.getElementById("submit-form-button").disabled = !shouldEnable;
+    };
 
 </script>
 
