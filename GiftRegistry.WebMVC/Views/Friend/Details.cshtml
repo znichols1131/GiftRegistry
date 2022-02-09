@@ -28,18 +28,20 @@
     </div>
 
     <div class="col-md-6">
-        <div class="text-cente py-4 text-center">
-            @if (Model.Person.ProfilePicture != null)
-            {
-                var base64 = Convert.ToBase64String(Model.Person.ProfilePicture);
-                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+        <div class="py-4 d-flex justify-content-center">
+            <div class="img-wrapper">
+                @if (Model.Person.ProfilePicture != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.Person.ProfilePicture);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
 
-                <img id="feature-image" src="@imgSrc" alt="Profile picture" />
-            }
-            else
-            {
-                <img id="feature-image" src="~/Images/Gift2.svg" alt="No profile picture found" />
-            }
+                    <img id="feature-image" src="@imgSrc" alt="Profile picture" />
+                }
+                else
+                {
+                    <img id="feature-image" src="~/Images/Gift2.svg" alt="No profile picture found" />
+                }
+            </div>
         </div>
     </div>
 
@@ -96,12 +98,22 @@
     }
 
     #feature-image {
-        width: 50%;
+        width: 100%;
         aspect-ratio: 1.0;
         object-fit: cover;
+        transform: scale(1.08);
+        transform-origin: 50% 50%;
+        overflow: hidden;
+        background-color: rgba(224, 184, 64, .25);
+    }
+
+    .img-wrapper {
+        overflow: hidden;
+        width: 50%;
+        height: auto;
         border-radius: 50%;
         border: 1px solid rgba(143, 143, 143, .5);
-        background-color: rgba(224, 184, 64, .25);
+        margin-top: 20px;
     }
 
     .btn.btn-list-item {

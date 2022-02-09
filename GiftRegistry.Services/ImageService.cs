@@ -191,10 +191,10 @@ namespace GiftRegistry.Services
         {
             if(isProfilePicture)
             {
-                return GetDefaultImage("https://doodleipsum.com/500/avatar-3");
+                return GetDefaultImage("https://doodleipsum.com/300x300/avatar-3");
             }else
             {
-                return GetDefaultImage("https://doodleipsum.com/500/abstract");
+                return GetDefaultImage("https://doodleipsum.com/300x300/abstract");
             }
         }
     }
