@@ -24,7 +24,7 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: Create
         public ActionResult Create()
         {            
-            return View();
+            return PartialView();
         }
 
         // POST: Create

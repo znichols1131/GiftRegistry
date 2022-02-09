@@ -69,7 +69,14 @@
                         @Html.DisplayFor(modelItem => item.DaysRemaining)
                     </td>
                     <td class="align-middle">
-                        @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, new { @class = "btn btn-secondary" })
+                        @if (item.WishListID < 0)
+                        {
+                            @Html.ActionLink("View", "FriendDetails", "Person", new { personID = item.OwnerID }, new { @class = "btn btn-secondary" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, new { @class = "btn btn-secondary" })
+                        }
                     </td>
                 </tr>
             }

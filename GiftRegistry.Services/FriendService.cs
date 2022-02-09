@@ -223,7 +223,8 @@ namespace GiftRegistry.Services
                 {
                     var entity = ctx
                                     .Friends
-                                    .Single(e => e.OwnerGUID == recipient.PersonGUID && e.PersonID == sender.PersonID);
+                                    .Where(e => e.OwnerGUID == recipient.PersonGUID && e.PersonID == sender.PersonID)
+                                    .FirstOrDefault();
 
                     return entity.FriendID;
                 }
@@ -271,7 +272,8 @@ namespace GiftRegistry.Services
                 {
                     var entity = ctx
                                     .Friends
-                                    .Single(e => e.OwnerGUID == senderGUID && e.PersonID == recipientID);
+                                    .Where(e => e.OwnerGUID == senderGUID && e.PersonID == recipientID)
+                                    .FirstOrDefault();
 
                     ctx.Friends.Remove(entity);
 

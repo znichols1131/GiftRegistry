@@ -22,7 +22,7 @@ namespace GiftRegistry.Services
             using (var ctx = new ApplicationDbContext())
             {
                 List<EventListItem> events = new List<EventListItem>();
-                DateTime now = DateTime.Now;
+                DateTime today = DateTime.Now;
 
                 var friends =
                     ctx
@@ -34,11 +34,34 @@ namespace GiftRegistry.Services
                                 {
                                     OwnerName = e.Person.FirstName + " " + e.Person.LastName,
                                     OwnerID = e.PersonID,
-                                    WishLists = e.Person.WishLists
+                                    WishLists = e.Person.WishLists,
+                                    Birthday = e.Person.Birthdate
                                 }).ToList();
 
                 foreach(var friend in friends)
                 {
+                    if(friend.Birthday != null)
+                    {
+                        DateTime nextBirthday = new DateTime(today.Year, ((DateTime)friend.Birthday).Month, ((DateTime)friend.Birthday).Day);
+                        int nextAge = nextBirthday.Year - ((DateTime)friend.Birthday).Year;
+
+                        if (nextBirthday.Month - today.Month <= 3)
+                        {
+                            // Birthday is within 3 months
+                            EventListItem newBirthday = new EventListItem();
+
+                            newBirthday.OwnerID = friend.OwnerID;
+                            newBirthday.OwnerName = friend.OwnerName;
+                            newBirthday.WishListID = -1;
+                            newBirthday.EventName = string.Format($"{friend.OwnerName}'s Birthday (Age {nextAge})");
+                            newBirthday.EventDate = nextBirthday;
+                            newBirthday.DaysRemaining = (int)((TimeSpan)(nextBirthday - today)).TotalDays;
+
+                            events.Add(newBirthday);
+                        }
+                    }
+
+
                     foreach(var wishList in friend.WishLists)
                     {
                         EventListItem newEvent = new EventListItem();
@@ -48,35 +71,11 @@ namespace GiftRegistry.Services
                         newEvent.WishListID = wishList.WishListID;
                         newEvent.EventName = wishList.Name;
                         newEvent.EventDate = (DateTime)wishList.DueDate;                        
-                        newEvent.DaysRemaining = (int)((TimeSpan)((DateTime)wishList.DueDate - now)).TotalDays;
+                        newEvent.DaysRemaining = (int)((TimeSpan)((DateTime)wishList.DueDate - today)).TotalDays;
 
                         events.Add(newEvent);
                     }
                 }
-
-                //var friends =
-                //    ctx
-                //        .Friends
-                //        .Include("Person")
-                //        .Where(e => e.OwnerGUID == _userId);                        
-
-                //foreach (var friend in friends)
-                //{
-                //    var person = ctx.Entry(friend).Entity.Person;
-                //    var wishLists = ctx.Entry(person).Entity.WishLists.ToList();
-                //    foreach(var wishList in wishLists)
-                //    {
-                //        EventListItem newEvent = new EventListItem();
-
-                //        newEvent.OwnerID = person.PersonID;
-                //        newEvent.OwnerName = person.FullName;
-                //        newEvent.WishListID = wishList.WishListID;
-                //        newEvent.EventName = wishList.Name;
-                //        newEvent.EventDate = (DateTime)wishList.DueDate;
-
-                //        events.Add(newEvent);
-                //    }
-                //}
 
                 return events.OrderBy(e => e.EventDate);
             }
