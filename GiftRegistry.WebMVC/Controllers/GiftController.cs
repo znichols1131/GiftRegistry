@@ -113,26 +113,29 @@ namespace GiftRegistry.WebMVC.Controllers
                     ImageID = detail.Image.ImageID
                 };
 
-            return View(model);
+            return PartialView("_GiftEditPartial", model);
         }
 
         // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, GiftEdit model)
-        {            
-            if (!ModelState.IsValid) return View(model);
+        public JsonResult Edit(int id, GiftEdit model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+            }
 
             if (model.GiftID != id)
             {
                 ModelState.AddModelError("", "Id Mismatch");
-                return View(model);
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
             }
 
             // Get image
             var imageService = CreateImageService();
             if(imageService is null)
-                return RedirectToAction("Index", "Home");
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
 
             if (model.ImageID == -1)
             {
@@ -158,16 +161,16 @@ namespace GiftRegistry.WebMVC.Controllers
 
             var service = CreateGiftService();
             if (service is null)
-                return RedirectToAction("Index", "Home");
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
 
             if (service.UpdateGift(model))
             {
                 TempData["SaveResult"] = "Your gift was updated.";
-                return RedirectToAction("Details", "WishList", new { id = model.WishListID });
+                return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
             }
 
             ModelState.AddModelError("", "Your gift could not be updated.");
-            return View(model);
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Delete

@@ -157,6 +157,26 @@
                     });
             });
 
+            $('#PlaceHolderHere').on('click', '[id="btnEditGiftSubmit"]', function (event) {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (data) {
+                    if (Boolean(data.successful)) {
+                        PlaceHolderElement.find('.modal').modal('hide');
+                        setTimeout(function () {// wait for 1 secs
+                            location.reload(); // then reload the page.
+                        }, 500);
+                    } else {
+                        // Show errors
+                        //    alert("Error");
+                    }
+                })
+                    .fail(function () {
+                        alert("There was an error processing your request. Please try again.");
+                    });
+            });
+
         });
 
     </script>

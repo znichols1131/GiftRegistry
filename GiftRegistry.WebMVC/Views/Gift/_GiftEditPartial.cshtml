@@ -1,2 +1,114 @@
 ﻿@model GiftRegistry.Models.GiftEdit
 
+<div class="modal fade" id="editGift">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="editGiftLabel">Edit Gift</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            @using (Html.BeginForm("Edit", "Gift", FormMethod.Post, new { @id = "basic-form" }))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.GiftID)
+                    @Html.HiddenFor(model => model.WishListID)
+
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @*<label for="Name">Name <span>(required, at least 2 characters)</span></label>*@
+                            <div class="col-md-12">
+                                <input id="Name" name="Name" minlength="2" maxlength="50" required type="text" class="form-control" value="@Model.Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                <textarea id="Description" name="Description" rows="2" cols="50" maxlength="100" class="form-control">@Model.Description</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SourceURL, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                <input id="SourceURL" name="SourceURL" type="text" class="form-control" value="@Model.SourceURL">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.QtyDesired, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                <input id="QtyDesired" name="QtyDesired" type="number" min="0" class="form-control" value="@Model.QtyDesired">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control product-image", id = "ImageIDField" })
+                            <p class="mb-0">
+                                @string.Format("Product Image")
+                            </p>
+                            @Html.Partial("_ImageUploadPartial", Model.Image)
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnEditGiftSubmit">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#basic-form").validate({
+            errorClass: "error fail-alert",
+            rules: {
+                Name: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 50
+                },
+                Description: {
+                    maxlength: 100
+                },
+                QtyDesired: {
+                    min: 0,
+                    number: true
+                }
+            },
+            messages: {
+                Name: {
+                    required: "Please enter a name for this wish list.",
+                    minlength: "Name should be at least 2 characters long.",
+                    maxlength: "Name should not be more than 50 characters long."
+                },
+                Description: {
+                    maxlength: "Description should not be more than 100 characters long."
+                },
+                QtyDesired: {
+                    min: "Quantity should be 0 or more.",
+                    number: "Quantity must be a numerical value."
+                }
+            }
+        });
+    });
+
+</script>
+
+<style>
+    input,
+    textarea {
+        max-width: 100%;
+    }
+</style>

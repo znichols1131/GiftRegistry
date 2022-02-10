@@ -30,9 +30,8 @@
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <label for="Description">Description</label>
                             <div class="col-md-12">
-                                <textarea id="Description" name="Description" rows="2" cols="50" maxlength="100" class="form-control" value="@Model.Description"/>
+                                <textarea id="Description" name="Description" rows="2" cols="50" maxlength="100" class="form-control">@Model.Description</textarea>
                             </div>
                         </div>
 
