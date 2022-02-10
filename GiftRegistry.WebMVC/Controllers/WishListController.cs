@@ -143,28 +143,31 @@ namespace GiftRegistry.WebMVC.Controllers
         }
 
         // GET: Delete
+        [HttpGet]
         [ActionName("Delete")]
         public ActionResult Delete(int id)
         {            
             var service = CreateWishListService();
 
             var model = service.GetWishListByID(id);
-
-            return View(model);
+            return PartialView("_WishListDeletePartial", model);
         }
 
         // POST: Delete
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int id)
+        public JsonResult DeletePost(int id)
         {            
             var service = CreateWishListService();
-            service.DeleteWishList(id);
+            bool successful = service.DeleteWishList(id);
 
-            TempData["SaveResult"] = "Your wish list was deleted.";
+            if(successful)
+                TempData["SaveResult"] = "Your wish list was deleted.";
 
-            return RedirectToAction("Index");
+            var jsonModel = Json(new { successful }, JsonRequestBehavior.AllowGet);
+
+            return jsonModel;
         }
 
         private WishListService CreateWishListService()

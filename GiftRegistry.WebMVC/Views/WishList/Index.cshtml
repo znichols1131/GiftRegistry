@@ -14,7 +14,6 @@
             <p class="mt-3">You can use these to let your friends and family know what you want for different events.</p>
 
             <div class="mt-3">
-                @*@Html.ActionLink("Create A New List", "Create", "WishList", null, new { @class = "btn btn-gray-dark" })*@
                 <button type="button" class="btn btn-gray-dark" data-toggle="ajax-modal" data-target="#createWishList"
                         data-url="@Url.Action("Create")">
                     Create A New List
@@ -62,7 +61,11 @@
                 @Html.DisplayFor(modelItem => item.GiftCount)
             </td>
             <td class="align-middle">
-                @Html.ActionLink("Delete", "Delete", new { id = item.WishListID }, new { @class = "btn btn-red float-end btn-list-item" })
+                <button type="button" class="btn btn-red float-end btn-list-item" data-toggle="ajax-modal" data-target="#deleteWishList"
+                        data-url="@Url.Action("Delete", "WishList", new { id = item.WishListID })">
+                    Delete
+                </button>
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.WishListID }, new { @class = "btn btn-red float-end btn-list-item" })*@
                 @Html.ActionLink("View", "Details", new { id = item.WishListID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
             </td>
         </tr>
@@ -72,7 +75,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
 
         $(function () {
             var PlaceHolderElement = $('#PlaceHolderHere');
@@ -93,7 +96,7 @@
             //    });
             //});
 
-            $('#PlaceHolderHere').on('click', '[data-save="modal"]', function (event) {
+            $('#PlaceHolderHere').on('click', '[id="btnCreateSubmit"]', function (event) {
                 var form = $(this).parents('.modal').find('form');
                 var actionUrl = form.attr('action');
                 var sendData = form.serialize();
@@ -112,9 +115,39 @@
                         alert("There was an error processing your request. Please try again.");
                     });
             });
+
+            $('#PlaceHolderHere').on('click', '[id="btnDeleteSubmit"]', function (event) {
+
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+
+                $.ajax({
+                    url: actionUrl,
+                    type: "POST",
+                    data: sendData,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (Boolean(data.successful)) {
+                            PlaceHolderElement.find('.modal').modal('hide');
+                            setTimeout(function () {// wait for 1 secs
+                                location.reload(); // then reload the page.
+                            }, 500);
+                        } else {
+                            // Show errors
+                            //    alert("Error");
+                        }
+                    },
+                    error: function () {
+                        alert("There was an error processing your request. Please try again.");
+                    }
+                });
+
+            });
+
         });
 
-    </script>
+</script>
 }
 
 <style>

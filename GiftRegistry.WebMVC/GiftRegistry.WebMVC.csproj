@@ -314,7 +314,6 @@
     <Content Include="Views\Friend\Delete.cshtml" />
     <Content Include="Views\Friend\Edit.cshtml" />
     <Content Include="Views\WishList\Index.cshtml" />
-    <Content Include="Views\WishList\Create.cshtml" />
     <Content Include="Views\WishList\Details.cshtml" />
     <Content Include="Views\WishList\Edit.cshtml" />
     <Content Include="Views\WishList\Delete.cshtml" />
@@ -336,6 +335,7 @@
     <Content Include="Views\Shared\_PersonListItemPartial.cshtml" />
     <Content Include="Views\Shared\_GiftItemPartial.cshtml" />
     <Content Include="Views\WishList\_WishListCreatePartial.cshtml" />
+    <Content Include="Views\WishList\_WishListDeletePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
