@@ -335,6 +335,7 @@
     <Content Include="Views\Shared\_FriendListItemPartial.cshtml" />
     <Content Include="Views\Shared\_PersonListItemPartial.cshtml" />
     <Content Include="Views\Shared\_GiftItemPartial.cshtml" />
+    <Content Include="Views\WishList\_WishListCreatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

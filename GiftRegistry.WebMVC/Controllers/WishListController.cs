@@ -23,18 +23,24 @@ namespace GiftRegistry.WebMVC.Controllers
 
         // GET: Create
         public ActionResult Create()
-        {            
-            return PartialView();
+        {
+            WishListCreate model = new WishListCreate();
+            return PartialView("_WishListCreatePartial", model);
         }
 
         // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(WishListCreate model)
-        {            
+        public JsonResult Create(WishListCreate model)
+        {
+            bool successful;
+            JsonResult jsonModel;
+
             if (!ModelState.IsValid)
             {
-                return View(model);
+                successful = false;
+                jsonModel = Json(new { successful }, JsonRequestBehavior.AllowGet);
+                return jsonModel;
             }
 
             var service = CreateWishListService();
@@ -42,13 +48,40 @@ namespace GiftRegistry.WebMVC.Controllers
             if (service.CreateWishList(model))
             {
                 TempData["SaveResult"] = "Your wish list was created.";
-                return RedirectToAction("Index");
+                successful = true;
+                jsonModel = Json(new { successful }, JsonRequestBehavior.AllowGet);
+                return jsonModel;
             }
 
             ModelState.AddModelError("", "Wish list could not be created.");
 
-            return View(model);
+            successful = false;
+            jsonModel = Json(new { successful }, JsonRequestBehavior.AllowGet);
+            return jsonModel;
         }
+
+        //// POST: Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(WishListCreate model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return PartialView("_WishListCreatePartial", model);
+        //    }
+
+        //    var service = CreateWishListService();
+
+        //    if (service.CreateWishList(model))
+        //    {
+        //        TempData["SaveResult"] = "Your wish list was created.";
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    ModelState.AddModelError("", "Wish list could not be created.");
+
+        //    return PartialView("_WishListCreatePartial", model);
+        //}
 
         // GET: Detail
         public ActionResult Details(int id)
