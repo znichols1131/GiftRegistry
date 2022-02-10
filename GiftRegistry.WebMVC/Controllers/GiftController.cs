@@ -24,21 +24,22 @@ namespace GiftRegistry.WebMVC.Controllers
             if (imageService != null)
             {
                 model.Image = imageService.CreateAndReturnRandomImage(false);
-                return View(model);
+                model.ImageID = model.Image.ImageID;
+                return PartialView("_GiftCreatePartial", model);
             }
 
             model.Image = new ImageModel();
-            return View(model);
+            return PartialView("_GiftCreatePartial", model);
         }
 
         // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(GiftCreate model)
+        public JsonResult Create(GiftCreate model)
         {            
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
             }
 
             // Get image
@@ -72,12 +73,12 @@ namespace GiftRegistry.WebMVC.Controllers
             {
                 TempData["SaveResult"] = "Your gift was created.";
 
-                return RedirectToAction("Details", "WishList", new { id = model.WishListID });
+                return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
             }
 
             ModelState.AddModelError("", "Gift could not be created.");
 
-            return View(model);
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Detail

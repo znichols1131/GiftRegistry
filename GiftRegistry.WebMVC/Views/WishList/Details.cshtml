@@ -12,7 +12,7 @@
 
         <div class="mt-4 gray-box row justify-content-between">
 
-            <div class="col-auto me-auto">
+            <div class="col-auto me-auto align-self-center">
                 <h4>@Model.Name</h4>
 
                 <div class="mt-3">
@@ -33,13 +33,18 @@
                 <div class="mt-3">
                     @if (ViewBag.UserGUID == Model.OwnerGUID)
                     {
-                        @Html.ActionLink("Add A Gift", "Create", "Gift", new { id = Model.WishListID }, new { @class = "btn btn-gold" })
+                        <button type="button" class="btn btn-gold" data-toggle="ajax-modal" data-target="#createGift"
+                                data-url="@Url.Action("Create", "Gift", new { id = Model.WishListID })">
+                            Add A Gift
+                        </button>
 
-                        <button type="button" class="btn btn-gray-dark" data-toggle="ajax-modal" data-target="#editWishList"
+                        @*@Html.ActionLink("Add A Gift", "Create", "Gift", new { id = Model.WishListID }, new { @class = "btn btn-gold" })*@
+
+                        <button type="button" class="btn btn-gray-dark mx-2" data-toggle="ajax-modal" data-target="#editWishList"
                                 data-url="@Url.Action("Edit", "WishList", new { id = Model.WishListID })">
                             Edit Info
                         </button>
-                        
+
                         @*@Html.ActionLink("Edit Info", "Edit", "WishList", new { id = Model.WishListID }, new { @class = "btn btn-gray-dark mx-2" })*@
                     }
                     else
@@ -113,6 +118,26 @@
             });
 
             $('#PlaceHolderHere').on('click', '[id="btnEditWishListSubmit"]', function (event) {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (data) {
+                    if (Boolean(data.successful)) {
+                        PlaceHolderElement.find('.modal').modal('hide');
+                        setTimeout(function () {// wait for 1 secs
+                            location.reload(); // then reload the page.
+                        }, 500);
+                    } else {
+                        // Show errors
+                        //    alert("Error");
+                    }
+                })
+                    .fail(function () {
+                        alert("There was an error processing your request. Please try again.");
+                    });
+            });
+
+            $('#PlaceHolderHere').on('click', '[id="btnCreateGiftSubmit"]', function (event) {
                 var form = $(this).parents('.modal').find('form');
                 var actionUrl = form.attr('action');
                 var sendData = form.serialize();

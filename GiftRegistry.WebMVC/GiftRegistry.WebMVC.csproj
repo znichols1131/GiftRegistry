@@ -335,6 +335,10 @@
     <Content Include="Views\WishList\_WishListCreatePartial.cshtml" />
     <Content Include="Views\WishList\_WishListDeletePartial.cshtml" />
     <Content Include="Views\WishList\_WishListEditPartial.cshtml" />
+    <Content Include="Views\Gift\_GiftCreatePartial.cshtml" />
+    <Content Include="Views\Gift\_GiftDeletePartial.cshtml" />
+    <Content Include="Views\Gift\_GiftDetailsPartial.cshtml" />
+    <Content Include="Views\Gift\_GiftEditPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

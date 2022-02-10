@@ -1,30 +1,28 @@
-﻿@model GiftRegistry.Models.WishListEdit
+﻿@model GiftRegistry.Models.GiftCreate
 
-<div class="modal fade" id="editWishList">
+<div class="modal fade" id="createGift">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title" id="editWishListLabel">Edit Wish List</h4>
+                <h4 class="modal-title" id="createGiftLabel">Create Gift</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            @using (Html.BeginForm("Edit", "WishList", FormMethod.Post, new { @id = "basic-form" }))
+            @using (Html.BeginForm("Create", "Gift", FormMethod.Post, new { @id = "basic-form" }))
             {
                 <div class="modal-body">
                     @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.WishListID)
 
                     <div class="form-horizontal">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        @Html.HiddenFor(model => model.WishListID)
-                        @Html.HiddenFor(model => model.OwnerID)
-                        @Html.HiddenFor(model => model.OwnerGUID)
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                             @*<label for="Name">Name <span>(required, at least 2 characters)</span></label>*@
                             <div class="col-md-12">
-                                <input id="Name" name="Name" minlength="2" maxlength="50" required type="text" class="form-control" value="@Model.Name">
+                                <input id="Name" name="Name" minlength="2" maxlength="50" required type="text" class="form-control">
                             </div>
                         </div>
 
@@ -32,22 +30,38 @@
                             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                             <label for="Description">Description</label>
                             <div class="col-md-12">
-                                <textarea id="Description" name="Description" rows="2" cols="50" maxlength="100" class="form-control" value="@Model.Description"/>
+                                <textarea id="Description" name="Description" rows="2" cols="50" maxlength="100" class="form-control" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.SourceURL, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-12">
-                                <input id="DueDate" name="DueDate" type="date" class="form-control" value="@Model.DueDate.Value.ToString("yyyy-MM-dd")">
+                                <input id="SourceURL" name="SourceURL" type="text" class="form-control">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.QtyDesired, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                <input id="QtyDesired" name="QtyDesired" type="number" min="0" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control product-image", id = "ImageIDField" })
+                            <p class="mb-0">
+                                @string.Format("Product Image")
+                            </p>
+                            @Html.Partial("_ImageUploadPartial", Model.Image)
+                        </div>
+
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnEditWishListSubmit">Save</button>
+                    <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnCreateGiftSubmit">Save</button>
                 </div>
             }
         </div>
@@ -67,6 +81,10 @@
                 },
                 Description: {
                     maxlength: 100
+                },
+                QtyDesired: {
+                    min: 0,
+                    number: true
                 }
             },
             messages: {
@@ -77,6 +95,10 @@
                 },
                 Description: {
                     maxlength: "Description should not be more than 100 characters long."
+                },
+                QtyDesired: {
+                    min: "Quantity should be 0 or more.",
+                    number: "Quantity must be a numerical value."
                 }
             }
         });
