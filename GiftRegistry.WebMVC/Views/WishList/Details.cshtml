@@ -4,6 +4,8 @@
     ViewBag.Title = "Details";
 }
 
+<div id="PlaceHolderHere"></div>
+
 <div class="row mt-4">
 
     <div class="col-md-6 align-self-end py-4">
@@ -32,7 +34,13 @@
                     @if (ViewBag.UserGUID == Model.OwnerGUID)
                     {
                         @Html.ActionLink("Add A Gift", "Create", "Gift", new { id = Model.WishListID }, new { @class = "btn btn-gold" })
-                        @Html.ActionLink("Edit Info", "Edit", "WishList", new { id = Model.WishListID }, new { @class = "btn btn-gray-dark mx-2" })
+
+                        <button type="button" class="btn btn-gray-dark" data-toggle="ajax-modal" data-target="#editWishList"
+                                data-url="@Url.Action("Edit", "WishList", new { id = Model.WishListID })">
+                            Edit Info
+                        </button>
+                        
+                        @*@Html.ActionLink("Edit Info", "Edit", "WishList", new { id = Model.WishListID }, new { @class = "btn btn-gray-dark mx-2" })*@
                     }
                     else
                     {
@@ -88,64 +96,46 @@
         </div>
     }
 
-
-    @*<table class="table">
-            <tr>
-                @{ var dummyGift = Model.Gifts.FirstOrDefault();}
-                <th>
-                    @Html.DisplayNameFor(model => dummyGift.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => dummyGift.QtyDesired)
-                </th>
-
-                @if (ViewBag.UserGUID != Model.OwnerGUID)
-                {
-                    <th>
-                        @Html.DisplayName("Qty. Purchased")
-                    </th>
-                }
-
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model.Gifts)
-            {
-                var qtyPurchased = Model.QtyPurchasedForGiftID(item.GiftID);
-                <tr>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.QtyDesired)
-                    </td>
-
-                    @if (ViewBag.UserGUID != Model.OwnerGUID)
-                    {
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => qtyPurchased)
-                        </td>
-                    }
-
-                    <td class="align-middle">
-                        @if (ViewBag.UserGUID == Model.OwnerGUID)
-                        {
-                            @Html.ActionLink("Delete", "Delete", "Gift", new { id = item.GiftID }, new { @class = "btn btn-red float-end btn-list-item" })
-                            @Html.ActionLink("Edit", "Edit", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
-                            @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
-
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = item.GiftID }, new { @class = "btn btn-gold float-end btn-list-item" })
-                            @Html.ActionLink("View", "Details", "Gift", new { id = item.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
-                        }
-                    </td>
-                </tr>
-            }
-
-        </table>*@
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(function () {
+            var PlaceHolderElement = $('#PlaceHolderHere');
+            $('button[data-toggle="ajax-modal"]').click(function (event) {
+                var url = $(this).data('url');
+                $.get(url).done(function (data) {
+                    PlaceHolderElement.html(data);
+                    PlaceHolderElement.find('.modal').modal('show');
+                });
+            });
+
+            $('#PlaceHolderHere').on('click', '[id="btnEditWishListSubmit"]', function (event) {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (data) {
+                    if (Boolean(data.successful)) {
+                        PlaceHolderElement.find('.modal').modal('hide');
+                        setTimeout(function () {// wait for 1 secs
+                            location.reload(); // then reload the page.
+                        }, 500);
+                    } else {
+                        // Show errors
+                        //    alert("Error");
+                    }
+                })
+                    .fail(function () {
+                        alert("There was an error processing your request. Please try again.");
+                    });
+            });
+
+        });
+
+    </script>
+}
 
 <style>
 
@@ -170,7 +160,6 @@
         max-height: 200px;
         aspect-ratio: 1.0;
         object-fit: cover;
-
         border-radius: 50%;
         padding: 0px;
         margin: 0px;

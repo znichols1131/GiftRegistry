@@ -60,29 +60,6 @@ namespace GiftRegistry.WebMVC.Controllers
             return jsonModel;
         }
 
-        //// POST: Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(WishListCreate model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return PartialView("_WishListCreatePartial", model);
-        //    }
-
-        //    var service = CreateWishListService();
-
-        //    if (service.CreateWishList(model))
-        //    {
-        //        TempData["SaveResult"] = "Your wish list was created.";
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    ModelState.AddModelError("", "Wish list could not be created.");
-
-        //    return PartialView("_WishListCreatePartial", model);
-        //}
-
         // GET: Detail
         public ActionResult Details(int id)
         {            
@@ -113,21 +90,23 @@ namespace GiftRegistry.WebMVC.Controllers
                 };
 
 
-
-            return View(model);
+            return PartialView("_WishListEditPartial", model);
         }
 
         // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, WishListEdit model)
-        {            
-            if (!ModelState.IsValid) return View(model);
+        public JsonResult Edit(int id, WishListEdit model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+            }
 
             if (model.WishListID != id)
             {
                 ModelState.AddModelError("", "Id Mismatch");
-                return View(model);
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
             }
 
             var service = CreateWishListService();
@@ -135,11 +114,11 @@ namespace GiftRegistry.WebMVC.Controllers
             if (service.UpdateWishList(model))
             {
                 TempData["SaveResult"] = "Your wish list was updated.";
-                return RedirectToAction("Details", new { id = model.WishListID });
+                return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
             }
 
             ModelState.AddModelError("", "Your wish list could not be updated.");
-            return View(model);
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Delete

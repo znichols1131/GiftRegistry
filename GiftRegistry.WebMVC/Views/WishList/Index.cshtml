@@ -65,7 +65,6 @@
                         data-url="@Url.Action("Delete", "WishList", new { id = item.WishListID })">
                     Delete
                 </button>
-                @*@Html.ActionLink("Delete", "Delete", new { id = item.WishListID }, new { @class = "btn btn-red float-end btn-list-item" })*@
                 @Html.ActionLink("View", "Details", new { id = item.WishListID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
             </td>
         </tr>
@@ -86,15 +85,6 @@
                     PlaceHolderElement.find('.modal').modal('show');
                 });
             });
-
-            //PlaceHolderElement.on('click', '[data-save="modal"]', function (event) {
-            //    var form = $(this).parents('.modal').find('form');
-            //    var actionUrl = form.attr('action');
-            //    var sendData = form.serialize();
-            //    $.post(actionUrl, sendData).done(function (data) {
-            //        PlaceHolderElement.find('.modal').modal('hide');
-            //    });
-            //});
 
             $('#PlaceHolderHere').on('click', '[id="btnCreateSubmit"]', function (event) {
                 var form = $(this).parents('.modal').find('form');
