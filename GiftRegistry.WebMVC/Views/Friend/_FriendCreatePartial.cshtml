@@ -1,0 +1,70 @@
+﻿@model GiftRegistry.Models.FriendCreate
+
+<div class="modal fade" id="createFriend">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="createFriendLabel">Add New Friend</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            @using (Html.BeginForm("Create", "Friend", FormMethod.Post, new { @id = "basic-form" }))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.OwnerGUID)
+                    @Html.HiddenFor(model => model.PersonID)
+
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <p>
+                            @string.Format("Name: " + Model.PersonName + "\n")
+                        </p>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Relationship, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-12">
+                                <input id="Relationship" name="Relationship" type="text" class="form-control" value="@Model.Relationship">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnCreateFriendSubmit">Send Friend Request</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#basic-form").validate({
+            errorClass: "error fail-alert",
+            rules: {
+                Relationship: {
+                    maxlength: 100
+                }
+            },
+            messages: {
+                Relationship: {
+                    maxlength: "Relationship should not be more than 100 characters long."
+                }
+            }
+        });
+    });
+
+</script>
+
+<style>
+    input,
+    textarea {
+        max-width: 100%;
+    }
+</style>

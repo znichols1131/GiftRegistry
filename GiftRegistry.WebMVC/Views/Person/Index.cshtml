@@ -4,6 +4,8 @@
     ViewBag.Title = "People You May Know";
 }
 
+<div id="PlaceHolderHere"></div>
+
 <div class="row mt-4">
 
     <div class="col-md-6 align-self-end py-4">
@@ -28,7 +30,7 @@
     <div class="col-md-auto pl-0 mr-1">
         @using (Html.BeginForm("Index", "Person", FormMethod.Get))
         {
-            @Html.TextBox("search", null, new { @id="searchField", @onblur = "return check(this);", @placeholder = "Search..." }) <input class="btn btn-gray-light search-button mr-1 ml-0" type="submit" value="" />
+            @Html.TextBox("search", null, new { @id = "searchField", @onblur = "return check(this);", @placeholder = "Search..." }) <input class="btn btn-gray-light search-button mr-1 ml-0" type="submit" value="" />
         }
     </div>
 
@@ -52,27 +54,65 @@
 
 </div>
 
-<script>
 
-    $(document).ready(function () {  
-        if (document.getElementById("searchField").value != "") {
-            document.getElementById("clearButton").disabled = false;
-        }
-        else {
-            document.getElementById("clearButton").disabled = true;
-        }
-    });
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
 
-    function check(obj) {
-        if (obj.value.trim() != "") {
-            document.getElementById("clearButton").disabled = false;
-        }
-        else {
-            document.getElementById("clearButton").disabled = true;
-        }
-    }
+        // Button pressed to open a modal (any modal)
+        $(function () {
+            var PlaceHolderElement = $('#PlaceHolderHere');
+            $('button[data-toggle="ajax-modal"]').click(function (event) {
+                var url = $(this).data('url');
+                $.get(url).done(function (data) {
+                    PlaceHolderElement.html(data);
+                    PlaceHolderElement.find('.modal').modal('show');
+                });
+            });
 
-</script>
+            // Send friend request button pressed on create friend info modal
+            $('#PlaceHolderHere').on('click', '[id="btnCreateFriendSubmit"]', function (event) {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (data) {
+                    if (Boolean(data.successful)) {
+                        PlaceHolderElement.find('.modal').modal('hide');
+                        setTimeout(function () {// wait for 1 secs
+                            location.reload(); // then reload the page.
+                        }, 500);
+                    } else {
+                        // Show errors
+                        //    alert("Error");
+                    }
+                })
+                    .fail(function () {
+                        alert("There was an error processing your request. Please try again.");
+                    });
+            });
+
+        });
+
+        $(document).ready(function () {
+            if (document.getElementById("searchField").value != "") {
+                document.getElementById("clearButton").disabled = false;
+            }
+            else {
+                document.getElementById("clearButton").disabled = true;
+            }
+        });
+
+        function check(obj) {
+            if (obj.value.trim() != "") {
+                document.getElementById("clearButton").disabled = false;
+            }
+            else {
+                document.getElementById("clearButton").disabled = true;
+            }
+        }
+
+    </script>
+}
 
 <style>
 
@@ -84,7 +124,7 @@
         margin-top: 0px;
         margin-bottom: 0px;
         font-size: 32px;
-    }    
+    }
 
     input[type=text] {
         float: left;
@@ -129,5 +169,4 @@
     .gold-text {
         color: #E0B840;
     }
-
 </style>

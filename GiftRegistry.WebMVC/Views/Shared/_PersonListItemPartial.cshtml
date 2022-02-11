@@ -22,7 +22,12 @@
         <div class="card-footer">
             <div class="d-flex justify-content-center">
 
-                @Html.ActionLink("Add Friend", "Create", "Friend", new { id = Model.PersonID, name = Model.FullName }, new { @class = "btn btn-gold btn-action" })
+                @*@Html.ActionLink("Add Friend", "Create", "Friend", new { id = Model.PersonID, name = Model.FullName }, new { @class = "btn btn-gold btn-action" })*@
+
+                <button type="button" class="btn btn-gold btn-action" data-toggle="ajax-modal" data-target="#createFriend"
+                        data-url="@Url.Action("Create", "Friend", new { id = Model.PersonID, name = Model.FullName })">
+                    Add Friend
+                </button>
 
             </div>
         </div>

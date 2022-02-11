@@ -29,18 +29,19 @@ namespace GiftRegistry.WebMVC.Controllers
 
             model.PersonID = id;
             model.PersonName = name;
+            model.IsPending = true;
 
-            return View(model);
+            return PartialView("_FriendCreatePartial", model);
         }
 
         // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(FriendCreate model)
+        public JsonResult Create(FriendCreate model)
         {            
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
             }
 
             var service = CreateFriendService();
@@ -49,12 +50,12 @@ namespace GiftRegistry.WebMVC.Controllers
             if (service.SendFriendRequest(model))
             {
                 TempData["SaveResult"] = "Your friend request was sent.";
-                return RedirectToAction("Index");
+                return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
             }
 
             ModelState.AddModelError("", "Friend request could not be created.");
 
-            return View(model);
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Detail
@@ -89,7 +90,7 @@ namespace GiftRegistry.WebMVC.Controllers
         // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, FriendEdit model)
+        public JsonResult Edit(int id, FriendEdit model)
         {            
             if (!ModelState.IsValid)
             {

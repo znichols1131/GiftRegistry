@@ -23,7 +23,6 @@
             </div>
 
             <div class="mt-3">
-                @*@Html.ActionLink("Edit Info", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-gray-dark" })*@
                 <button type="button" class="btn btn-gray-dark" data-toggle="ajax-modal" data-target="#editFriend"
                         data-url="@Url.Action("Edit", "Friend", new { id = Model.FriendID })">
                     Edit Info
