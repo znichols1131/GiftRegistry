@@ -21,18 +21,18 @@
             {
                 if (!String.IsNullOrWhiteSpace(Model.Relationship))
                 {
-                    <p class="card-text align-middle"><img src="~/Images/UserIcon.svg" class="icon"/> @Model.Relationship (Friend Request Pending)</p>
+                    <p class="card-text align-middle"><img src="~/Images/UserIcon.svg" class="icon" /> @Model.Relationship (Friend Request Pending)</p>
                 }
             }
             else
             {
                 if (!String.IsNullOrWhiteSpace(Model.Relationship))
                 {
-                    <p class="card-text align-middle"><img src="~/Images/UserIcon.svg" class="icon"/> @Model.Relationship</p>
+                    <p class="card-text align-middle"><img src="~/Images/UserIcon.svg" class="icon" /> @Model.Relationship</p>
                 }
                 if (Model.Person.Birthdate != null)
                 {
-                    <p class="card-text align-middle"><img src="~/Images/Birthday.svg"  class="icon"> @Model.Person.Birthdate.Value.ToString("MMM. dd")</p>
+                    <p class="card-text align-middle"><img src="~/Images/Birthday.svg" class="icon"> @Model.Person.Birthdate.Value.ToString("MMM. dd")</p>
                 }
             }
         </div>
@@ -43,14 +43,30 @@
                 @if (Model.IsPending)
                 {
                     @Html.ActionLink("View", "Details", "Friend", new { id = Model.FriendID }, new { @class = "btn btn-gray-light btn-action" })
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-gray-light btn-action" })
-                    @Html.ActionLink("Cancel Request", "Delete", new { id = Model.FriendID }, new { @class = "btn btn-red btn-action" })
+
+                    <button type="button" class="btn btn-gray-light btn-action" data-toggle="ajax-modal" data-target="#editFriend"
+                            data-url="@Url.Action("Edit", "Friend", new { id = Model.FriendID })">
+                        Edit
+                    </button>
+
+                    <button type="button" class="btn btn-red btn-action" data-toggle="ajax-modal" data-target="#deleteFriend"
+                            data-url="@Url.Action("Delete", "Friend", new { id = Model.FriendID })">
+                        Cancel Request
+                    </button>
                 }
                 else
                 {
                     @Html.ActionLink("View", "Details", "Friend", new { id = Model.FriendID }, new { @class = "btn btn-gray-light btn-action" })
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.FriendID }, new { @class = "btn btn-gray-light btn-action" })
-                    @Html.ActionLink("Unfriend", "Delete", new { id = Model.FriendID }, new { @class = "btn btn-red btn-action" })
+
+                    <button type="button" class="btn btn-gray-light btn-action" data-toggle="ajax-modal" data-target="#editFriend"
+                            data-url="@Url.Action("Edit", "Friend", new { id = Model.FriendID })">
+                        Edit
+                    </button>
+
+                    <button type="button" class="btn btn-red btn-action" data-toggle="ajax-modal" data-target="#deleteFriend"
+                            data-url="@Url.Action("Delete", "Friend", new { id = Model.FriendID })">
+                        Unfriend
+                    </button>
                 }
 
             </div>

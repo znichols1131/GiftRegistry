@@ -310,7 +310,6 @@
     <Content Include="Views\Person\Edit.cshtml" />
     <Content Include="Views\Friend\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
-    <Content Include="Views\Friend\Delete.cshtml" />
     <Content Include="Views\WishList\Index.cshtml" />
     <Content Include="Views\WishList\Details.cshtml" />
     <Content Include="Views\Friend\Details.cshtml" />
@@ -335,6 +334,7 @@
     <Content Include="Views\Notification\_NotificationDeletePartial.cshtml" />
     <Content Include="Views\Friend\_FriendEditPartial.cshtml" />
     <Content Include="Views\Friend\_FriendCreatePartial.cshtml" />
+    <Content Include="Views\Friend\_FriendDeletePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

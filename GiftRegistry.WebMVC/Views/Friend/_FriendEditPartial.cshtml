@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            @using (Html.BeginForm("Edit", "Friend", FormMethod.Post, new { @id = "basic-form" }))
+            @using (Html.BeginForm("Edit", "Friend", new { @id = Model.FriendID }, FormMethod.Post, new { @id = "basic-form" }))
             {
                 <div class="modal-body">
                     @Html.AntiForgeryToken()

@@ -1,0 +1,73 @@
+﻿@model GiftRegistry.Models.FriendDetail
+
+<div class="modal fade" id="deleteFriend">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteFriendLabel">Unfriend @Model.PersonName</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <h5 class="mb-2">Are you sure you want to unfriend them?</h5>
+                <div>
+                    <dl class="dl-horizontal">
+
+                        @if (Model.IsPending)
+                        {
+                            <dt>
+                                @Html.DisplayName("Status")
+                            </dt>
+
+                            <dd>
+                                Request Pending
+                            </dd>
+                        }
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Relationship)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Relationship)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Person.Birthdate)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Person.Birthdate)
+                        </dd>
+                    </dl>
+                </div>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
+                        <input type="button" value="Unfriend" data-save="modal" class="btn btn-red" id="btnDeleteFriendSubmit" />
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #giftImage {
+            object-fit: scale-down;
+            height: 250px;
+            width: 250px;
+            border: 1px solid rgba(143, 143, 143, .5);
+        }
+
+        .img-wrapper {
+            overflow: hidden;
+            width: 250px;
+            height: 250px;
+        }
+    </style>

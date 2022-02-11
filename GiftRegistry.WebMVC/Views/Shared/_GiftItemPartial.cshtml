@@ -7,7 +7,7 @@
         {
             var base64 = Convert.ToBase64String(Model.ProductImage);
             var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-            <div class="img-wrapper">
+            <div class="gift-img-wrapper">
                 <img src="@imgSrc" class="card-img-top mx-auto" alt="Gift Picture">
             </div>
         }
@@ -113,11 +113,9 @@
             object-fit: scale-down;
             height: 250px;
             width: 250px;
-            /*        margin: 10px 10px 10px 10px;
-    */
         }
 
-        .img-wrapper {
+        .gift-img-wrapper {
             overflow: hidden;
             width: 250px;
             height: 250px;

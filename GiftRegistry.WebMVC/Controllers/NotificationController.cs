@@ -58,9 +58,9 @@ namespace GiftRegistry.WebMVC.Controllers
 
 
         // POST: Accept Friend Request
-        [HttpGet]
+        [HttpPost]
         [ActionName("AcceptFriendRequest")]
-        public ActionResult AcceptFriendRequest(int id)
+        public JsonResult AcceptFriendRequest(int id)
         {
             // Get original friend request
             // Fulfill original friend request
@@ -72,19 +72,19 @@ namespace GiftRegistry.WebMVC.Controllers
             if(friendID < 0)
             {
                 TempData["SaveResult"] = "Friend request could not be accepted.";
-                return RedirectToAction("Index");
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
             }
 
             TempData["SaveResult"] = "You accepted the friend request.";
 
             // Send recipient to the Update page for new friend
-            return RedirectToAction("Edit", "Friend", new { id = friendID });
+            return Json(new { successful = true , friendID = friendID }, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Deny Friend Request
-        [HttpGet]
+        [HttpPost]
         [ActionName("DenyFriendRequest")]
-        public ActionResult DenyFriendRequest(int id)
+        public JsonResult DenyFriendRequest(int id)
         {
             // Get original friend request
             // Deny original friend request
@@ -93,7 +93,7 @@ namespace GiftRegistry.WebMVC.Controllers
             TempData["SaveResult"] = "You denied the friend request.";
 
             // Send recipient back to notifications
-            return RedirectToAction("Index");
+            return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
         }
 
 

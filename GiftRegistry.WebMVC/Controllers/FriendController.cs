@@ -122,22 +122,22 @@ namespace GiftRegistry.WebMVC.Controllers
 
             var model = service.GetFriendByID(id);
 
-            return View(model);
+            return PartialView("_FriendDeletePartial", model);
         }
 
         // POST: Delete
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int id)
+        public JsonResult DeletePost(int id)
         {            
             var service = CreateFriendService();
 
-            service.DeleteFriend(id);
+            bool successful = service.DeleteFriend(id);
 
             TempData["SaveResult"] = "Your friend was deleted.";
 
-            return RedirectToAction("Index");
+            return Json(new { successful }, JsonRequestBehavior.AllowGet);
         }
 
         private FriendService CreateFriendService()
