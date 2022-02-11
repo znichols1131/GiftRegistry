@@ -83,7 +83,7 @@ namespace GiftRegistry.WebMVC.Controllers
                     PersonName = detail.PersonName
                 };
 
-            return View(model);
+            return PartialView("_FriendEditPartial", model);
         }
 
         // POST: Edit
@@ -91,24 +91,27 @@ namespace GiftRegistry.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, FriendEdit model)
         {            
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+            {
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+            }
 
             if (model.FriendID != id)
             {
                 ModelState.AddModelError("", "Id Mismatch");
-                return View(model);
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
             }
 
             var service = CreateFriendService();
             if (service.UpdateFriend(model))
             {
                 TempData["SaveResult"] = "Your friend was updated.";
-                return RedirectToAction("Index");
+                return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
             }
 
             ModelState.AddModelError("", "Your friend could not be updated.");
-            return View(model);
-        }  
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: Delete
         [ActionName("Delete")]

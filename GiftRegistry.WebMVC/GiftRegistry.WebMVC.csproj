@@ -335,6 +335,7 @@
     <Content Include="Views\Transaction\_TransactionEditPartial.cshtml" />
     <Content Include="Views\Notification\_NotificationDetailsPartial.cshtml" />
     <Content Include="Views\Notification\_NotificationDeletePartial.cshtml" />
+    <Content Include="Views\Friend\_FriendEditPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
