@@ -72,7 +72,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
             ViewBag.UserGUID = Guid.Parse(User.Identity.GetUserId());
 
-            return View(model);
+            return PartialView("_TransactionDetailsPartial", model);
         }
 
         // GET: Edit
@@ -96,20 +96,23 @@ namespace GiftRegistry.WebMVC.Controllers
                     Giver = detail.Giver
                 };
 
-            return View(model);
+            return PartialView("_TransactionEditPartial", model);
         }
 
         // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, TransactionEdit model)
-        {            
-            if (!ModelState.IsValid) return View(model);
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+            }
 
             if (model.TransactionID != id)
             {
                 ModelState.AddModelError("", "Id Mismatch");
-                return View(model);
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
             }
 
             var service = CreateTransactionService();
@@ -117,11 +120,11 @@ namespace GiftRegistry.WebMVC.Controllers
             if (service.UpdateTransaction(model))
             {
                 TempData["SaveResult"] = "Your transaction was updated.";
-                return RedirectToAction("Index"); 
+                return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
             }
 
             ModelState.AddModelError("", "Your transaction could not be updated.");
-            return View(model);
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Delete
@@ -132,7 +135,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
             var model = service.GetTransactionByID(id);
 
-            return View(model);
+            return PartialView("_TransactionDeletePartial", model);
         }
 
         // POST: Delete
@@ -149,7 +152,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
             TempData["SaveResult"] = "Your transaction was deleted.";
 
-            return RedirectToAction("Index");
+            return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
         }
 
         private TransactionService CreateTransactionService()

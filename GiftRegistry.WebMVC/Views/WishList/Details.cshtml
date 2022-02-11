@@ -38,14 +38,10 @@
                             Add A Gift
                         </button>
 
-                        @*@Html.ActionLink("Add A Gift", "Create", "Gift", new { id = Model.WishListID }, new { @class = "btn btn-gold" })*@
-
                         <button type="button" class="btn btn-gray-dark mx-2" data-toggle="ajax-modal" data-target="#editWishList"
                                 data-url="@Url.Action("Edit", "WishList", new { id = Model.WishListID })">
                             Edit Info
                         </button>
-
-                        @*@Html.ActionLink("Edit Info", "Edit", "WishList", new { id = Model.WishListID }, new { @class = "btn btn-gray-dark mx-2" })*@
                     }
                     else
                     {

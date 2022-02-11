@@ -4,6 +4,8 @@
     ViewBag.Title = "Transactions";
 }
 
+<div id="PlaceHolderHere"></div>
+
 <div class="row mt-4">
 
     <div class="col-md-6 align-self-end py-4">
@@ -65,15 +67,99 @@
                 @Html.DisplayFor(modelItem => item.DateModified)
             </td>
             <td class="align-middle">
-                @Html.ActionLink("Delete", "Delete", new { id = item.TransactionID }, new { @class = "btn btn-red float-end btn-list-item" })
-                @Html.ActionLink("Details", "Details", new { id = item.TransactionID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
-                @Html.ActionLink("Edit", "Edit", new { id = item.TransactionID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
+                <button type="button" class="btn btn-red float-end btn-list-item" data-toggle="ajax-modal" data-target="#deleteTransaction"
+                        data-url="@Url.Action("Delete", "Transaction", new { id = item.TransactionID })">
+                    Delete
+                </button>
+                <button type="button" class="btn btn-gray-light float-end btn-list-item" data-toggle="ajax-modal" data-target="#detailsTransaction"
+                        data-url="@Url.Action("Details", "Transaction", new { id = item.TransactionID })">
+                    Details
+                </button>
+                <button type="button" class="btn btn-gray-light float-end btn-list-item" data-toggle="ajax-modal" data-target="#editTransaction"
+                        data-url="@Url.Action("Edit", "Transaction", new { id = item.TransactionID })">
+                    Edit
+                </button>
             </td>
 
         </tr>
     }
 
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        // Button pressed to open a modal (any modal)
+        $(function () {
+            var PlaceHolderElement = $('#PlaceHolderHere');
+            $('button[data-toggle="ajax-modal"]').click(function (event) {
+                var url = $(this).data('url');
+                $.get(url).done(function (data) {
+                    PlaceHolderElement.html(data);
+                    PlaceHolderElement.find('.modal').modal('show');
+                });
+            });
+
+            // Save button pressed on edit transaction modal
+            $('#PlaceHolderHere').on('click', '[id="btnEditTransactionSubmit"]', function (event) {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (data) {
+                    if (Boolean(data.successful)) {
+                        PlaceHolderElement.find('.modal').modal('hide');
+                        setTimeout(function () {// wait for 1 secs
+                            location.reload(); // then reload the page.
+                        }, 500);
+                    } else {
+                        // Show errors
+                        //    alert("Error");
+                    }
+                })
+                    .fail(function () {
+                        alert("There was an error processing your request. Please try again.");
+                    });
+            }); 
+
+            // Delete button pressed on delete transaction modal
+            $('#PlaceHolderHere').on('click', '[id="btnDeleteTransactionSubmit"]', function (event) {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (data) {
+                    if (Boolean(data.successful)) {
+                        PlaceHolderElement.find('.modal').modal('hide');
+                        setTimeout(function () {// wait for 1 secs
+                            location.reload(); // then reload the page.
+                        }, 500);
+                    } else {
+                        // Show errors
+                        //    alert("Error");
+                    }
+                })
+                    .fail(function () {
+                        alert("There was an error processing your request. Please try again.");
+                    });
+            });
+
+            // Edit button pressed on details gift modal, need to go to edit modal
+            $('#PlaceHolderHere').on('click', '[id="btnDetailsGoToEditTransaction"]', function (event) {
+
+                var url = $(this).data('url');
+                PlaceHolderElement.find('.modal').modal('hide');
+
+                $.get(url).done(function (data) {
+                    PlaceHolderElement.html(data);
+                    PlaceHolderElement.find('.modal').modal('show');
+                });
+
+            });
+
+        });
+
+    </script>
+}
 
 <style>
 
