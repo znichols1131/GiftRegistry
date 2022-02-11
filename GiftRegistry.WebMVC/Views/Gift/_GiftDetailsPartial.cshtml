@@ -1,2 +1,95 @@
 ﻿@model GiftRegistry.Models.GiftDetail
 
+<div class="modal fade" id="detailsGift">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="detailsGiftLabel">@Model.Name</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <dl class="dl-horizontal">
+
+                        <div class="img-wrapper mt-3 mb-2">
+                            @if (Model.Image != null && Model.Image.ImageData != null)
+                            {
+                                var base64 = Convert.ToBase64String(Model.Image.ImageData);
+                                var imageSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                <img id="giftImage" src="@imageSrc" alt="Gift image" />
+                            }
+                        </div>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SourceURL)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.SourceURL)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.QtyDesired)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.QtyDesired)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.WishList.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.WishList.Name)
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="modal-footer">
+                    @if (ViewBag.UserGUID != Model.WishList.OwnerGUID)
+                    {
+                        <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnDetailsGoToPurchaseGift"
+                                data-url="@Url.Action("Create", "Transaction", new { giftID = Model.GiftID })">Purchase</button>
+                        @*<p>
+                @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = Model.GiftID }, null) |
+                @Html.ActionLink("Back to Gift List", "Details", "WishList", new { id = Model.WishListID }, null)
+            </p>*@
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnDetailsGoToEditGift"
+                                data-url="@Url.Action("Edit", "Gift", new { id = Model.GiftID })">Edit</button>
+                    }
+                </div>           
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #giftImage {
+            object-fit: scale-down;
+            height: 250px;
+            width: 250px;
+            border: 1px solid rgba(143, 143, 143, .5);
+        }
+
+        .img-wrapper {
+            overflow: hidden;
+            width: 250px;
+            height: 250px;
+        }
+    </style>

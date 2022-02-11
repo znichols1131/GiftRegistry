@@ -12,83 +12,96 @@
             </div>
         }
 
-    <div class="card-body pt-0">
-        <h5 class="card-title">@Model.Name</h5>
+        <div class="card-body pt-0">
+            <h5 class="card-title">@Model.Name</h5>
 
-        @if (!String.IsNullOrWhiteSpace(Model.SourceURL))
-        {
-            <p class="card-text">@Html.DisplayNameFor(m => m.Description): @Model.Description</p>
-        }
-
-        @if (!String.IsNullOrWhiteSpace(Model.SourceURL))
-        {
-            <p class="card-text mt-1"><a href="@Model.SourceURL" class="custom-link" target="_blank">Click here to go to product.</a></p>
-        }
-
-        @if (!((bool)ViewData["isGiftOwner"]))
-        {
-            var qtyPurchased = (int)ViewData["qtyPurchased"];
-
-            if (Model.QtyDesired > 0)
+            @if (!String.IsNullOrWhiteSpace(Model.SourceURL))
             {
-                var progressFraction = 100 * ((double)qtyPurchased) / ((double)Model.QtyDesired);
+                <p class="card-text">@Html.DisplayNameFor(m => m.Description): @Model.Description</p>
+            }
 
-                <div class="text-center">
-                    <p class="card-text mt-3">@qtyPurchased of @Model.QtyDesired purchased</p>
-                </div>
-                <div class="progress">
+            @if (!String.IsNullOrWhiteSpace(Model.SourceURL))
+            {
+                <p class="card-text mt-1"><a href="@Model.SourceURL" class="custom-link" target="_blank">Click here to go to product.</a></p>
+            }
 
-                    <div class="@((progressFraction>=100) ? "progress-bar-complete" : "progress-bar") progress-bar-striped" role="progressbar" style="width: @progressFraction%" aria-valuenow=@qtyPurchased aria-valuemin="0" aria-valuemax=@Model.QtyDesired></div>
-                </div>
+            @if (!((bool)ViewData["isGiftOwner"]))
+            {
+                var qtyPurchased = (int)ViewData["qtyPurchased"];
+
+                if (Model.QtyDesired > 0)
+                {
+                    var progressFraction = 100 * ((double)qtyPurchased) / ((double)Model.QtyDesired);
+
+                    <div class="text-center">
+                        <p class="card-text mt-3">@qtyPurchased of @Model.QtyDesired purchased</p>
+                    </div>
+                    <div class="progress">
+
+                        <div class="@((progressFraction>=100) ? "progress-bar-complete" : "progress-bar") progress-bar-striped" role="progressbar" style="width: @progressFraction%" aria-valuenow=@qtyPurchased aria-valuemin="0" aria-valuemax=@Model.QtyDesired></div>
+                    </div>
+                }
+                else
+                {
+                    var progressFraction = (qtyPurchased > 0) ? 50 : 0;
+
+                    <div class="text-center">
+                        <p class="card-text mt-3">@qtyPurchased of unlimited purchased</p>
+                    </div>
+                    <div class="progress">
+
+                        <div class="@((progressFraction>=100) ? "progress-bar-complete" : "progress-bar") progress-bar-striped" role="progressbar" style="width: @progressFraction%" aria-valuenow=@qtyPurchased aria-valuemin="0" aria-valuemax=@Model.QtyDesired></div>
+                    </div>
+                }
             }
             else
             {
-                var progressFraction = (qtyPurchased > 0) ? 50 : 0;
-
-                <div class="text-center">
-                    <p class="card-text mt-3">@qtyPurchased of unlimited purchased</p>
-                </div>
-                <div class="progress">
-
-                    <div class="@((progressFraction>=100) ? "progress-bar-complete" : "progress-bar") progress-bar-striped" role="progressbar" style="width: @progressFraction%" aria-valuenow=@qtyPurchased aria-valuemin="0" aria-valuemax=@Model.QtyDesired></div>
-                </div>
+                if (Model.QtyDesired > 0)
+                {
+                    <p class="card-text mt-1">@Html.DisplayNameFor(m => m.QtyDesired): @Model.QtyDesired</p>
+                }
+                else
+                {
+                    <p class="card-text mt-1">@Html.DisplayNameFor(m => m.QtyDesired): Unlimited</p>
+                }
             }
-        }
-        else
-        {
-            if (Model.QtyDesired > 0)
-            {
-                <p class="card-text mt-1">@Html.DisplayNameFor(m => m.QtyDesired): @Model.QtyDesired</p>
-            }
-            else
-            {
-                <p class="card-text mt-1">@Html.DisplayNameFor(m => m.QtyDesired): Unlimited</p>
-            }
-        }
 
-    </div>
+        </div>
 
         <div class="card-footer">
             <div class="d-flex justify-content-center">
 
                 @if ((bool)ViewData["isGiftOwner"])
                 {
-                    @Html.ActionLink("View", "Details", "Gift", new { id = Model.GiftID }, new { @class = "btn btn-gray-light btn-list-item" })
+                    <button type="button" class="btn btn-gray-light btn-list-item" data-toggle="ajax-modal" data-target="#detailsGift"
+                            data-url="@Url.Action("Details", "Gift", new { id = Model.GiftID })">
+                        View
+                    </button>
 
                     <button type="button" class="btn btn-gray-light btn-list-item" data-toggle="ajax-modal" data-target="#editGift"
                             data-url="@Url.Action("Edit", "Gift", new { id = Model.GiftID })">
                         Edit Info
                     </button>
 
-                    @*@Html.ActionLink("Edit", "Edit", "Gift", new { id = Model.GiftID }, new { @class = "btn btn-gray-light btn-list-item" })*@
-
-                    @Html.ActionLink("Delete", "Delete", "Gift", new { id = Model.GiftID }, new { @class = "btn btn-red btn-list-item" })
+                    <button type="button" class="btn btn-red btn-list-item" data-toggle="ajax-modal" data-target="#deleteGift"
+                            data-url="@Url.Action("Delete", "Gift", new { id = Model.GiftID })">
+                        Delete
+                    </button>
 
                 }
                 else
                 {
-                    @Html.ActionLink("View", "Details", "Gift", new { id = Model.GiftID }, new { @class = "btn btn-gray-light float-end btn-list-item" })
-                    @Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = Model.GiftID }, new { @class = "btn btn-gold float-end btn-list-item" })
+                    <button type="button" class="btn btn-gray-light btn-list-item" data-toggle="ajax-modal" data-target="#detailsGift"
+                            data-url="@Url.Action("Details", "Gift", new { id = Model.GiftID })">
+                        View
+                    </button>
+                    
+                    <button type="button" class="btn btn-gold float-end btn-list-item" data-toggle="ajax-modal" data-target="#createTransaction"
+                            data-url="@Url.Action("Create", "Transaction", new { giftID = Model.GiftID })">
+                        Purchase
+                    </button>
+
+                    @*@Html.ActionLink("Purchase", "Create", "Transaction", new { giftID = Model.GiftID }, new { @class = "btn btn-gold float-end btn-list-item" })*@
                 }
 
             </div>
@@ -98,40 +111,39 @@
 
 <style>
 
-    .card-img-top {
-        object-fit: scale-down;
-        height: 250px;
-        width: 250px;
-/*        margin: 10px 10px 10px 10px;
-*/
-    }
+        .card-img-top {
+            object-fit: scale-down;
+            height: 250px;
+            width: 250px;
+            /*        margin: 10px 10px 10px 10px;
+    */
+        }
 
-    .img-wrapper {
-        overflow: hidden;
-        width: 250px;
-        height: 250px;
-        border-bottom: 1px solid rgba(143, 143, 143, .5);
-    }
+        .img-wrapper {
+            overflow: hidden;
+            width: 250px;
+            height: 250px;
+            border-bottom: 1px solid rgba(143, 143, 143, .5);
+        }
 
-    .card-title {
-    }
+        .card-title {
+        }
 
-    .card-text {
-        margin-bottom: 0px;
-    }
+        .card-text {
+            margin-bottom: 0px;
+        }
 
-    .progress-bar {
-        background-color: #e0b940;
-    }
+        .progress-bar {
+            background-color: #e0b940;
+        }
 
-    .progress-bar-complete {
-        background-color: #629460;
-    }
+        .progress-bar-complete {
+            background-color: #629460;
+        }
 
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 2px 6px 6px rgba(143, 143, 143, 0.75);
-    }
-
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 2px 6px 6px rgba(143, 143, 143, 0.75);
+        }
 </style>

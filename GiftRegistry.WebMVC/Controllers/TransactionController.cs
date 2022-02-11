@@ -36,17 +36,17 @@ namespace GiftRegistry.WebMVC.Controllers
             model.GiftID = giftID;
             model.GiverID = transactionService.GetCurrentUserID();
 
-            return View(model);
+            return PartialView("_TransactionCreatePartial", model);
         }
 
         // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TransactionCreate model)
+        public JsonResult Create(TransactionCreate model)
         {            
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
             }
 
             var service = CreateTransactionService();
@@ -55,12 +55,12 @@ namespace GiftRegistry.WebMVC.Controllers
             {
                 TempData["SaveResult"] = "Your transaction was created.";
 
-                return RedirectToAction("Details", "WishList", new { id = model.WishListID });
+                return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
             }
 
             ModelState.AddModelError("", "Transaction could not be created.");
 
-            return View(model);
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Detail

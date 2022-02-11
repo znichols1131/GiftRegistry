@@ -90,7 +90,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
             ViewBag.UserGUID = Guid.Parse(User.Identity.GetUserId());
 
-            return View(model);
+            return PartialView("_GiftDetailsPartial", model);
         }
 
         // GET: Edit
@@ -181,7 +181,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
             var model = service.GetGiftByID(id);
 
-            return View(model);
+            return PartialView("_GiftDeletePartial", model);
         }
 
         // POST: Delete
@@ -194,11 +194,11 @@ namespace GiftRegistry.WebMVC.Controllers
 
             var model = service.GetGiftByID(id);
 
-            service.DeleteGift(id);
+            bool successful = service.DeleteGift(id);
 
             TempData["SaveResult"] = "Your gift was deleted.";
 
-            return RedirectToAction("Details", "WishList", new { id = model.WishListID });
+            return Json(new { successful }, JsonRequestBehavior.AllowGet);
         }
 
         private byte[] ConvertToBytes(HttpPostedFileBase image)

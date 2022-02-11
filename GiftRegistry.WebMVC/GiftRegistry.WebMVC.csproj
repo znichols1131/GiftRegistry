@@ -339,6 +339,7 @@
     <Content Include="Views\Gift\_GiftDeletePartial.cshtml" />
     <Content Include="Views\Gift\_GiftDetailsPartial.cshtml" />
     <Content Include="Views\Gift\_GiftEditPartial.cshtml" />
+    <Content Include="Views\Transaction\_TransactionCreatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
