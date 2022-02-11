@@ -49,11 +49,11 @@ namespace GiftRegistry.WebMVC.Controllers
         {
             var service = CreateNotificationService();
 
-            service.DeleteNotification(id);
+            bool successful = service.DeleteNotification(id);
 
             TempData["SaveResult"] = "Your notification was deleted.";
 
-            return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
+            return Json(new { successful }, JsonRequestBehavior.AllowGet);
         }
 
 

@@ -134,15 +134,21 @@ namespace GiftRegistry.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity =
+                if(ctx.Notifications.Include("Recipient").Any(e => e.NotificationID == id && (e.Recipient.PersonGUID == _userId)))
+                {
+                    var entity =
                     ctx
                         .Notifications
+                        .Include("Recipient")
                         .Single(e => e.NotificationID == id && (e.Recipient.PersonGUID == _userId));
 
-                ctx.Notifications.Remove(entity);
+                    ctx.Notifications.Remove(entity);
 
-                return ctx.SaveChanges() == 1;
+                    return ctx.SaveChanges() > 0;
+                }
             }
+
+            return false;
         }
 
         public bool DeleteNotificationForPendingFriend(FriendDetail friendship)

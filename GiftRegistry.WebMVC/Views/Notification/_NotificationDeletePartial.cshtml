@@ -52,7 +52,7 @@
                     </dl>
                 </div>
 
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("Delete", "Notification", new { @id = Model.NotificationID }, FormMethod.Post, new { @id = "basic-form" }))
                 {
                     @Html.AntiForgeryToken()
 

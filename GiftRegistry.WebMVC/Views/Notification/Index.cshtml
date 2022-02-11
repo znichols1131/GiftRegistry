@@ -72,7 +72,6 @@
                         View
                     </button>
 
-                    @*@Html.ActionLink("Accept", "AcceptFriendRequest", new { id = item.NotificationID }, new { @id = "acceptFriendRequestButton", @class = "btn btn-gold float-end btn-list-item" })*@
                     <button type="button" class="btn btn-gold float-end btn-list-item"
                             id="acceptFriendRequestButton"
                             data-url="@Url.Action("AcceptFriendRequest", "Notification", new { id = item.NotificationID })">
