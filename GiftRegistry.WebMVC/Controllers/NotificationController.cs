@@ -27,7 +27,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
             var model = service.GetNotificationByID(id);
 
-            return View(model);
+            return PartialView("_NotificationDetailsPartial", model);
         }
 
         // GET: Delete
@@ -38,14 +38,14 @@ namespace GiftRegistry.WebMVC.Controllers
 
             var model = service.GetNotificationByID(id);
 
-            return View(model);
+            return PartialView("_NotificationDeletePartial", model);
         }
 
         // POST: Delete
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int id)
+        public JsonResult DeletePost(int id)
         {
             var service = CreateNotificationService();
 
@@ -53,7 +53,7 @@ namespace GiftRegistry.WebMVC.Controllers
 
             TempData["SaveResult"] = "Your notification was deleted.";
 
-            return RedirectToAction("Index");
+            return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
         }
 
 

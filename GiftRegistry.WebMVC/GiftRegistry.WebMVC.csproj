@@ -319,8 +319,6 @@
     <Content Include="Views\Transaction\Index.cshtml" />
     <Content Include="Views\Shared\_ImageUploadPartial.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
-    <Content Include="Views\Notification\Details.cshtml" />
-    <Content Include="Views\Notification\Delete.cshtml" />
     <Content Include="Views\Shared\_FriendListItemPartial.cshtml" />
     <Content Include="Views\Shared\_PersonListItemPartial.cshtml" />
     <Content Include="Views\Shared\_GiftItemPartial.cshtml" />
@@ -335,6 +333,8 @@
     <Content Include="Views\Transaction\_TransactionDeletePartial.cshtml" />
     <Content Include="Views\Transaction\_TransactionDetailsPartial.cshtml" />
     <Content Include="Views\Transaction\_TransactionEditPartial.cshtml" />
+    <Content Include="Views\Notification\_NotificationDetailsPartial.cshtml" />
+    <Content Include="Views\Notification\_NotificationDeletePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
