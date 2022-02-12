@@ -144,7 +144,8 @@ namespace GiftRegistry.Services
                 entity.Description = model.Description;
                 entity.DueDate = model.DueDate;
 
-                return ctx.SaveChanges() == 1;
+                int changes = ctx.SaveChanges();
+                return changes > 0;
             }
         }
 

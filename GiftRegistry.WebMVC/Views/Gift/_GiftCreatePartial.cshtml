@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            @using (Html.BeginForm("Create", "Gift", FormMethod.Post, new { @id = "basic-form" }))
+            @using (Html.BeginForm("Create", "Gift", null, FormMethod.Post, new { @id = "basic-form" }))
             {
                 <div class="modal-body">
                     @Html.AntiForgeryToken()
@@ -20,7 +20,6 @@
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @*<label for="Name">Name <span>(required, at least 2 characters)</span></label>*@
                             <div class="col-md-12">
                                 <input id="Name" name="Name" minlength="2" maxlength="50" required type="text" class="form-control">
                             </div>
@@ -28,9 +27,8 @@
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <label for="Description">Description</label>
                             <div class="col-md-12">
-                                <textarea id="Description" name="Description" rows="2" cols="50" maxlength="100" class="form-control" value="@Model.Description"/>
+                                <textarea id="Description" name="Description" rows="2" cols="50" maxlength="100" class="form-control"></textarea>
                             </div>
                         </div>
 
@@ -44,16 +42,16 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.QtyDesired, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-12">
-                                <input id="QtyDesired" name="QtyDesired" type="number" min="0" class="form-control">
+                                <input id="QtyDesired" name="QtyDesired" type="number" required min="0" class="form-control" value="0">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control product-image", id = "ImageIDField" })
+                            @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control product-image ignore-validation", id = "ImageIDField" })
                             <p class="mb-0">
                                 @string.Format("Product Image")
                             </p>
-                            @Html.Partial("_ImageUploadPartial", Model.Image)
+                            @*@Html.Partial("_ImageUploadPartial", Model.Image)*@
                         </div>
 
                     </div>
@@ -71,7 +69,13 @@
 <script>
 
     $(document).ready(function () {
+
+        $("#btnCreateGiftSubmit").on('click', function () {
+            $("#basic-form").valid();  // <- TEST VALIDATION
+        });
+
         $("#basic-form").validate({
+            ignore: ".ignore-validation, :hidden",
             errorClass: "error fail-alert",
             rules: {
                 Name: {
@@ -83,13 +87,13 @@
                     maxlength: 100
                 },
                 QtyDesired: {
-                    min: 0,
-                    number: true
+                    number: true,
+                    min: 0
                 }
             },
             messages: {
                 Name: {
-                    required: "Please enter a name for this wish list.",
+                    required: "Please enter a name for this gift.",
                     minlength: "Name should be at least 2 characters long.",
                     maxlength: "Name should not be more than 50 characters long."
                 },
@@ -97,8 +101,8 @@
                     maxlength: "Description should not be more than 100 characters long."
                 },
                 QtyDesired: {
-                    min: "Quantity should be 0 or more.",
-                    number: "Quantity must be a numerical value."
+                    number: "Quantity must be a numerical value.",
+                    min: "Quantity should be 0 or more."
                 }
             }
         });

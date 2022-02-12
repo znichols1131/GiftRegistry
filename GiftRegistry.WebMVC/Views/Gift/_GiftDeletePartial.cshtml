@@ -65,7 +65,7 @@
                     </dl>
                 </div>
 
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("Delete", "Gift", new { @id = Model.GiftID }, FormMethod.Post, new { @id = "basic-form" }))
                 {
                     @Html.AntiForgeryToken()
 

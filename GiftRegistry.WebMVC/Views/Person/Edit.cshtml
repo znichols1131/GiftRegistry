@@ -5,7 +5,7 @@
 }
 
 
-@using (Html.BeginForm("Edit", "Person", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.PersonID)

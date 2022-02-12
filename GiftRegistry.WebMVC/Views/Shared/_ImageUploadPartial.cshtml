@@ -15,12 +15,15 @@
 
         <div class="text-center">
 
-            <input type="file" id="imageFile" name="imageFile" style="display: none;" />
-            <input type="button" class="btn btn-gray-light" value="Upload" onclick="document.getElementById('imageFile').click();" />
+            <form id="imageForm" action="" enctype="multipart/form-data" data-ajax="false">
+                <input type="file" id="imageFile" name="imageFile" style="display: none;" />
+                <input type="button" class="btn btn-gray-light" value="Upload" onclick="document.getElementById('imageFile').click();" />
 
-            <div class="btn btn-gray-light">
-                <span id="random-image-btn">Randomize</span>
-            </div>
+                <div class="btn btn-gray-light">
+                    <span id="random-image-btn">Randomize</span>
+                </div>
+            </form>
+            
         </div>
     </div>
 </div>
@@ -38,14 +41,11 @@
 
             if (this.files && this.files[0]) {
                 var reader = new FileReader();
-                var url;
                 reader.onload = function (e) {
                     $('#uploadedPicture').attr('src', e.target.result);
                     $("#ImageIDField").val("-1");
-
                 }
                 reader.readAsDataURL(this.files[0]);
-                // Pass url back to controller here
             }
 
         });

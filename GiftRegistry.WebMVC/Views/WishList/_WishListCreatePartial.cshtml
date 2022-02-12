@@ -53,6 +53,11 @@
 <script>
 
     $(document).ready(function () {
+
+        $("#btnCreateSubmit").on('click', function () {
+            $("#basic-form").valid();  // <- TEST VALIDATION
+        });
+
         $("#basic-form").validate({
             errorClass: "error fail-alert",
             rules: {

@@ -57,7 +57,7 @@
                     </dl>
                 </div>
 
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("Delete", "Transaction", new { @id = Model.TransactionID }, FormMethod.Post, new { @id = "basic-form" }))
                 {
                     @Html.AntiForgeryToken()
 

@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            @using (Html.BeginForm("Edit", "Transaction", FormMethod.Post, new { @id = "basic-form" }))
+            @using (Html.BeginForm("Edit", "Transaction", new { @id = Model.TransactionID }, FormMethod.Post, new { @id = "basic-form" }))
             {
                 <div class="modal-body">
                     @Html.AntiForgeryToken()
@@ -51,6 +51,11 @@
 <script>
 
     $(document).ready(function () {
+
+        $("#btnEditTransactionSubmit").on('click', function () {
+            $("#basic-form").valid();  // <- TEST VALIDATION
+        });
+
         $("#basic-form").validate({
             errorClass: "error fail-alert",
             rules: {

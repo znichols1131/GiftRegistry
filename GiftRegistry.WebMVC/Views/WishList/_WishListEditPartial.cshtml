@@ -8,8 +8,7 @@
                 <h4 class="modal-title" id="editWishListLabel">Edit Wish List</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
-            @using (Html.BeginForm("Edit", "WishList", FormMethod.Post, new { @id = "basic-form" }))
+            @using (Html.BeginForm("Edit", "WishList", new { @id = Model.WishListID }, FormMethod.Post, new { @id = "basic-form" }))
             {
                 <div class="modal-body">
                     @Html.AntiForgeryToken()
@@ -55,8 +54,14 @@
 
 <script>
 
-    $(document).ready(function () {
+    $(document).ready(function ValidateForm() {
+
+        $("#btnEditWishListSubmit").on('click', function () {
+            $("#basic-form").valid();  // <- TEST VALIDATION
+        });
+
         $("#basic-form").validate({
+            debug: true,
             errorClass: "error fail-alert",
             rules: {
                 Name: {
@@ -71,6 +76,7 @@
             messages: {
                 Name: {
                     required: "Please enter a name for this wish list.",
+                    validateNullOrWhiteSpace: "Please enter a name for this wish list.",
                     minlength: "Name should be at least 2 characters long.",
                     maxlength: "Name should not be more than 50 characters long."
                 },

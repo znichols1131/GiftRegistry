@@ -47,6 +47,11 @@
 <script>
 
     $(document).ready(function () {
+
+        $("#btnEditFriendSubmit").on('click', function () {
+            $("#basic-form").valid();  // <- TEST VALIDATION
+        });
+
         $("#basic-form").validate({
             errorClass: "error fail-alert",
             rules: {

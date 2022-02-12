@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            @using (Html.BeginForm("Edit", "Gift", FormMethod.Post, new { @id = "basic-form" }))
+            @using (Html.BeginForm("Edit", "Gift", new { @id = Model.GiftID }, FormMethod.Post, new { @id = "basic-form" }))
             {
                 <div class="modal-body">
                     @Html.AntiForgeryToken()
@@ -21,7 +21,6 @@
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @*<label for="Name">Name <span>(required, at least 2 characters)</span></label>*@
                             <div class="col-md-12">
                                 <input id="Name" name="Name" minlength="2" maxlength="50" required type="text" class="form-control" value="@Model.Name">
                             </div>
@@ -53,7 +52,7 @@
                             <p class="mb-0">
                                 @string.Format("Product Image")
                             </p>
-                            @Html.Partial("_ImageUploadPartial", Model.Image)
+                            @*@Html.Partial("_ImageUploadPartial", Model.Image)*@
                         </div>
 
                     </div>
@@ -71,6 +70,11 @@
 <script>
 
     $(document).ready(function () {
+
+        $("#btnEditGiftSubmit").on('click', function () {
+            $("#basic-form").valid();  // <- TEST VALIDATION
+        });
+
         $("#basic-form").validate({
             errorClass: "error fail-alert",
             rules: {
