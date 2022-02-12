@@ -26,6 +26,15 @@ textarea {
 
 /* Navbar */
 
+#bee-logo {
+    height: 1.8em;
+    width: auto;
+
+    position: relative;
+    right: 150px;
+    z-index: 99;
+}
+
 .navbar.navbar-custom {
     background-color: #2E2E2E;
 }
@@ -38,6 +47,7 @@ textarea {
 .navbar-brand {
     color: #E0B940;
     font-size: 24px;
+    margin-right: -30px;
 }
 
     .navbar-brand:hover {

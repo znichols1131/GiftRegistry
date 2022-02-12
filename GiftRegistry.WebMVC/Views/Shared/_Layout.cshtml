@@ -11,7 +11,9 @@
 <body>
     <nav class="navbar fixed-top navbar-custom navbar-expand-lg">
         <div class="container-fluid container">
-            <a class="navbar-brand" href="@Url.Action("Index", "Home")">BeeGifted</a>
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                BeeGifted<img src="~/Images/Bee_Default.png" alt="Bee Logo" id="bee-logo" class="">
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -42,13 +44,15 @@
         <hr />
         <footer class="text-center">
             <p class="mb-0">&copy; @DateTime.Now.Year - BeeGifted by Zach Nichols</p>
-            <p class="mt-1">@Html.ActionLink("About", "About", "Home", null, new { @class = "custom-link" }) | 
-            @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "custom-link" })</p>
-        </footer>
-    </div>
+            <p class="mt-1">
+                @Html.ActionLink("About", "About", "Home", null, new { @class = "custom-link" }) |
+            @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "custom-link" })
+        </p>
+    </footer>
+</div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 </body>
 </html>
