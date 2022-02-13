@@ -58,6 +58,10 @@
             $("#basic-form").valid();  // <- TEST VALIDATION
         });
 
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+
         $("#basic-form").validate({
             errorClass: "error fail-alert",
             rules: {
@@ -68,6 +72,9 @@
                 },
                 Description: {
                     maxlength: 100
+                },
+                DueDate: {
+                    min: yesterday
                 }
             },
             messages: {
@@ -78,6 +85,9 @@
                 },
                 Description: {
                     maxlength: "Description should not be more than 100 characters long."
+                },
+                DueDate: {
+                    min: "Date must be no earlier than " + yesterday.toLocaleDateString('en-us', options) + "."
                 }
             }
         });

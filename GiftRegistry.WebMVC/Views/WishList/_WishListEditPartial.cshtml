@@ -60,6 +60,10 @@
             $("#basic-form").valid();  // <- TEST VALIDATION
         });
 
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+
         $("#basic-form").validate({
             debug: true,
             errorClass: "error fail-alert",
@@ -71,9 +75,12 @@
                 },
                 Description: {
                     maxlength: 100
+                },
+                DueDate: {
+                    min: yesterday
                 }
             },
-            messages: {
+        messages: {
                 Name: {
                     required: "Please enter a name for this wish list.",
                     validateNullOrWhiteSpace: "Please enter a name for this wish list.",
@@ -82,6 +89,9 @@
                 },
                 Description: {
                     maxlength: "Description should not be more than 100 characters long."
+                },
+                DueDate: {
+                    min: "Date must be no earlier than " + yesterday.toLocaleDateString('en-us', options) +"."
                 }
             }
         });
