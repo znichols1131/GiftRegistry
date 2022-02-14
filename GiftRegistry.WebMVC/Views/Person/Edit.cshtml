@@ -1,22 +1,23 @@
 ﻿@model GiftRegistry.Models.PersonEdit
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Account Info";
 }
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Person", null, FormMethod.Post, new { @id = "basic-form" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.PersonID)
+    @Html.HiddenFor(model => model.ImageID)
 
     <div class="form-horizontal row d-flex justify-content-center">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="col-6 mt-3">
 
-            @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control person-image", id = "ImageIDField" })
-            @Html.Partial("_ImageUploadPartial", Model.Image)
+            @*@Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control person-image", id = "ImageIDField" })*@
+            @*@Html.Partial("_ImageUploadPartial", Model.Image)*@
 
             <div class="my-4">
 
@@ -24,8 +25,7 @@
                     <div class="col-6">
                         @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "form-label" })
                         <div class="">
-                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = "First Name" } })
-                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            <input id="FirstName" name="FirstName" required type="text" class="form-control" value="@Model.FirstName">
                         </div>
                     </div>
                 </div>
@@ -34,8 +34,7 @@
                     <div class="col-6">
                         @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label" })
                         <div class="">
-                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Last Name" } })
-                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            <input id="LastName" name="LastName" required type="text" class="form-control" value="@Model.LastName">
                         </div>
                     </div>
                 </div>
@@ -44,8 +43,7 @@
                     <div class="col-6">
                         @Html.LabelFor(model => model.Birthdate, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="">
-                            @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { Value = Model.Birthdate.Value.ToString("yyyy-MM-dd"), @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
+                            <input id="Birthdate" name="Birthdate" type="date" class="form-control" value="@Model.Birthdate.Value.ToString("yyyy-MM-dd")">
                         </div>
                     </div>
                 </div>
@@ -54,7 +52,7 @@
 
             <div class="form-group my-2 row d-flex justify-content-center">
                 <div class="col-6 mt-3 text-center">
-                    <input type="submit" value="Save" class="btn btn-gold" />
+                    <input type="button" value="Save" id="saveButton" class="btn btn-gold" />
                     @Html.ActionLink("Return", "Index", "Home", null, new { @class = "btn btn-gray-light" })
                 </div>
             </div>
@@ -67,6 +65,78 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 
+<script>
+
+    $(document).ready(function ValidateForm() {
+
+        //$("#saveButton").on('click', function (e) {
+        //    var isValid = $("#basic-form").valid();  // <- TEST VALIDATION
+
+        //    if (!isValid) {
+        //        e.preventDefault();
+        //        alert("is not valid");
+        //    } else {
+        //        alert("is valid");
+        //    }
+        //});
+
+        $("#saveButton").click(function (e) {
+
+            //$("#basic-form")[0].submit()
+
+            e.preventDefault();
+            var isValid = $("#basic-form").valid();  // <- TEST VALIDATION
+            if (!isValid) {
+            //    alert("is not valid");
+            } else {
+                //alert("is valid");
+                $("#basic-form")[0].submit() // This will cause a stack overflow :)
+            }
+        });
+
+        var today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+
+        jQuery.validator.addMethod("pastDate", function (value, element) {
+
+            var dateString = today.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).split("/").reverse().join("-");
+
+            //alert(value + " is before than " + dateString + "? Answer: " + (value <= dateString));
+            return this.optional(element) || (value <= dateString);
+        }, "Date must be in the past.");
+
+        $("#basic-form").validate({
+            debug: true,
+            errorClass: "error fail-alert",
+            rules: {
+                FirstName: {
+                    required: true
+                },
+                LastName: {
+                    required: true
+                },
+                Birthdate: {
+                    pastDate: true
+                }
+            },
+            messages: {
+                FirstName: {
+                    required: "Please enter a first name.",
+                    validateNullOrWhiteSpace: "Please enter a first name."
+                },
+                LastName: {
+                    required: "Please enter a last name.",
+                    validateNullOrWhiteSpace: "Please enter a last name."
+                },
+                Birthdate: {
+                    pastDate: "Date must be no later than " + today.toLocaleDateString('en-us', options) + "."
+                }
+            }
+        });
+    });
+
+</script>
+
 <style>
 
     .centered-form {
@@ -74,5 +144,4 @@
         margin-right: auto;
         width: 600px;
     }
-
 </style>
