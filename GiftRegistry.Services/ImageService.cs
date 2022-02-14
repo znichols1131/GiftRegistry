@@ -65,18 +65,23 @@ namespace GiftRegistry.Services
             {
                 using (var ctx = new ApplicationDbContext())
                 {
-                    var entity =
+                    if(ctx.Images.Any(e => e.ImageID == id && e.OwnerGUID == _userId))
+                    {
+                        var entity =
                         ctx
                             .Images
-                            .Single(e => e.ImageID == id && e.OwnerGUID == _userId);
+                            .First(e => e.ImageID == id && e.OwnerGUID == _userId);
 
-                    return
-                        new ImageModel
-                        {
-                            ImageID = entity.ImageID,
-                            OwnerGUID = entity.OwnerGUID,
-                            ImageData = entity.ImageData
-                        };
+                        return
+                            new ImageModel
+                            {
+                                ImageID = entity.ImageID,
+                                OwnerGUID = entity.OwnerGUID,
+                                ImageData = entity.ImageData
+                            };
+                    }
+
+                    return null;
                 }
             }catch
             {

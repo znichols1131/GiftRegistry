@@ -9,15 +9,14 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.PersonID)
-    @Html.HiddenFor(model => model.ImageID)
 
     <div class="form-horizontal row d-flex justify-content-center">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="col-6 mt-3">
 
-            @*@Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control person-image", id = "ImageIDField" })*@
-            @*@Html.Partial("_ImageUploadPartial", Model.Image)*@
+            @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control person-image", id = "ImageIDField" })
+            @Html.Partial("_ImageUploadPartial", Model.Image)
 
             <div class="my-4">
 
@@ -68,17 +67,6 @@
 <script>
 
     $(document).ready(function ValidateForm() {
-
-        //$("#saveButton").on('click', function (e) {
-        //    var isValid = $("#basic-form").valid();  // <- TEST VALIDATION
-
-        //    if (!isValid) {
-        //        e.preventDefault();
-        //        alert("is not valid");
-        //    } else {
-        //        alert("is valid");
-        //    }
-        //});
 
         $("#saveButton").click(function (e) {
 
