@@ -9,6 +9,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
+            @*@Html.Partial("_ImageUploadPartial", Model.Image)*@
+
             @using (Html.BeginForm("Create", "Gift", null, FormMethod.Post, new { @id = "basic-form" }))
             {
                 <div class="modal-body">
@@ -48,10 +50,10 @@
 
                         <div class="form-group">
                             @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control product-image ignore-validation", id = "ImageIDField" })
-                            <p class="mb-0">
+                            @*<p class="mb-0">
                                 @string.Format("Product Image")
-                            </p>
-                            @Html.Partial("_ImageUploadPartial", Model.Image)
+                            </p>*@
+                            @*@Html.Partial("_ImageUploadPartial", Model.Image)*@
                         </div>
 
                     </div>
@@ -59,7 +61,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnCreateGiftSubmit">Create</button>
+                    <button type="button" class="btn btn-gray-dark btn-form-submission" data-save="modal" id="btnCreateGiftSubmit">Create</button>
                 </div>
             }
         </div>
@@ -70,9 +72,11 @@
 
     $(document).ready(function () {
 
-        $("#btnCreateGiftSubmit").on('click', function () {
-            $("#basic-form").valid();  // <- TEST VALIDATION
-        });
+        // Will validate from WishList/Detail page
+
+        //$("#btnCreateGiftSubmit").on('click', function () {
+        //    $("#basic-form").valid();  // <- TEST VALIDATION
+        //});
 
         $("#basic-form").validate({
             ignore: ".ignore-validation, :hidden",

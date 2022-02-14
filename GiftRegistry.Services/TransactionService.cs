@@ -103,7 +103,9 @@ namespace GiftRegistry.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity =
+                if(ctx.Transactions.Any(e => e.TransactionID == id))
+                {
+                    var entity =
                     ctx
                         .Transactions
                         .Include("Giver")
@@ -112,19 +114,22 @@ namespace GiftRegistry.Services
                         .Include("Gift.WishList.Owner")
                         .Single(e => e.TransactionID == id);
 
-                return
-                    new TransactionDetail
-                    {
-                        TransactionID = entity.TransactionID,
-                        DateCreated = entity.DateCreated,
-                        DateModified = entity.DateModified,
-                        QtyGiven = entity.QtyGiven,
-                        GiftID = entity.GiftID,
-                        Gift = entity.Gift,
-                        GiverID = entity.GiverID,
-                        Giver = entity.Giver,
-                        RecipientName = entity.Gift.WishList.Owner.FirstName + " " + entity.Gift.WishList.Owner.LastName
-                    };
+                    return
+                        new TransactionDetail
+                        {
+                            TransactionID = entity.TransactionID,
+                            DateCreated = entity.DateCreated,
+                            DateModified = entity.DateModified,
+                            QtyGiven = entity.QtyGiven,
+                            GiftID = entity.GiftID,
+                            Gift = entity.Gift,
+                            GiverID = entity.GiverID,
+                            Giver = entity.Giver,
+                            RecipientName = entity.Gift.WishList.Owner.FirstName + " " + entity.Gift.WishList.Owner.LastName
+                        };
+                }
+
+                return null;
             }
         }
 

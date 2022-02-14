@@ -45,7 +45,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnEditWishListSubmit">Save</button>
+                    <button type="button" class="btn btn-gray-dark btn-form-submission" data-save="modal" id="btnEditWishListSubmit">Save</button>
                 </div>
             }
         </div>
@@ -60,12 +60,19 @@
             $("#basic-form").valid();  // <- TEST VALIDATION
         });
 
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
+        var today = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 
+        jQuery.validator.addMethod("futureDate", function (value, element) {
+
+            var dateString = today.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).split("/").reverse().join("-");
+
+            //alert(value + " is before than " + dateString + "? Answer: " + (value >= dateString));
+            return this.optional(element) || (value >= dateString);
+        }, "Date must be in the future.");
+
+
         $("#basic-form").validate({
-            debug: true,
             errorClass: "error fail-alert",
             rules: {
                 Name: {
@@ -77,13 +84,12 @@
                     maxlength: 100
                 },
                 DueDate: {
-                    min: yesterday
+                    futureDate: true
                 }
             },
-        messages: {
+            messages: {
                 Name: {
                     required: "Please enter a name for this wish list.",
-                    validateNullOrWhiteSpace: "Please enter a name for this wish list.",
                     minlength: "Name should be at least 2 characters long.",
                     maxlength: "Name should not be more than 50 characters long."
                 },
@@ -91,7 +97,7 @@
                     maxlength: "Description should not be more than 100 characters long."
                 },
                 DueDate: {
-                    min: "Date must be no earlier than " + yesterday.toLocaleDateString('en-us', options) +"."
+                    futureDate: "Date must be no earlier than " + today.toLocaleDateString('en-us', options) + "."
                 }
             }
         });

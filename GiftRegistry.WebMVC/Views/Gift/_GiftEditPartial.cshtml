@@ -9,6 +9,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
+            @Html.Partial("_ImageUploadPartial", Model.Image)
+
             @using (Html.BeginForm("Edit", "Gift", new { @id = Model.GiftID }, FormMethod.Post, new { @id = "basic-form" }))
             {
                 <div class="modal-body">
@@ -47,12 +49,13 @@
                             </div>
                         </div>
 
+
                         <div class="form-group">
                             @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control product-image", id = "ImageIDField" })
-                            <p class="mb-0">
-                                @string.Format("Product Image")
-                            </p>
-                            @Html.Partial("_ImageUploadPartial", Model.Image)
+                            @*<p class="mb-0">
+                            @string.Format("Product Image")
+                        </p>
+                        @Html.Partial("_ImageUploadPartial", Model.Image)*@
                         </div>
 
                     </div>
@@ -60,7 +63,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnEditGiftSubmit">Save</button>
+                    <button type="submit" class="btn btn-gray-dark btn-form-submission" data-save="modal" id="btnEditGiftSubmit">Save</button>
                 </div>
             }
         </div>
@@ -71,11 +74,29 @@
 
     $(document).ready(function () {
 
-        $("#btnEditGiftSubmit").on('click', function () {
+        // Will validate from WishList/Detail page
+
+        //$("#btnEditGiftSubmit").click(function (e) {
+
+        //    //$("#basic-form")[0].submit()
+
+        //    var isValid = $("#basic-form").valid();  // <- TEST VALIDATION
+        //    if (!isValid) {
+        //        e.preventDefault();
+        //        alert("is not valid");
+        //    } else {
+        //        //alert("is valid");
+        //        //$("#basic-form")[0].submit() // This will cause a stack overflow :)
+        //    }
+        //});
+
+        $(".form-group").on("change blur", function () {
+            //alert("hello");
             $("#basic-form").valid();  // <- TEST VALIDATION
         });
 
         $("#basic-form").validate({
+            debug: true,
             errorClass: "error fail-alert",
             rules: {
                 Name: {

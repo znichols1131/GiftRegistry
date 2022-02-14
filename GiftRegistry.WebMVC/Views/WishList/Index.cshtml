@@ -74,23 +74,62 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+}
+
 <script>
 
-        $(function () {
-            var PlaceHolderElement = $('#PlaceHolderHere');
-            $('button[data-toggle="ajax-modal"]').click(function (event) {
-                var url = $(this).data('url');
-                $.get(url).done(function (data) {
-                    PlaceHolderElement.html(data);
-                    PlaceHolderElement.find('.modal').modal('show');
-                });
-            });
+    $(function () {
 
-            $('#PlaceHolderHere').on('click', '[id="btnCreateSubmit"]', function (event) {
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var sendData = form.serialize();
-                $.post(actionUrl, sendData).done(function (data) {
+        var PlaceHolderElement = $('#PlaceHolderHere');
+
+        $('button[data-toggle="ajax-modal"]').click(function (event) {
+            var url = $(this).data('url');
+            $.get(url).done(function (data) {
+                PlaceHolderElement.html(data);
+                PlaceHolderElement.find('.modal').modal('show');
+            });
+        });
+
+        // Submit wishlist create
+        $('#PlaceHolderHere').on('click', '[id="btnCreateSubmit"]', function (event) {
+            var form = $(this).parents('.modal').find('form');
+
+            var isValid = $("#basic-form").valid();
+            if (!isValid) {
+                e.preventDefault();
+                return;
+            }
+
+            var actionUrl = form.attr('action');
+            var sendData = form.serialize();
+            $.post(actionUrl, sendData).done(function (data) {
+                if (Boolean(data.successful)) {
+                    PlaceHolderElement.find('.modal').modal('hide');
+                    setTimeout(function () {// wait for 1 secs
+                        location.reload(); // then reload the page.
+                    }, 500);
+                } else {
+                    // Show errors
+                    //    alert("Error");
+                }
+            })
+                .fail(function () {
+                    alert("There was an error processing your request. Please try again.");
+                });
+        });
+
+        $('#PlaceHolderHere').on('click', '[id="btnDeleteSubmit"]', function (event) {
+
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var sendData = form.serialize();
+
+            $.ajax({
+                url: actionUrl,
+                type: "POST",
+                data: sendData,
+                dataType: 'json',
+                success: function (data) {
                     if (Boolean(data.successful)) {
                         PlaceHolderElement.find('.modal').modal('hide');
                         setTimeout(function () {// wait for 1 secs
@@ -100,45 +139,18 @@
                         // Show errors
                         //    alert("Error");
                     }
-                })
-                    .fail(function () {
-                        alert("There was an error processing your request. Please try again.");
-                    });
-            });
-
-            $('#PlaceHolderHere').on('click', '[id="btnDeleteSubmit"]', function (event) {
-
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var sendData = form.serialize();
-
-                $.ajax({
-                    url: actionUrl,
-                    type: "POST",
-                    data: sendData,
-                    dataType: 'json',
-                    success: function (data) {
-                        if (Boolean(data.successful)) {
-                            PlaceHolderElement.find('.modal').modal('hide');
-                            setTimeout(function () {// wait for 1 secs
-                                location.reload(); // then reload the page.
-                            }, 500);
-                        } else {
-                            // Show errors
-                            //    alert("Error");
-                        }
-                    },
-                    error: function () {
-                        alert("There was an error processing your request. Please try again.");
-                    }
-                });
-
+                },
+                error: function () {
+                    alert("There was an error processing your request. Please try again.");
+                }
             });
 
         });
 
+    });
+
 </script>
-}
+
 
 <style>
 

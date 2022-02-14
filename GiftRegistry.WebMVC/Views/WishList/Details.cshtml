@@ -101,162 +101,66 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+}
+<script>
 
-        // Button pressed to open a modal (any modal)
-        $(function () {
-            var PlaceHolderElement = $('#PlaceHolderHere');
-            $('button[data-toggle="ajax-modal"]').click(function (event) {
-                var url = $(this).data('url');
-                $.get(url).done(function (data) {
-                    PlaceHolderElement.html(data);
-                    PlaceHolderElement.find('.modal').modal('show');
+    // Button pressed to open a modal (any modal)
+    $(function () {
+
+        var PlaceHolderElement = $('#PlaceHolderHere');
+
+        $('button[data-toggle="ajax-modal"]').click(function (event) {
+            var url = $(this).data('url');
+            $.get(url).done(function (data) {
+                PlaceHolderElement.html(data);
+                PlaceHolderElement.find('.modal').modal('show');
+            });
+        });
+
+        // Any form (on child modal) was submitted
+        $('#PlaceHolderHere').on('click', '.btn-form-submission', function (event) {
+
+            var isValid = $("#basic-form").valid();
+            if (!isValid) {
+                e.preventDefault();
+                return;
+            }
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var sendData = form.serialize();
+            $.post(actionUrl, sendData).done(function (data) {
+                if (Boolean(data.successful)) {
+                    PlaceHolderElement.find('.modal').modal('hide');
+                    setTimeout(function () {// wait for 1 secs
+                        location.reload(); // then reload the page.
+                    }, 500);
+                } else {
+                    // Show errors
+                    //    alert("Error");
+                }
+            })
+                .fail(function () {
+                    alert("There was an error processing your request. Please try again.");
                 });
-            });
+        });
 
-            // Edit button pressed on wish list modal
-            $('#PlaceHolderHere').on('click', '[id="btnEditWishListSubmit"]', function (event) {
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var sendData = form.serialize();
-                $.post(actionUrl, sendData).done(function (data) {
-                    if (Boolean(data.successful)) {
-                        PlaceHolderElement.find('.modal').modal('hide');
-                        setTimeout(function () {// wait for 1 secs
-                            location.reload(); // then reload the page.
-                        }, 500);
-                    } else {
-                        // Show errors
-                        //    alert("Error");
-                    }
-                })
-                    .fail(function () {
-                        alert("There was an error processing your request. Please try again.");
-                    });
-            });
+        // Any navigation button (on child modal) was submitted
+        $('#PlaceHolderHere').on('click', '.btn-button-to-other-modal', function (event) {
 
-            // Create button pressed on create gift modal
-            $('#PlaceHolderHere').on('click', '[id="btnCreateGiftSubmit"]', function (event) {
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var sendData = form.serialize();
-                $.post(actionUrl, sendData).done(function (data) {
-                    if (Boolean(data.successful)) {
-                        PlaceHolderElement.find('.modal').modal('hide');
-                        setTimeout(function () {// wait for 1 secs
-                            location.reload(); // then reload the page.
-                        }, 500);
-                    } else {
-                        // Show errors
-                        //    alert("Error");
-                    }
-                })
-                    .fail(function () {
-                        alert("There was an error processing your request. Please try again.");
-                    });
-            });
+            var url = $(this).data('url');
+            PlaceHolderElement.find('.modal').modal('hide');
 
-            // Save button pressed on edit modal
-            $('#PlaceHolderHere').on('click', '[id="btnEditGiftSubmit"]', function (event) {
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var sendData = form.serialize();
-                $.post(actionUrl, sendData).done(function (data) {
-                    if (Boolean(data.successful)) {
-                        PlaceHolderElement.find('.modal').modal('hide');
-                        setTimeout(function () {// wait for 1 secs
-                            location.reload(); // then reload the page.
-                        }, 500);
-                    } else {
-                        // Show errors
-                        //    alert("Error");
-                    }
-                })
-                    .fail(function () {
-                        alert("There was an error processing your request. Please try again.");
-                    });
-            });
-
-            // Delete button pressed on delete modal
-            $('#PlaceHolderHere').on('click', '[id="btnDeleteGiftSubmit"]', function (event) {
-
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var sendData = form.serialize();
-                $.ajax({
-                    url: actionUrl,
-                    type: "POST",
-                    data: sendData,
-                    dataType: 'json',
-                    success: function (data) {
-                        if (Boolean(data.successful)) {
-                            PlaceHolderElement.find('.modal').modal('hide');
-                            setTimeout(function () {// wait for 1 secs
-                                location.reload(); // then reload the page.
-                            }, 500);
-                        } else {
-                            // Show errors
-                            //    alert("Error");
-                        }
-                    },
-                    error: function () {
-                        alert("There was an error processing your request. Please try again.");
-                    }
-                });
-
-            });
-
-            // Edit button pressed on details gift modal, need to go to edit modal
-            $('#PlaceHolderHere').on('click', '[id="btnDetailsGoToEditGift"]', function (event) {
-
-                var url = $(this).data('url');
-                PlaceHolderElement.find('.modal').modal('hide');
-
-                $.get(url).done(function (data) {
-                    PlaceHolderElement.html(data);
-                    PlaceHolderElement.find('.modal').modal('show');
-                });
-
-            });
-
-            // Purchase button pressed on details gift modal, need to go to create modal for transaction
-            $('#PlaceHolderHere').on('click', '[id="btnDetailsGoToPurchaseGift"]', function (event) {
-
-                var url = $(this).data('url');
-                PlaceHolderElement.find('.modal').modal('hide');
-
-                $.get(url).done(function (data) {
-                    PlaceHolderElement.html(data);
-                    PlaceHolderElement.find('.modal').modal('show');
-                });
-
-            });
-
-            // Create button pressed on create transaction modal
-            $('#PlaceHolderHere').on('click', '[id="btnCreateTransactionSubmit"]', function (event) {
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var sendData = form.serialize();
-                $.post(actionUrl, sendData).done(function (data) {
-                    if (Boolean(data.successful)) {
-                        PlaceHolderElement.find('.modal').modal('hide');
-                        setTimeout(function () {// wait for 1 secs
-                            location.reload(); // then reload the page.
-                        }, 500);
-                    } else {
-                        // Show errors
-                        //    alert("Error");
-                    }
-                })
-                    .fail(function () {
-                        alert("There was an error processing your request. Please try again.");
-                    });
+            $.get(url).done(function (data) {
+                PlaceHolderElement.html(data);
+                PlaceHolderElement.find('.modal').modal('show');
             });
 
         });
 
-    </script>
-}
+    });
+
+</script>
+
 
 <style>
 

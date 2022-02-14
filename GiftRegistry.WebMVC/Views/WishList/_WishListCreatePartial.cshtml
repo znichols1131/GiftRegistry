@@ -54,13 +54,35 @@
 
     $(document).ready(function () {
 
-        $("#btnCreateSubmit").on('click', function () {
-            $("#basic-form").valid();  // <- TEST VALIDATION
-        });
+        // Call validation from WishList/Index
 
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
+        //$("#btnCreateSubmit").on('click', function () {
+        //    $("#basic-form").valid();  // <- TEST VALIDATION
+        //});
+
+        //$("#btnCreateSubmit").click(function (e) {
+
+        //    e.preventDefault();
+        //    var isValid = $("#basic-form").valid();  // <- TEST VALIDATION
+        //    if (!isValid) {
+        //            alert("is not valid");
+        //    } else {
+        //        alert("is valid");
+        //        $("#basic-form")[0].submit() // This will cause a stack overflow :)
+        //    }
+        //});
+
+        var today = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+
+        jQuery.validator.addMethod("futureDate", function (value, element) {
+
+            var dateString = today.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).split("/").reverse().join("-");
+
+            //alert(value + " is before than " + dateString + "? Answer: " + (value >= dateString));
+            return this.optional(element) || (value >= dateString);
+        }, "Date must be in the future.");
+
 
         $("#basic-form").validate({
             errorClass: "error fail-alert",
@@ -74,7 +96,7 @@
                     maxlength: 100
                 },
                 DueDate: {
-                    min: yesterday
+                    futureDate: true
                 }
             },
             messages: {
@@ -87,7 +109,7 @@
                     maxlength: "Description should not be more than 100 characters long."
                 },
                 DueDate: {
-                    min: "Date must be no earlier than " + yesterday.toLocaleDateString('en-us', options) + "."
+                    futureDate: "Date must be no earlier than " + today.toLocaleDateString('en-us', options) + "."
                 }
             }
         });

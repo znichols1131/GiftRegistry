@@ -60,13 +60,13 @@
                     @if (ViewBag.UserGUID != Model.WishList.OwnerGUID)
                     {
                         <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnDetailsGoToPurchaseGift"
+                        <button type="button" class="btn btn-gray-dark btn-button-to-other-modal" data-save="modal" id="btnDetailsGoToPurchaseGift"
                                 data-url="@Url.Action("Create", "Transaction", new { giftID = Model.GiftID })">Purchase</button>
                     }
                     else
                     {
                         <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnDetailsGoToEditGift"
+                        <button type="button" class="btn btn-gray-dark btn-button-to-other-modal" data-save="modal" id="btnDetailsGoToEditGift"
                                 data-url="@Url.Action("Edit", "Gift", new { id = Model.GiftID })">Edit</button>
                     }
                 </div>           

@@ -101,29 +101,14 @@
                 });
             });
 
-            // Save button pressed on edit transaction modal
-            $('#PlaceHolderHere').on('click', '[id="btnEditTransactionSubmit"]', function (event) {
-                var form = $(this).parents('.modal').find('form');
-                var actionUrl = form.attr('action');
-                var sendData = form.serialize();
-                $.post(actionUrl, sendData).done(function (data) {
-                    if (Boolean(data.successful)) {
-                        PlaceHolderElement.find('.modal').modal('hide');
-                        setTimeout(function () {// wait for 1 secs
-                            location.reload(); // then reload the page.
-                        }, 500);
-                    } else {
-                        // Show errors
-                        //    alert("Error");
-                    }
-                })
-                    .fail(function () {
-                        alert("There was an error processing your request. Please try again.");
-                    });
-            }); 
+            // Any form (on child modal) was submitted
+            $('#PlaceHolderHere').on('click', '.btn-form-submission', function (event) {
 
-            // Delete button pressed on delete transaction modal
-            $('#PlaceHolderHere').on('click', '[id="btnDeleteTransactionSubmit"]', function (event) {
+                var isValid = $("#basic-form").valid();
+                if (!isValid) {
+                    e.preventDefault();
+                    return;
+                }
                 var form = $(this).parents('.modal').find('form');
                 var actionUrl = form.attr('action');
                 var sendData = form.serialize();
@@ -143,8 +128,8 @@
                     });
             });
 
-            // Edit button pressed on details gift modal, need to go to edit modal
-            $('#PlaceHolderHere').on('click', '[id="btnDetailsGoToEditTransaction"]', function (event) {
+            // Any navigation button (on child modal) was submitted
+            $('#PlaceHolderHere').on('click', '.btn-button-to-other-modal', function (event) {
 
                 var url = $(this).data('url');
                 PlaceHolderElement.find('.modal').modal('hide');
@@ -155,7 +140,6 @@
                 });
 
             });
-
         });
 
     </script>

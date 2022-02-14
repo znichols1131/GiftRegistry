@@ -39,7 +39,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-gray-dark" data-save="modal" id="btnCreateTransactionSubmit">Purchase</button>
+                    <button type="button" class="btn btn-gray-dark btn-form-submission" data-save="modal" id="btnCreateTransactionSubmit">Purchase</button>
                 </div>
             }
         </div>
@@ -50,9 +50,11 @@
 
     $(document).ready(function () {
 
-        $("#btnCreateTransactionSubmit").on('click', function () {
-            $("#basic-form").valid();  // <- TEST VALIDATION
-        });
+        // Will validate from WishList/Detail page
+
+        //$("#btnCreateTransactionSubmit").on('click', function () {
+        //    $("#basic-form").valid();  // <- TEST VALIDATION
+        //});
 
         $("#basic-form").validate({
             errorClass: "error fail-alert",
