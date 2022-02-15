@@ -59,6 +59,24 @@ namespace GiftRegistry.Services
             return GetLatestImageForUser();
         }
 
+        public bool CreateUploadedImage(byte[] uploadedImage)
+        {
+            if (!DeleteImagesForUser()) return false;
+
+            var entity =
+                new CustomImage()
+                {
+                    OwnerGUID = _userId,
+                    ImageData = uploadedImage
+                };
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.Images.Add(entity);
+                return ctx.SaveChanges() > 0;
+            }
+        }
+
         public ImageModel GetImageByID(int id)
         {
             try

@@ -15,7 +15,14 @@
 
         <div class="text-center">
 
-            <input type="file" id="imageFile" name="imageFile" style="display: none;" />
+            @*@using (Html.BeginForm("UploadImage", "_ImageUpload", null, FormMethod.Post, new { enctype = "multipart/form-data", @id = "image-upload-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="file" id="imageFile" name="imageFile" style="display: none;" />
+                    <input type="button" class="btn btn-gray-light" value="Upload" onclick="document.getElementById('imageFile').click();" />
+                }*@
+
+            <input type="file" id="imageFile" name="imageFile" style="display: none;" />  @*Will be on parent view*@
             <input type="button" class="btn btn-gray-light" value="Upload" onclick="document.getElementById('imageFile').click();" />
 
             <div class="btn btn-gray-light">
@@ -38,12 +45,75 @@
             // Update image src
 
             if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#uploadedPicture').attr('src', e.target.result);
-                    $("#ImageIDField").val("-1");
+                
+                var file = this.files[0];
+                //var reader = new FileReader();
+                //reader.onload = function (e) {
+                //    $('#uploadedPicture').attr('src', e.target.result);
+                //    $("#ImageIDField").val("-1");
+                //}
+                //reader.readAsDataURL(file);
+
+                // Now send that file to the controller
+                var actionUrl = "@(Url.Action("UploadImage", "_ImageUpload"))";
+
+                var sendData = { file: file };
+                //alert("File to upload: " + sendData.file.name + "\nTarget address: " + actionUrl);
+
+                var formdata = new FormData(); //FormData object
+                //Iterating through each files selected in fileInput
+                formdata.append(file.name, file);
+
+                //Creating an XMLHttpRequest and sending
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', actionUrl);
+                xhr.send(formdata);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Success
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#uploadedPicture').attr('src', e.target.result);
+                            $("#ImageIDField").val("-1");
+                        }
+                        reader.readAsDataURL(file);
+                    }
                 }
-                reader.readAsDataURL(this.files[0]);
+                return false;
+
+                //$.ajax({
+                //    url: actionUrl,
+                //    type: 'POST',
+                //    //dataType: "json",
+                //    contentType: 'application/json',
+                //    data: sendData
+                //})
+                //    .done(function (data) {
+                //        if (Boolean(data.successful)) {
+                //        alert("Success");
+                //    } else {
+                //        // Show errors
+                //            alert("Error");
+                //    }
+                //})
+                //    .fail(function () {
+                //        alert("There was an error processing your request. Please try again.");
+                //    });
+
+                //$.post(actionUrl, sendData).done(function (data) {
+                //    if (Boolean(data.successful)) {
+                //        PlaceHolderElement.find('.modal').modal('hide');
+                //        setTimeout(function () {// wait for 1 secs
+                //            location.reload(); // then reload the page.
+                //        }, 500);
+                //    } else {
+                //        // Show errors
+                //        //    alert("Error");
+                //    }
+                //})
+                //    .fail(function () {
+                //        alert("There was an error processing your request. Please try again.");
+                //    });
             }
 
         });
@@ -67,8 +137,8 @@
              $.ajax({
                 type: "GET",
                  url: "@(Url.Action("CreateRandomImageJSON", "_ImageUpload"))",
-                 data: {isPerson: isPerson},
-                contentType: "application/json; charset=utf-8",
+                 contentType: "application/json; charset=utf-8",
+                    data: {isPerson: isPerson},
                 success: function (data) {
 
                     var imageData = data.imageSrc;
@@ -106,5 +176,4 @@
         border-radius: 50%;
         border: 1px solid rgba(143, 143, 143, .5);
     }
-
 </style>

@@ -69,6 +69,32 @@ namespace GiftRegistry.WebMVC.Controllers
             return service.CreateAndReturnRandomImage(_isProfilePicture);
         }
 
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        [ActionName("UploadImage")]
+        public JsonResult UploadImage()
+        {
+            HttpPostedFileBase file = Request.Files[0]; //Uploaded file
+
+            try
+            {
+                // Image was uploaded and doesn't exist in database yet
+                if (file != null && file.ContentLength != 0)
+                {
+                    var imageService = CreateImageService();
+                    if (imageService is null)
+                        return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+
+                    bool successful = imageService.CreateUploadedImage(ConvertToBytes(file));
+
+                    return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch { }
+
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+        }
+
         public ImageModel GetLatestImageForUser()
         {
             var service = CreateImageService();

@@ -47,20 +47,14 @@ namespace GiftRegistry.WebMVC.Controllers
 
             if (model.ImageID == -1)
             {
-                // Image was uploaded and doesn't exist in database yet
-                HttpPostedFileBase file = Request.Files["imageFile"];
-                if (file != null && file.ContentLength != 0)
-                {
-                    // Valid image file uploaded
-                    ImageModel newImage = new ImageModel();
-                    newImage.ImageData = ConvertToBytes(file);
-                    model.Image = newImage;
-                }
-                else
+                model.Image = imageService.GetLatestImageForUser();
+
+                if (model.Image is null)
                 {
                     // Invalid, get a default image
                     model.Image = imageService.CreateAndReturnRandomImage(false);
                 }
+
             }
             else
             {
@@ -139,20 +133,14 @@ namespace GiftRegistry.WebMVC.Controllers
 
             if (model.ImageID == -1)
             {
-                // Image was uploaded and doesn't exist in database yet
-                HttpPostedFileBase file = Request.Files["imageFile"];
-                if (file != null && file.ContentLength != 0)
-                {
-                    // Valid image file uploaded
-                    ImageModel newImage = new ImageModel();
-                    newImage.ImageData = ConvertToBytes(file);
-                    model.Image = newImage;
-                }
-                else
+                model.Image = imageService.GetLatestImageForUser();
+
+                if(model.Image is null)
                 {
                     // Invalid, get a default image
                     model.Image = imageService.CreateAndReturnRandomImage(false);
                 }
+
             }
             else
             {
