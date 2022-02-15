@@ -17,7 +17,7 @@ namespace GiftRegistry.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Display(Name = "Birthdate")]
+        [Display(Name = "Date of Birth")]
         public DateTime? Birthdate { get; set; }
 
         [Display(Name = "Profile Picture")]

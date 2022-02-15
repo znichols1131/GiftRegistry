@@ -26,7 +26,7 @@ namespace GiftRegistry.Data
         [Display(Name = "Full Name")]
         public string FullName { get { return FirstName + " " + LastName; } }
 
-        [Display(Name = "Birthdate")]
+        [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
         public DateTime? Birthdate { get; set; }
 
