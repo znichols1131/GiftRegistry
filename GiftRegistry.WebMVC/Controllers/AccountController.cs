@@ -12,6 +12,7 @@ using GiftRegistry.WebMVC.Models;
 using GiftRegistry.Data;
 using GiftRegistry.Services;
 using GiftRegistry.Models;
+using System.Web.UI;
 
 namespace GiftRegistry.WebMVC.Controllers
 {
@@ -415,6 +416,7 @@ namespace GiftRegistry.WebMVC.Controllers
         // Get: /Account/GetProfilePicture
         [HttpGet]
         [ActionName("GetProfilePicture")]
+        //[OutputCache(Duration = 3600, VaryByParam = "none", Location = OutputCacheLocation.Client, NoStore = true)]
         public JsonResult GetProfilePicture()
         {
             var service = CreateImageService();

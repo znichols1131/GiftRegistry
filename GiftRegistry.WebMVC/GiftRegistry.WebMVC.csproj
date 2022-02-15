@@ -207,6 +207,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\Awards.svg" />
     <Content Include="Images\Bee_Default.png" />
+    <Content Include="Images\Bee_Default_Small.png" />
     <Content Include="Images\Birthday.svg" />
     <Content Include="Images\CampFire.svg" />
     <Content Include="Images\Coffee.svg" />
