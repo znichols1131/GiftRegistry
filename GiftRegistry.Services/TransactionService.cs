@@ -164,16 +164,20 @@ namespace GiftRegistry.Services
                         .Include("Gift.WishList.Owner")
                         .Single(e => e.TransactionID == id && (e.Giver.PersonGUID == _userId || e.Gift.WishList.OwnerGUID == _userId));
 
+                // IF THE PERSON DELETING THE TRANSACTION ISN'T THE BUYER:
                 // Before deleting transaction, we want to notify buyers that their transaction was deleted
-                var service = CreateNotificationService();
-                NotificationDetail model = new NotificationDetail()
+                if(entity.Giver.PersonGUID != _userId)
                 {
-                    NotificationType = NotificationType.ReadOnlyNegative,
-                    Message = $"Your transaction for {entity.Gift.Name} (qty. {entity.QtyGiven}) was cancelled. {entity.Gift.WishList.Owner.FullName} removed this item from their wish list.",
-                    RecipientID = (int)entity.GiverID,
-                    SenderID = (int)entity.Gift.WishList.OwnerID
-                };
-                service.CreateNotification(model);
+                    var service = CreateNotificationService();
+                    NotificationDetail model = new NotificationDetail()
+                    {
+                        NotificationType = NotificationType.ReadOnlyNegative,
+                        Message = $"Your transaction for {entity.Gift.Name} (qty. {entity.QtyGiven}) was cancelled. {entity.Gift.WishList.Owner.FullName} removed this item from their wish list.",
+                        RecipientID = (int)entity.GiverID,
+                        SenderID = (int)entity.Gift.WishList.OwnerID
+                    };
+                    service.CreateNotification(model);
+                }                
 
                 ctx.Transactions.Remove(entity);
 
