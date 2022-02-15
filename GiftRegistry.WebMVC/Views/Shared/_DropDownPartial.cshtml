@@ -58,8 +58,8 @@ else
                     var imageData = data.imageSrc;
                     $('#profilePictureDropdown').attr('src', imageData);
                 },
-                error: function () {
-                    alert("Could not load profile picture.");
+            error: function (result) {
+                alert(result.status + ' ' + result.statusText + "\nCould not load profile picture. Try uploading a smaller profile picture.");
                 }
         });
 

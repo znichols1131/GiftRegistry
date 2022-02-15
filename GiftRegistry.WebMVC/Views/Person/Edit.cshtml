@@ -4,19 +4,19 @@
     ViewBag.Title = "Account Info";
 }
 
+<div class="form-horizontal row d-flex justify-content-center">
 
-@using (Html.BeginForm("Edit", "Person", null, FormMethod.Post, new { @id = "basic-form" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.PersonID)
+    <div class="col-6 mt-3">
 
-    <div class="form-horizontal row d-flex justify-content-center">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Partial("_ImageUploadPartial", Model.Image)
 
-        <div class="col-6 mt-3">
+        @using (Html.BeginForm("Edit", "Person", null, FormMethod.Post, new { @id = "basic-form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PersonID)
 
             @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control person-image", id = "ImageIDField" })
-            @Html.Partial("_ImageUploadPartial", Model.Image)
 
             <div class="my-4">
 
@@ -55,10 +55,10 @@
                     @Html.ActionLink("Return", "Index", "Home", null, new { @class = "btn btn-gray-light" })
                 </div>
             </div>
-
-        </div>
+        }
     </div>
-}
+</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -73,7 +73,7 @@
             e.preventDefault();
             var isValid = $("#basic-form").valid();  // <- TEST VALIDATION
             if (!isValid) {
-            //    alert("is not valid");
+                //    alert("is not valid");
             } else {
                 //alert("is valid");
                 $("#basic-form")[0].submit() // This will cause a stack overflow :)
