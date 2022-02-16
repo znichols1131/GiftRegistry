@@ -131,6 +131,57 @@ namespace GiftRegistry.Services
             }
         }
 
+        public WishListDetail GetWishListByIDAndSearch(int id, string search)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if(!ctx.WishLists.Any(e => e.WishListID == id))
+                {
+                    return null;
+                }
+
+                var entity =
+                    ctx
+                        .WishLists
+                        .Include("Owner")
+                        .Single(e => e.WishListID == id);
+
+                var result = new WishListDetail
+                {
+                    WishListID = entity.WishListID,
+                    OwnerID = entity.OwnerID,
+                    OwnerGUID = entity.OwnerGUID,
+                    Name = entity.Name,
+                    Description = entity.Description,
+                    DueDate = entity.DueDate,
+                    OwnerName = entity.Owner.FullName,
+                    OwnerImage = entity.Owner.ProfilePicture,
+                    Gifts = new List<GiftListItem>(),
+                    GiftCount = entity.Gifts.Count
+                };
+
+                foreach (var gift in entity.Gifts)
+                {
+                    if(gift.Name.ToLower().Contains(search.ToLower()) || (!string.IsNullOrWhiteSpace(gift.Description) && gift.Description.ToLower().Contains(search.ToLower())))
+                    {
+                        result.Gifts.Add(new GiftListItem
+                        {
+                            GiftID = gift.GiftID,
+                            Name = gift.Name,
+                            Description = gift.Description,
+                            SourceURL = gift.SourceURL,
+                            QtyDesired = gift.QtyDesired,
+                            WishListID = gift.WishListID,
+                            WishList = gift.WishList,
+                            ProductImage = gift.ProductImage
+                        });
+                    }                    
+                }
+
+                return result;
+            }
+        }
+
         public bool UpdateWishList(WishListEdit model)
         {
             using (var ctx = new ApplicationDbContext())

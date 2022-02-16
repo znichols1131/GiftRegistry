@@ -61,11 +61,11 @@ namespace GiftRegistry.WebMVC.Controllers
         }
 
         // GET: Detail
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string search)
         {            
             var service = CreateWishListService();
-            
-            var model = service.GetWishListByID(id);
+
+            var model = string.IsNullOrWhiteSpace(search) ? service.GetWishListByID(id) : service.GetWishListByIDAndSearch(id, search); 
 
             ViewBag.UserGUID = Guid.Parse(User.Identity.GetUserId());
 
