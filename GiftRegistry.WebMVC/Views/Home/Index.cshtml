@@ -8,7 +8,7 @@
     <div class="col-md-6 align-self-end py-4">
         <div class="mt-4 gray-box">
             <h4 class="Massive-Lead-In-Text">Hello! Welcome to BeeGifted, a gift registry for any occassion.</h4>
-            <hr class="hr-double mb-4"/>
+            <hr class="hr-double mb-4" />
             <h4 class="Massive-Lead-In-Text">The date is</h4>
             <p class="Massive-Date-Text">@ViewBag.DateString</p>
         </div>
@@ -25,118 +25,132 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="pt-5">
-        <h4>Upcoming Events</h4>
-        <hr />
+<div class="pt-5">
+    <h4>Upcoming Events</h4>
+
+    <div class="mt-3 row justify-content-md-start">
+
+        <div id="sort-container" class="col-md-auto px-0 mr-1 ml-0">
+            @using (Html.BeginForm("Index", "Home", null, FormMethod.Get, new { @class = "input-group" }))
+            {
+                @Html.DropDownList("time", (IEnumerable<SelectListItem>)ViewBag.SortOptions, null, new { @id = "time-Field", @onblur = "return check(this);", @placeholder = "Time...", @class = "form-select" })
+                <button type="submit" id="filterTimeButton" class="btn btn-gray-dark mr-1 ml-0">Filter</button>
+            }
+        </div>
     </div>
+
+    <hr />
+</div>
 
     if (Model is null || Model.ToList().Count == 0)
     {
-        <p class="mb-4">There are no upcoming events at this time.</p>
+    <p class="mb-4">There are no upcoming events at this time.</p>
     }
     else
     {
-        <table class="table mb-4">
+    <table class="table mb-4">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DaysRemaining)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.EventName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OwnerName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EventDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DaysRemaining)
-                </th>
-                <th></th>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.EventName)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.OwnerName)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.EventDate)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.DaysRemaining)
+                </td>
+                <td class="align-middle">
+                    @if (item.WishListID < 0)
+                    {
+                        @Html.ActionLink("View", "FriendDetails", "Person", new { personID = item.OwnerID }, new { @class = "btn btn-secondary" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, new { @class = "btn btn-secondary" })
+                    }
+                </td>
             </tr>
+        }
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.EventName)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.OwnerName)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.EventDate)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.DaysRemaining)
-                    </td>
-                    <td class="align-middle">
-                        @if (item.WishListID < 0)
-                        {
-                            @Html.ActionLink("View", "FriendDetails", "Person", new { personID = item.OwnerID }, new { @class = "btn btn-secondary" })
-                        }
-                        else
-                        {
-                            @Html.ActionLink("View", "Details", "WishList", new { id = item.WishListID }, new { @class = "btn btn-secondary" })
-                        }
-                    </td>
-                </tr>
-            }
-
-        </table>
+    </table>
     }
 
 
-}
-else
-{
+    }
+    else
+    {
     <h4 class="mt-4">Welcome to the Gift Registry, a web application where you can create and share gift lists with your friends and family!</h4>
     <p class="mt-2">To access all of our features, please <a href="@Url.Action("Register", "Account", new { id = "registerLink" })">register</a> or <a href="@Url.Action("Login", "Account", new { id = "loginLink" })">log in</a> first.</p>
     <br />
-}
-
-<style>
-
-    body {
-        color: #2E2E2E;
     }
 
-    h4 {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        font-size: 32px;
-    }
+    <style>
 
-    #feature-image {
-        width: 25vw;
-        height: auto;
-        padding: 50px;
-    }
+        body {
+            color: #2E2E2E;
+        }
 
-    .Massive-Date-Text {
-        font-size: 72px;
-        margin-top: 0px;
-        margin-bottom: 0px;
-        color: #2E2E2E
-    }
+        h4 {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-size: 32px;
+        }
 
-    div.gray-box {
-        background-color: #F1F2F3;
-        padding: 20px;
-        border-radius: 12px;
-    }
+        #feature-image {
+            width: 25vw;
+            height: auto;
+            padding: 50px;
+        }
 
-    .gold-text {
-        color: #E0B840;
-    }
+        #time-Field {
+            margin-right: 10px;
+        }
 
-    hr.hr-double {
-        height: 6px;
-        width: 80%;
-        margin-left: 10%;
-        border-top: 2px solid #2E2E2E;
-        border-bottom: 2px solid #2E2E2E;
-        color: none;
-        background-color: transparent;
-    }
+        .Massive-Date-Text {
+            font-size: 72px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            color: #2E2E2E
+        }
 
+        div.gray-box {
+            background-color: #F1F2F3;
+            padding: 20px;
+            border-radius: 12px;
+        }
 
-</style>
+        .gold-text {
+            color: #E0B840;
+        }
+
+        hr.hr-double {
+            height: 6px;
+            width: 80%;
+            margin-left: 10%;
+            border-top: 2px solid #2E2E2E;
+            border-bottom: 2px solid #2E2E2E;
+            color: none;
+            background-color: transparent;
+        }
+    </style>

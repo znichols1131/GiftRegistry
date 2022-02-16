@@ -11,7 +11,7 @@ namespace GiftRegistry.WebMVC.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string time)
         {
             var service = CreateHomeService();
             IEnumerable<EventListItem> model;
@@ -21,8 +21,33 @@ namespace GiftRegistry.WebMVC.Controllers
                 model = null;
             }else
             {
-                model = service.GetEvents();
+                model = string.IsNullOrWhiteSpace(time) ? service.GetEvents() : service.GetEventsWithinTime(time);
             }
+
+            // Sorting options
+            List<SelectListItem> sortOptions = new List<SelectListItem>();
+            sortOptions.Add(new SelectListItem
+            {
+                Text = "1 month",
+                Value = "month01",
+                Selected = true
+            });
+            sortOptions.Add(new SelectListItem
+            {
+                Text = "3 months",
+                Value = "month03"
+            });
+            sortOptions.Add(new SelectListItem
+            {
+                Text = "6 months",
+                Value = "month06"
+            });
+            sortOptions.Add(new SelectListItem
+            {
+                Text = "12 months",
+                Value = "month12"
+            });
+            ViewBag.SortOptions = sortOptions;
 
             ViewBag.DateString = GetDateString();
             return View(model);
