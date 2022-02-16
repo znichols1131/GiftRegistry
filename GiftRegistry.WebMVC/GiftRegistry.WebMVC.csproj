@@ -340,6 +340,7 @@
     <Content Include="Views\Friend\_FriendDeletePartial.cshtml" />
     <Content Include="Views\UserRole\Index.cshtml" />
     <Content Include="Views\Account\_RegisterRolePartial.cshtml" />
+    <Content Include="Views\Account\_DeleteAccountPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

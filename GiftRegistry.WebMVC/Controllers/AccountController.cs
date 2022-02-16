@@ -27,7 +27,7 @@ namespace GiftRegistry.WebMVC.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -39,9 +39,9 @@ namespace GiftRegistry.WebMVC.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -125,7 +125,7 @@ namespace GiftRegistry.WebMVC.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -160,8 +160,8 @@ namespace GiftRegistry.WebMVC.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -180,15 +180,15 @@ namespace GiftRegistry.WebMVC.Controllers
 
         //
         // GET: /Account/RegisterRole
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult RegisterRole(Guid userGUID)
         {
             var service = CreateUserRoleService();
 
             var model = service.GetUserForGuid(userGUID);
-            
-            if(string.IsNullOrWhiteSpace(model.UserRoleName))
+
+            if (string.IsNullOrWhiteSpace(model.UserRoleName))
             {
                 try
                 {
@@ -196,9 +196,9 @@ namespace GiftRegistry.WebMVC.Controllers
                     if (!string.IsNullOrWhiteSpace(selectedRole))
                         model.UserRoleName = selectedRole;
                 }
-                catch { }                
+                catch { }
             }
-            
+
             var userRoles = service.GetAllRoles();
 
             ViewBag.UserRoles = new SelectList(userRoles, "Name", "Name", model.UserRoleName);
@@ -209,13 +209,13 @@ namespace GiftRegistry.WebMVC.Controllers
         //
         // POST: /Account/RegisterRole
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public JsonResult RegisterRole(UserRoleDetail model)
         {
             using (var ctx = new ApplicationDbContext())
             {
-                if(ctx.Users.Any(i => i.Id == model.UserGUID.ToString()))
+                if (ctx.Users.Any(i => i.Id == model.UserGUID.ToString()))
                 {
                     var user = ctx.Users.Where(i => i.Id == model.UserGUID.ToString()).FirstOrDefault();
 
@@ -225,10 +225,10 @@ namespace GiftRegistry.WebMVC.Controllers
                         string[] allUserRoles = UserManager.GetRoles(user.Id).ToArray();
                         UserManager.RemoveFromRoles(user.Id, allUserRoles);
                     }
-                    catch { }                    
+                    catch { }
 
                     // Add new role
-                    if(!string.IsNullOrWhiteSpace(model.UserRoleName))
+                    if (!string.IsNullOrWhiteSpace(model.UserRoleName))
                         UserManager.AddToRole(user.Id, model.UserRoleName);
 
                     return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
@@ -238,10 +238,67 @@ namespace GiftRegistry.WebMVC.Controllers
             return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
         }
 
+        //
+        // GET: /Account/Delete
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(Guid userGUID)
+        {
+            var service = CreateUserRoleService();
+
+            var model = service.GetUserForGuid(userGUID);
+
+            if (string.IsNullOrWhiteSpace(model.UserRoleName))
+            {
+                try
+                {
+                    string selectedRole = UserManager.GetRoles(model.UserGUID.ToString()).ToArray().First();
+                    if (!string.IsNullOrWhiteSpace(selectedRole))
+                        model.UserRoleName = selectedRole;
+                }
+                catch { }
+            }
+
+            return PartialView("_DeleteAccountPartial", model);
+        }
+
+        //
+        // POST: /Account/Delete
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public JsonResult DeleteAccount(Guid userGUID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                // Get associated user
+                var service = CreatePersonService();
+                var person = service.GetPersonByGUID(userGUID);
+                if(person is null)
+                    return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+
+                // Delete associated user
+                if (!service.DeletePerson(person.PersonID))
+                    return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+
+                // Delete account
+                var user = UserManager.FindById(userGUID.ToString());
+                bool success = (UserManager.Delete(user) == IdentityResult.Success);
+                return Json(new { successful = success }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         private UserRoleService CreateUserRoleService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new UserRoleService(userId);
+            return service;
+        }
+
+        private PersonService CreatePersonService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new PersonService(userId);
             return service;
         }
 

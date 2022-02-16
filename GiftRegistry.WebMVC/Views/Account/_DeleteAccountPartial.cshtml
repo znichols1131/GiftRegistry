@@ -1,0 +1,57 @@
+﻿@model GiftRegistry.Models.UserRoleDetail
+
+<div class="modal fade" id="deleteAccount">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteAccountLabel">Delete Account</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <h5 class="mb-2">Are you sure you want to delete this?</h5>
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FullName)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UserRoleName)
+                        </dt>
+
+                        @if (string.IsNullOrWhiteSpace(Model.UserRoleName))
+                        {
+                            <dd>
+                                <p>None</p>
+                            </dd>
+                        }
+                        else
+                        {
+                            <dd>
+                                @Html.DisplayFor(model => model.UserRoleName)
+                            </dd>
+                        }
+                    </dl>
+                </div>
+
+                @using (Html.BeginForm("DeleteAccount", "Account", new { @userGUID = Model.UserGUID }, FormMethod.Post, new { @id = "basic-form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
+                        <input type="button" value="Delete" data-save="modal" class="btn btn-red" id="btnDeleteSubmit" />
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+

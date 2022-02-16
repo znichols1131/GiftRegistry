@@ -175,6 +175,11 @@ namespace GiftRegistry.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
+                if(!ctx.People.Any(e => e.PersonGUID == guid))
+                {
+                    return null;
+                }
+
                 var entity =
                     ctx
                         .People
@@ -219,20 +224,40 @@ namespace GiftRegistry.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity =
+                if (ctx.People.Any(e => e.PersonID == id))
+                {
+                    var entity =
                     ctx
                         .People
-                        .Single(e => e.PersonID == id && e.PersonGUID == _userId);
+                        .Include("WishLists")
+                        .Single(e => e.PersonID == id);
 
-                ctx.People.Remove(entity);
+                    // Don't rely on cascade deleting. We want to send notification to buyers whose transactions will be deleted
+                    var wishListService = CreateWishListService();
+                    foreach (var gift in entity.WishLists)
+                    {
+                        wishListService.DeleteWishList(gift.WishListID);
+                    }
 
-                return ctx.SaveChanges() == 1;
+                    ctx.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+                    ctx.People.Remove(entity);
+
+                    return ctx.SaveChanges() > 0;
+                }                
             }
+
+            return false;
         }
 
         private ImageService CreateImageService()
         {
             var service = new ImageService(_userId);
+            return service;
+        }
+
+        private WishListService CreateWishListService()
+        {
+            var service = new WishListService(_userId);
             return service;
         }
 

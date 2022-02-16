@@ -1,11 +1,11 @@
 ﻿@model GiftRegistry.Models.UserRoleDetail
 
-<div class="modal fade" id="editUserRole">
+<div class="modal fade" id="registerRole">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title" id="editUserRoleLabel">Edit User Role</h4>
+                <h4 class="modal-title" id="registerRoleLabel">Edit User Role</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             @using (Html.BeginForm("RegisterRole", "Account", null, FormMethod.Post, new { @id = "basic-form" }))

@@ -117,13 +117,19 @@ namespace GiftRegistry.Services
             List<Transaction> transactions;
             using (var ctx = new ApplicationDbContext())
             {
-                var entity =
+                if(ctx.Gifts.Any(e => e.GiftID == id))
+                {
+                    var entity =
                     ctx
                         .Gifts
                         .Include("Transactions")
-                        .Single(e => e.GiftID == id && e.WishList.OwnerGUID == _userId);
+                        .Single(e => e.GiftID == id);
 
-                transactions = entity.Transactions.ToList();
+                    transactions = entity.Transactions.ToList();
+                }else
+                {
+                    return false;
+                }                
             }
 
             // Don't rely on cascade deleting. We want to send notification to buyers whose transactions will be deleted
@@ -135,15 +141,23 @@ namespace GiftRegistry.Services
 
             using (var ctx = new ApplicationDbContext())
             {
-                var entity =
+                if(ctx.Gifts.Any(e => e.GiftID == id))
+                {
+                    var entity =
                     ctx
                         .Gifts
                         .Include("Transactions")
-                        .Single(e => e.GiftID == id && e.WishList.OwnerGUID == _userId);
+                        .Single(e => e.GiftID == id);
 
-                ctx.Gifts.Remove(entity);
-                return ctx.SaveChanges() == 1;
+
+                    ctx.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+                    ctx.Gifts.Remove(entity);
+                    
+                    return ctx.SaveChanges() == 1;
+                }                
             }
+
+            return false;
         }
 
         public int QuantityPurchasedForGiftID(int giftID)

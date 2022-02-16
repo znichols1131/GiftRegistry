@@ -18,8 +18,15 @@ namespace GiftRegistry.WebMVC.Controllers
         public ActionResult Edit()
         {            
             var service = CreatePersonService();
-
             var detail = service.GetCurrentPerson();
+
+            if(detail is null)
+            {
+                // Create a new person
+                service.CreatePerson(new PersonCreate() { FirstName = "First Name", LastName = "Last Name" });
+                detail = service.GetCurrentPerson();
+            }
+
             var model =
                 new PersonEdit
                 {

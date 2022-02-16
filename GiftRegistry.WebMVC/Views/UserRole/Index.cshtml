@@ -32,12 +32,12 @@
             </td>
             <td class="align-middle">
                 
-                <button type="button" class="btn btn-red float-end btn-list-item" data-toggle="ajax-modal" data-target="#deleteWishList"
-                        data-url="@Url.Action("RegisterRole", "Account", new { userGUID = item.UserGUID })">
+                <button type="button" class="btn btn-red float-end btn-list-item" data-toggle="ajax-modal" data-target="#registerRole"
+                        data-url="@Url.Action("Delete", "Account", new { userGUID = item.UserGUID })">
                     Delete
                 </button>
 
-                <button type="button" class="btn btn-gray-light float-end btn-list-item" data-toggle="ajax-modal" data-target="#deleteWishList"
+                <button type="button" class="btn btn-gray-light float-end btn-list-item" data-toggle="ajax-modal" data-target="#deleteAccount"
                         data-url="@Url.Action("RegisterRole", "Account", new { userGUID = item.UserGUID })">
                     Edit
                 </button>
@@ -67,6 +67,27 @@
 
         // Submit user role update
         $('#PlaceHolderHere').on('click', '[id="btnEditSubmit"]', function (event) {
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var sendData = form.serialize();
+            $.post(actionUrl, sendData).done(function (data) {
+                if (Boolean(data.successful)) {
+                    PlaceHolderElement.find('.modal').modal('hide');
+                    setTimeout(function () {// wait for 1 secs
+                        location.reload(); // then reload the page.
+                    }, 500);
+                } else {
+                    // Show errors
+                    //    alert("Error");
+                }
+            })
+                .fail(function () {
+                    alert("There was an error processing your request. Please try again.");
+                });
+        });
+
+        // Submit user delete
+        $('#PlaceHolderHere').on('click', '[id="btnDeleteSubmit"]', function (event) {
             var form = $(this).parents('.modal').find('form');
             var actionUrl = form.attr('action');
             var sendData = form.serialize();

@@ -153,23 +153,29 @@ namespace GiftRegistry.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity =
-                    ctx
-                        .WishLists
-                        .Include("Gifts")
-                        .Single(e => e.WishListID == id && e.OwnerGUID == _userId);
-
-                // Don't rely on cascade deleting. We want to send notification to buyers whose transactions will be deleted
-                var giftService = CreateGiftService();
-                foreach (var gift in entity.Gifts)
+                if(ctx.WishLists.Any(e => e.WishListID == id))
                 {
-                    giftService.DeleteGift(gift.GiftID);
-                }
+                    var entity =
+                                        ctx
+                                            .WishLists
+                                            .Include("Gifts")
+                                            .Single(e => e.WishListID == id);
 
-                ctx.WishLists.Remove(entity);
+                    // Don't rely on cascade deleting. We want to send notification to buyers whose transactions will be deleted
+                    var giftService = CreateGiftService();
+                    foreach (var gift in entity.Gifts)
+                    {
+                        giftService.DeleteGift(gift.GiftID);
+                    }
 
-                return ctx.SaveChanges() == 1;
+                    ctx.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+                    ctx.WishLists.Remove(entity);
+
+                    return ctx.SaveChanges() > 0;
+                }                
             }
+
+            return false;
         }
 
         public int GetCurrentUserID()
