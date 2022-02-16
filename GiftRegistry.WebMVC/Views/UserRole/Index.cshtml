@@ -1,0 +1,88 @@
+﻿@model IEnumerable<GiftRegistry.Models.UserRoleDetail>
+
+@{
+    ViewBag.Title = "Manage Users";
+}
+
+<div id="PlaceHolderHere"></div>
+
+<h2 class="mt-5">Manage Users</h2>
+
+<hr />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserRoleName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserRoleName)
+            </td>
+            <td>
+                <button type="button" class="btn btn-gray-light float-end btn-list-item" data-toggle="ajax-modal" data-target="#deleteWishList"
+                        data-url="@Url.Action("RegisterRole", "Account", new { userGUID = item.UserGUID })">
+                    Edit
+                </button>
+
+                @*@Html.ActionLink("Edit", "RegisterRole", "Account", new { userGUID = item.UserGUID }, new { @class = "btn btn-gray-light float-end btn-list-item" })*@
+                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+    $(function () {
+
+        var PlaceHolderElement = $('#PlaceHolderHere');
+
+        $('button[data-toggle="ajax-modal"]').click(function (event) {
+            var url = $(this).data('url');
+            $.get(url).done(function (data) {
+                PlaceHolderElement.html(data);
+                PlaceHolderElement.find('.modal').modal('show');
+            });
+        });
+
+        // Submit user role update
+        $('#PlaceHolderHere').on('click', '[id="btnEditSubmit"]', function (event) {
+            var form = $(this).parents('.modal').find('form');
+            var actionUrl = form.attr('action');
+            var sendData = form.serialize();
+            $.post(actionUrl, sendData).done(function (data) {
+                if (Boolean(data.successful)) {
+                    PlaceHolderElement.find('.modal').modal('hide');
+                    setTimeout(function () {// wait for 1 secs
+                        location.reload(); // then reload the page.
+                    }, 500);
+                } else {
+                    // Show errors
+                    //    alert("Error");
+                }
+            })
+                .fail(function () {
+                    alert("There was an error processing your request. Please try again.");
+                });
+        });
+
+    });
+
+</script>

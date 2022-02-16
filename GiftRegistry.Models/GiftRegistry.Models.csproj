@@ -76,6 +76,7 @@
     <Compile Include="Transaction\TransactionDetail.cs" />
     <Compile Include="Transaction\TransactionEdit.cs" />
     <Compile Include="Transaction\TransactionListItem.cs" />
+    <Compile Include="UserRoleDetail.cs" />
     <Compile Include="WishList\WishListListItem.cs" />
     <Compile Include="WishList\WishListDetail.cs" />
     <Compile Include="WishList\WishListEdit.cs" />

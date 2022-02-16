@@ -13,6 +13,7 @@ using GiftRegistry.Data;
 using GiftRegistry.Services;
 using GiftRegistry.Models;
 using System.Web.UI;
+using System.Collections.Generic;
 
 namespace GiftRegistry.WebMVC.Controllers
 {
@@ -175,6 +176,86 @@ namespace GiftRegistry.WebMVC.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+
+        //
+        // GET: /Account/RegisterRole
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult RegisterRole(Guid userGUID)
+        {
+            var service = CreateUserRoleService();
+
+            var model = service.GetUserForGuid(userGUID);
+            
+            if(string.IsNullOrWhiteSpace(model.UserRoleName))
+            {
+                try
+                {
+                    string selectedRole = UserManager.GetRoles(model.UserGUID.ToString()).ToArray().First();
+                    if (!string.IsNullOrWhiteSpace(selectedRole))
+                        model.UserRoleName = selectedRole;
+                }
+                catch { }                
+            }
+            
+            var userRoles = service.GetAllRoles();
+
+            //List<SelectListItem> roles = new List<SelectListItem>
+            //{
+            //    new SelectListItem{Text = "None", Value = "None"}
+
+            //};
+
+            //foreach (var role in userRoles)
+            //{
+            //    roles.Add(new SelectListItem { Text = role.Name, Value = role.Name });
+            //}
+
+            ViewBag.UserRoles = new SelectList(userRoles, "Name", "Name", model.UserRoleName);
+
+            return PartialView("RegisterRole", model);
+        }
+
+        //
+        // POST: /Account/RegisterRole
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public JsonResult RegisterRole(UserRoleDetail model)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if(ctx.Users.Any(i => i.Id == model.UserGUID.ToString()))
+                {
+                    var user = ctx.Users.Where(i => i.Id == model.UserGUID.ToString()).FirstOrDefault();
+
+                    // Remove user's current roles
+                    try
+                    {
+                        string[] allUserRoles = UserManager.GetRoles(user.Id).ToArray();
+                        UserManager.RemoveFromRoles(user.Id, allUserRoles);
+                    }
+                    catch { }                    
+
+                    // Add new role
+                    if(!string.IsNullOrWhiteSpace(model.UserRoleName))
+                        UserManager.AddToRole(user.Id, model.UserRoleName);
+
+                    return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+        }
+
+        private UserRoleService CreateUserRoleService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new UserRoleService(userId);
+            return service;
+        }
+
 
         //
         // GET: /Account/ConfirmEmail

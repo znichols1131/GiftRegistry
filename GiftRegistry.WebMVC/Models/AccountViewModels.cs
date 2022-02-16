@@ -64,6 +64,8 @@ namespace GiftRegistry.WebMVC.Models
 
     public class RegisterViewModel
     {
+        public string UserRoleName { get; set; }    // For users roles
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

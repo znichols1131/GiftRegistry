@@ -175,6 +175,7 @@
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
+    <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="Controllers\WishListController.cs" />
     <Compile Include="Controllers\_ImageUploadController.cs" />
     <Compile Include="Global.asax.cs">
@@ -337,6 +338,8 @@
     <Content Include="Views\Friend\_FriendEditPartial.cshtml" />
     <Content Include="Views\Friend\_FriendCreatePartial.cshtml" />
     <Content Include="Views\Friend\_FriendDeletePartial.cshtml" />
+    <Content Include="Views\UserRole\Index.cshtml" />
+    <Content Include="Views\Account\RegisterRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

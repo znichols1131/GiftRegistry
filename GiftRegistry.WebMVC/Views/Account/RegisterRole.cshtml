@@ -1,0 +1,46 @@
+﻿@model GiftRegistry.Models.UserRoleDetail
+
+<div class="modal fade" id="editUserRole">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="editUserRoleLabel">Edit User Role</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @using (Html.BeginForm("RegisterRole", "Account", null, FormMethod.Post, new { @id = "basic-form" }))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.UserGUID)
+                        @Html.HiddenFor(model => model.FullName)
+                        @Html.HiddenFor(model => model.PersonID)
+
+                        <div class="form-group">
+                            @Html.Label("User Name", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                <p>@Model.FullName</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserRoleName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("UserRoleName", (IEnumerable<SelectListItem>)ViewBag.UserRoles, "", new { @class = "form-control form-select" })
+                                @Html.ValidationMessageFor(model => model.UserRoleName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gray-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-gray-dark btn-form-submission" data-save="modal" id="btnEditSubmit">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
