@@ -84,14 +84,23 @@
         <div class="col-md-auto pl-0 mr-1">
             @using (Html.BeginForm("Details", "WishList", new { @id = Model.WishListID }, FormMethod.Get))
             {
-                @Html.TextBox("search", null, new { @id = "searchField", @onblur = "return check(this);", @placeholder = "Search..." }) <input class="btn btn-gray-light search-button mr-1 ml-0" type="submit" value="" />
+                @Html.TextBox("search", null, new { @id = "searchField", @onblur = "return check(this);", @placeholder = "Search..." })
+                <input class="btn btn-gray-light search-button mr-1 ml-0" type="submit" value="" />
             }
         </div>
-        
-        <div class="col-md-auto px-0 mr-1 ml-0">
+
+        <div class="col-md-auto px-0 mr-1 ml-0 me-auto">
             @using (Html.BeginForm("Details", "WishList", new { @id = Model.WishListID }, FormMethod.Get))
             {
                 <button type="submit" id="clearButton" class="btn btn-gray-dark" disabled>Clear Search</button>
+            }
+        </div>
+
+        <div id="sort-container" class="col-md-auto px-0 mr-1 ml-0">
+            @using (Html.BeginForm("Details", "WishList", new { @id = Model.WishListID }, FormMethod.Get, new { @class="input-group" }))
+            {
+                @Html.DropDownList("sort", (IEnumerable<SelectListItem>)ViewBag.SortOptions, null, new { @id = "sort-Field", @onblur = "return check(this);", @placeholder = "Sort...", @class= "form-select" })
+                <button type="submit" id="sortButton" class="btn btn-gray-dark mr-1 ml-0">Sort</button>
             }
         </div>
 
@@ -232,6 +241,10 @@
 
     #list-owner-img-wrapper {
         height: 80%;
+    }    
+
+    #sort-Field {
+        margin-right: 10px;
     }
 
     input[type=text] {

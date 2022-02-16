@@ -61,13 +61,44 @@ namespace GiftRegistry.WebMVC.Controllers
         }
 
         // GET: Detail
-        public ActionResult Details(int id, string search)
+        public ActionResult Details(int id, string search, string sort)
         {            
             var service = CreateWishListService();
 
             var model = string.IsNullOrWhiteSpace(search) ? service.GetWishListByID(id) : service.GetWishListByIDAndSearch(id, search); 
 
             ViewBag.UserGUID = Guid.Parse(User.Identity.GetUserId());
+
+            // Sorting options
+            List<SelectListItem> sortOptions = new List<SelectListItem>();
+            sortOptions.Add(new SelectListItem
+            {
+                Text = "Name (A to Z)",
+                Value = "name_asc",
+                Selected = true
+            });
+            sortOptions.Add(new SelectListItem
+            {
+                Text = "Name (Z to A)",
+                Value = "name_desc"
+            });
+            ViewBag.SortOptions = sortOptions;
+
+            if(!string.IsNullOrWhiteSpace(sort))
+            {
+                switch(sort)
+                {
+                    case "name_asc":
+                        model.Gifts = model.Gifts.OrderBy(g => g.Name.ToLower()).ToList();
+                        break;
+                    case "name_desc":
+                        model.Gifts = model.Gifts.OrderByDescending(g => g.Name).ToList(); 
+                        break;
+                    default:
+                        model.Gifts = model.Gifts.OrderBy(g => g.Name.ToLower()).ToList(); 
+                        break;
+                }
+            }
 
             return View(model);
         }
