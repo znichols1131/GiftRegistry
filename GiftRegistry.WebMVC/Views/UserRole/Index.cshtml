@@ -24,20 +24,23 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
-            <td>
+            <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.UserRoleName)
             </td>
-            <td>
+            <td class="align-middle">
+                
+                <button type="button" class="btn btn-red float-end btn-list-item" data-toggle="ajax-modal" data-target="#deleteWishList"
+                        data-url="@Url.Action("RegisterRole", "Account", new { userGUID = item.UserGUID })">
+                    Delete
+                </button>
+
                 <button type="button" class="btn btn-gray-light float-end btn-list-item" data-toggle="ajax-modal" data-target="#deleteWishList"
                         data-url="@Url.Action("RegisterRole", "Account", new { userGUID = item.UserGUID })">
                     Edit
                 </button>
-
-                @*@Html.ActionLink("Edit", "RegisterRole", "Account", new { userGUID = item.UserGUID }, new { @class = "btn btn-gray-light float-end btn-list-item" })*@
-                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
             </td>
         </tr>
     }

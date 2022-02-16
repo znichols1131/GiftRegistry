@@ -14,6 +14,8 @@ namespace GiftRegistry.WebMVC.Controllers
     public class UserRoleController : Controller
     {
         // GET: UserRole
+        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var service = CreateUserRoleService();

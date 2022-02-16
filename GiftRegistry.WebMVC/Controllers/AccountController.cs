@@ -201,20 +201,9 @@ namespace GiftRegistry.WebMVC.Controllers
             
             var userRoles = service.GetAllRoles();
 
-            //List<SelectListItem> roles = new List<SelectListItem>
-            //{
-            //    new SelectListItem{Text = "None", Value = "None"}
-
-            //};
-
-            //foreach (var role in userRoles)
-            //{
-            //    roles.Add(new SelectListItem { Text = role.Name, Value = role.Name });
-            //}
-
             ViewBag.UserRoles = new SelectList(userRoles, "Name", "Name", model.UserRoleName);
 
-            return PartialView("RegisterRole", model);
+            return PartialView("_RegisterRolePartial", model);
         }
 
         //
