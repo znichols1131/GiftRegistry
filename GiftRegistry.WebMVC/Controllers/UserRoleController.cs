@@ -16,12 +16,13 @@ namespace GiftRegistry.WebMVC.Controllers
         // GET: UserRole
         [Authorize]
         [Authorize(Roles = "Admin")]
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
             var service = CreateUserRoleService();
-            var model = service.GetUsers();
 
-            foreach(var user in model)
+            var model = string.IsNullOrWhiteSpace(search) ? service.GetUsers() : service.GetUsersForSearch(search);
+
+            foreach (var user in model)
             {
                 if(string.IsNullOrWhiteSpace(user.UserRoleName))
                 {

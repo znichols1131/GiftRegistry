@@ -47,9 +47,16 @@
 
 <div class="row row-gallery row-cols-1 row-cols-md-auto g-4 mb-2">
 
-    @foreach (var item in Model)
+    @if (Model is null || Model.Count() == 0)
     {
-        @Html.Partial("_PersonListItemPartial", item)
+        <p class="my-4">We couldn't find any people at this time.</p>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            @Html.Partial("_PersonListItemPartial", item)
+        }
     }
 
 </div>

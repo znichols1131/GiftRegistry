@@ -39,6 +39,27 @@ namespace GiftRegistry.Services
             return null;
         }
 
+        public IEnumerable<UserRoleDetail> GetUsersForSearch(string search)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                if (ctx.Users.Any())
+                {
+                    var users = ctx.Users.ToArray();
+
+                    List<UserRoleDetail> result = new List<UserRoleDetail>();
+                    foreach (var user in users)
+                    {
+                        result.Add(GetInfoForUser(user));
+                    }
+
+                    return result.Where(e => e.FullName.ToLower().Contains(search.ToLower())).OrderBy(e => e.FullName);
+                }
+            }
+
+            return null;
+        }
+
         public UserRoleDetail GetUserForGuid(Guid guid)
         {
             using (var ctx = new ApplicationDbContext())
