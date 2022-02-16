@@ -23,7 +23,8 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr class="@GetClassForUserRole(item.UserRoleName)">
+
             <td class="align-middle">
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
@@ -31,7 +32,7 @@
                 @Html.DisplayFor(modelItem => item.UserRoleName)
             </td>
             <td class="align-middle">
-                
+
                 <button type="button" class="btn btn-red float-end btn-list-item" data-toggle="ajax-modal" data-target="#registerRole"
                         data-url="@Url.Action("Delete", "Account", new { userGUID = item.UserGUID })">
                     Delete
@@ -46,6 +47,22 @@
     }
 
 </table>
+
+@functions{
+    public string GetClassForUserRole(string userRole)
+    {
+        switch (userRole)
+        {
+
+            case "Admin":
+                return "table-success";
+            case "Mod":
+                return "table-info";
+            default:
+                return "";
+        }
+    }
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
