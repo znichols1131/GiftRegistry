@@ -58,6 +58,11 @@
     <Compile Include="Gift.cs" />
     <Compile Include="IdentityModels.cs" />
     <Compile Include="CustomImage.cs" />
+    <Compile Include="Migrations\202202170131060_init.cs" />
+    <Compile Include="Migrations\202202170131060_init.Designer.cs">
+      <DependentUpon>202202170131060_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,6 +124,11 @@
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202202170131060_init.resx">
+      <DependentUpon>202202170131060_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
