@@ -58,43 +58,6 @@
     <Compile Include="Gift.cs" />
     <Compile Include="IdentityModels.cs" />
     <Compile Include="CustomImage.cs" />
-    <Compile Include="Migrations\202201242106394_init.cs" />
-    <Compile Include="Migrations\202201242106394_init.Designer.cs">
-      <DependentUpon>202201242106394_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202201250155422_init_wishlist.cs" />
-    <Compile Include="Migrations\202201250155422_init_wishlist.Designer.cs">
-      <DependentUpon>202201250155422_init_wishlist.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202201251858257_init_gift_qtypurchased.cs" />
-    <Compile Include="Migrations\202201251858257_init_gift_qtypurchased.Designer.cs">
-      <DependentUpon>202201251858257_init_gift_qtypurchased.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202201281609495_image-init.cs" />
-    <Compile Include="Migrations\202201281609495_image-init.Designer.cs">
-      <DependentUpon>202201281609495_image-init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202201291428112_gift-image-init.cs" />
-    <Compile Include="Migrations\202201291428112_gift-image-init.Designer.cs">
-      <DependentUpon>202201291428112_gift-image-init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202201312154286_gift-image2-init.cs" />
-    <Compile Include="Migrations\202201312154286_gift-image2-init.Designer.cs">
-      <DependentUpon>202201312154286_gift-image2-init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202202021956224_notifications-added-init.cs" />
-    <Compile Include="Migrations\202202021956224_notifications-added-init.Designer.cs">
-      <DependentUpon>202202021956224_notifications-added-init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202202030017388_friend-requests-added-init.cs" />
-    <Compile Include="Migrations\202202030017388_friend-requests-added-init.Designer.cs">
-      <DependentUpon>202202030017388_friend-requests-added-init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202202151557342_DateOfBirth-notation.cs" />
-    <Compile Include="Migrations\202202151557342_DateOfBirth-notation.Designer.cs">
-      <DependentUpon>202202151557342_DateOfBirth-notation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Notification.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -156,35 +119,6 @@
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202201242106394_init.resx">
-      <DependentUpon>202201242106394_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202201250155422_init_wishlist.resx">
-      <DependentUpon>202201250155422_init_wishlist.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202201251858257_init_gift_qtypurchased.resx">
-      <DependentUpon>202201251858257_init_gift_qtypurchased.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202201281609495_image-init.resx">
-      <DependentUpon>202201281609495_image-init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202201291428112_gift-image-init.resx">
-      <DependentUpon>202201291428112_gift-image-init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202201312154286_gift-image2-init.resx">
-      <DependentUpon>202201312154286_gift-image2-init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202202021956224_notifications-added-init.resx">
-      <DependentUpon>202202021956224_notifications-added-init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202202030017388_friend-requests-added-init.resx">
-      <DependentUpon>202202030017388_friend-requests-added-init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202202151557342_DateOfBirth-notation.resx">
-      <DependentUpon>202202151557342_DateOfBirth-notation.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
