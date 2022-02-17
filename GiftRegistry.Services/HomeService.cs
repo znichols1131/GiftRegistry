@@ -40,6 +40,8 @@ namespace GiftRegistry.Services
 
                 foreach(var friend in friends)
                 {
+                    // GET BIRTHDAY if it's within time frame
+
                     if(friend.Birthday != null)
                     {
                         DateTime nextBirthday = new DateTime(today.Year, ((DateTime)friend.Birthday).Month, ((DateTime)friend.Birthday).Day);
@@ -61,19 +63,22 @@ namespace GiftRegistry.Services
                         }
                     }
 
-
+                    // GET WISH LISTS that fit time frame
                     foreach(var wishList in friend.WishLists)
                     {
-                        EventListItem newEvent = new EventListItem();
+                        if(wishList.DueDate != null)
+                        {
+                            EventListItem newEvent = new EventListItem();
 
-                        newEvent.OwnerID = friend.OwnerID;
-                        newEvent.OwnerName = friend.OwnerName;
-                        newEvent.WishListID = wishList.WishListID;
-                        newEvent.EventName = wishList.Name;
-                        newEvent.EventDate = (DateTime)wishList.DueDate;                        
-                        newEvent.DaysRemaining = (int)((TimeSpan)((DateTime)wishList.DueDate - today)).TotalDays;
+                            newEvent.OwnerID = friend.OwnerID;
+                            newEvent.OwnerName = friend.OwnerName;
+                            newEvent.WishListID = wishList.WishListID;
+                            newEvent.EventName = wishList.Name;
+                            newEvent.EventDate = (DateTime)wishList.DueDate;
+                            newEvent.DaysRemaining = (int)((TimeSpan)((DateTime)wishList.DueDate - today)).TotalDays;
 
-                        events.Add(newEvent);
+                            events.Add(newEvent);
+                        }                        
                     }
                 }
 
