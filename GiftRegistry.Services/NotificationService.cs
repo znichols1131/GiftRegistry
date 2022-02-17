@@ -134,14 +134,15 @@ namespace GiftRegistry.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                if(ctx.Notifications.Include("Recipient").Any(e => e.NotificationID == id && (e.Recipient.PersonGUID == _userId)))
+                if(ctx.Notifications.Include("Recipient").Any(e => e.NotificationID == id))
                 {
                     var entity =
                     ctx
                         .Notifications
                         .Include("Recipient")
-                        .Single(e => e.NotificationID == id && (e.Recipient.PersonGUID == _userId));
+                        .Single(e => e.NotificationID == id);
 
+                    ctx.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                     ctx.Notifications.Remove(entity);
 
                     return ctx.SaveChanges() > 0;

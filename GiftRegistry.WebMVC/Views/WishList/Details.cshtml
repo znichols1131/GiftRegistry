@@ -22,7 +22,10 @@
                         <p>Description: @Model.Description</p>
                     }
 
-                    <p>Date: @Html.DisplayFor(model => model.DueDate)</p>
+                    @if (Model.DueDate != null)
+                    {
+                        <p>Date: @Html.DisplayFor(model => model.DueDate)</p>
+                    }
 
                     @if (ViewBag.UserGUID != Model.OwnerGUID)
                     {
