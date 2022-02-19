@@ -45,6 +45,9 @@ namespace GiftRegistry.Services
                     if(friend.Birthday != null)
                     {
                         DateTime nextBirthday = new DateTime(today.Year, ((DateTime)friend.Birthday).Month, ((DateTime)friend.Birthday).Day);
+                        if (nextBirthday < today)
+                            nextBirthday = nextBirthday.AddYears(1);
+
                         int nextAge = nextBirthday.Year - ((DateTime)friend.Birthday).Year;
 
                         if ((nextBirthday >= today) && (nextBirthday <= today.AddMonths(3)))
@@ -135,6 +138,9 @@ namespace GiftRegistry.Services
                     if (friend.Birthday != null)
                     {
                         DateTime nextBirthday = new DateTime(today.Year, ((DateTime)friend.Birthday).Month, ((DateTime)friend.Birthday).Day);
+                        if (nextBirthday < today)
+                            nextBirthday = nextBirthday.AddYears(1); 
+                        
                         int nextAge = nextBirthday.Year - ((DateTime)friend.Birthday).Year;
 
                         if ((nextBirthday >= today) && (nextBirthday <= today.AddMonths(monthRange)))
