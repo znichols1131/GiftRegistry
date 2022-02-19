@@ -59,11 +59,12 @@ namespace GiftRegistry.Services
                                     Gift = e.Gift,
                                     GiverID = e.GiverID,
                                     Giver = e.Giver,
-                                    RecipientName = e.Gift.WishList.Owner.FirstName + " " + e.Gift.WishList.Owner.LastName
+                                    RecipientName = e.Gift.WishList.Owner.FirstName + " " + e.Gift.WishList.Owner.LastName,
+                                    DateOfRecentActivity = (e.DateModified == null) ? e.DateCreated : (DateTime)e.DateModified
                                 }
                         );
 
-                return query.ToArray();
+                return query.OrderByDescending(e => e.DateOfRecentActivity).ToArray();
             }
         }
 
@@ -91,11 +92,12 @@ namespace GiftRegistry.Services
                                     Gift = e.Gift,
                                     GiverID = e.GiverID,
                                     Giver = e.Giver,
-                                    RecipientName = e.Gift.WishList.Owner.FirstName + " " + e.Gift.WishList.Owner.LastName
+                                    RecipientName = e.Gift.WishList.Owner.FirstName + " " + e.Gift.WishList.Owner.LastName,
+                                    DateOfRecentActivity = (e.DateModified == null) ? e.DateCreated : (DateTime)e.DateModified
                                 }
                         );
 
-                return query.ToArray();
+                return query.OrderByDescending(e => e.DateOfRecentActivity).ToArray();
             }
         }
 

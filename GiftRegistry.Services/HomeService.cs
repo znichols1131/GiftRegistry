@@ -47,7 +47,7 @@ namespace GiftRegistry.Services
                         DateTime nextBirthday = new DateTime(today.Year, ((DateTime)friend.Birthday).Month, ((DateTime)friend.Birthday).Day);
                         int nextAge = nextBirthday.Year - ((DateTime)friend.Birthday).Year;
 
-                        if (nextBirthday.Month - today.Month <= 3)
+                        if ((nextBirthday >= today) && (nextBirthday <= today.AddMonths(3)))
                         {
                             // Birthday is within 3 months
                             EventListItem newBirthday = new EventListItem();
@@ -137,7 +137,7 @@ namespace GiftRegistry.Services
                         DateTime nextBirthday = new DateTime(today.Year, ((DateTime)friend.Birthday).Month, ((DateTime)friend.Birthday).Day);
                         int nextAge = nextBirthday.Year - ((DateTime)friend.Birthday).Year;
 
-                        if (nextBirthday.Month - today.Month <= monthRange)
+                        if ((nextBirthday >= today) && (nextBirthday <= today.AddMonths(monthRange)))
                         {
                             // Birthday is within 3 months
                             EventListItem newBirthday = new EventListItem();
@@ -156,7 +156,7 @@ namespace GiftRegistry.Services
 
                     foreach (var wishList in friend.WishLists)
                     {
-                        if(wishList.DueDate <= DateTime.Today.AddMonths(monthRange))
+                        if(wishList.DueDate != null && wishList.DueDate <= today.AddMonths(monthRange))
                         {
                             EventListItem newEvent = new EventListItem();
 

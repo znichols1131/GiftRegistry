@@ -29,7 +29,9 @@ namespace GiftRegistry.Services
                     List<UserRoleDetail> result = new List<UserRoleDetail>();
                     foreach (var user in users)
                     {
-                        result.Add(GetInfoForUser(user));
+                        var userInfo = GetInfoForUser(user);
+                        if (userInfo != null)
+                            result.Add(userInfo);
                     }
 
                     return result.OrderBy(e => e.FullName);
@@ -121,6 +123,9 @@ namespace GiftRegistry.Services
 
             var service = CreatePersonService();
             PersonDetail person = service.GetPersonByGUID(result.UserGUID);
+
+            if (person is null)
+                return null;
 
             result.PersonID = person.PersonID;
             result.FullName = person.FirstName + " " + person.LastName;

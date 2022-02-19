@@ -21,7 +21,10 @@ namespace GiftRegistry.WebMVC.Controllers
                 model = null;
             }else
             {
-                model = string.IsNullOrWhiteSpace(time) ? service.GetEvents() : service.GetEventsWithinTime(time);
+                // Default setting
+                time = string.IsNullOrWhiteSpace(time) ? "month03" : time;
+                model = service.GetEventsWithinTime(time);
+                //model = string.IsNullOrWhiteSpace(time) ? service.GetEvents() : service.GetEventsWithinTime(time);
             }
 
             // Sorting options
@@ -29,13 +32,13 @@ namespace GiftRegistry.WebMVC.Controllers
             sortOptions.Add(new SelectListItem
             {
                 Text = "1 month",
-                Value = "month01",
-                Selected = true
+                Value = "month01"
             });
             sortOptions.Add(new SelectListItem
             {
                 Text = "3 months",
-                Value = "month03"
+                Value = "month03",
+                Selected = true
             });
             sortOptions.Add(new SelectListItem
             {

@@ -28,5 +28,9 @@ namespace GiftRegistry.Models
         public Person Giver { get; set; }
 
         public string RecipientName { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime DateOfRecentActivity { get; set; }
+
     }
 }
