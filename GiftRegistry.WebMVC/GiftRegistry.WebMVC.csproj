@@ -210,15 +210,20 @@
     <Content Include="Images\Awards.svg" />
     <Content Include="Images\Bee_Default.png" />
     <Content Include="Images\Bee_Default_Small.png" />
+    <Content Include="Images\Biking.svg" />
     <Content Include="Images\Birthday.svg" />
     <Content Include="Images\CampFire.svg" />
+    <Content Include="Images\Camping.svg" />
     <Content Include="Images\Coffee.svg" />
     <Content Include="Images\ContactMe.svg" />
     <Content Include="Images\DefaultAvatar.png" />
     <Content Include="Images\EmptyCart.svg" />
     <Content Include="Images\Events.svg" />
+    <Content Include="Images\Exploring.svg" />
+    <Content Include="Images\Exploring2.svg" />
     <Content Include="Images\Filter.svg" />
     <Content Include="Images\Fishing.svg" />
+    <Content Include="Images\Floating.svg" />
     <Content Include="Images\Friendship.svg" />
     <Content Include="Images\Gift1.svg" />
     <Content Include="Images\Gift2.svg" />
@@ -343,6 +348,7 @@
     <Content Include="Views\UserRole\Index.cshtml" />
     <Content Include="Views\Account\_RegisterRolePartial.cshtml" />
     <Content Include="Views\Account\_DeleteAccountPartial.cshtml" />
+    <Content Include="Views\Home\GetStarted.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

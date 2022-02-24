@@ -13,13 +13,20 @@ namespace GiftRegistry.WebMVC.Controllers
     {
         public ActionResult Index(string time)
         {
+            // Check if they have a Person object yet
+            if (User.Identity.IsAuthenticated && !PersonExists())
+            {
+                return RedirectToAction("GetStarted", "Home");
+            }
+
             var service = CreateHomeService();
             IEnumerable<EventListItem> model;
 
-            if(service is null)
+            if (service is null)
             {
                 model = null;
-            }else
+            }
+            else
             {
                 // Default setting
                 time = string.IsNullOrWhiteSpace(time) ? "month03" : time;
@@ -70,6 +77,36 @@ namespace GiftRegistry.WebMVC.Controllers
             return View();
         }
 
+        [Authorize]
+        [HttpGet]
+        [ActionName("GetStarted")]
+        public ActionResult GetStarted()
+        {
+            // Get the person object
+            var service = CreatePersonService();
+            var person = service.GetCurrentPerson();
+
+            // If person doesn't exist, make a new person
+            if (person is null)
+            {
+                service.CreatePerson(new PersonCreate() { FirstName = "First Name", LastName = "Last Name" });
+                person = service.GetCurrentPerson();
+            }
+
+            var model =
+                new PersonEdit
+                {
+                    PersonID = person.PersonID,
+                    FirstName = person.FirstName == "First Name" ? "" : person.FirstName,
+                    LastName = person.LastName == "Last Name" ? "" : person.LastName,
+                    Birthdate = person.Birthdate is null ? DateTime.Now : person.Birthdate,
+                    Image = person.Image,
+                    ImageID = person.Image.ImageID
+                };
+
+            return View(model);
+        }
+
         private string GetDateString()
         {
             DateTime today = DateTime.Now;
@@ -86,9 +123,36 @@ namespace GiftRegistry.WebMVC.Controllers
                 var userId = Guid.Parse(User.Identity.GetUserId());
                 var service = new HomeService(userId);
                 return service;
-            }catch
+            }
+            catch
             {
                 return null;
+            }
+        }
+        private PersonService CreatePersonService()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return null;
+
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new PersonService(userId);
+            return service;
+        }
+
+        private bool PersonExists()
+        {
+            try
+            {
+                var service = CreatePersonService();
+                var person = service.GetCurrentPerson();
+
+                return (person != null && 
+                    !string.IsNullOrWhiteSpace(person.FirstName) && person.FirstName.ToLower() != "first name" &&
+                    !string.IsNullOrWhiteSpace(person.LastName) && person.LastName.ToLower() != "last name");
+            }
+            catch
+            {
+                return false;
             }
         }
     }

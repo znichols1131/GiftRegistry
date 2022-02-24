@@ -1,0 +1,390 @@
+﻿@model GiftRegistry.Models.PersonEdit
+
+@{
+    ViewBag.Title = "Get Started";
+}
+
+<div class="row mt-4">
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4 gray-box">
+            <h4>Hello! Welcome to BeeGifted, a gift registry for any occassion.</h4>
+            <p class="mt-3">
+                Before we get started, there are a few questions we need to ask. Are you ready?
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="text-center">
+            <img class="feature-image" src="~/Images/Programmer.svg" alt="Creator image" />
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div id="editPersonSection" class="row justify-content-center mt-4">
+
+    <div class="col-md-6 align-self-end py-4">
+        <div class="mt-4 gray-box">
+            <h4>Let's start by getting your information.</h4>
+
+            <p class="mt-3">
+                Before you can add friends, you need a name and picture.
+                Your name and profile picture will be viewable to anyone on BeeGifted, but only your friends will see your birthday.
+                Your safety and privacy matter to BeeGifted!
+            </p>
+
+            <hr />
+
+            @Html.Partial("_ImageUploadPartial", Model.Image)
+
+            @using (Html.BeginForm("EditNoRedirect", "Person", null, FormMethod.Post, new { @id = "basic-form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.PersonID)
+
+                @Html.Hidden("ImageID", Model.ImageID, new { @class = "form-control person-image", id = "ImageIDField" })
+
+                <div class="my-4">
+
+                    <div class="form-group row justify-content-center">
+                        <div class="col-6">
+                            <label class="form-label" for="FirstName">First Name (required)</label>
+                            @*@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "form-label" })*@
+                            <div class="">
+                                <input id="FirstName" name="FirstName" required type="text" class="form-control" value="@Model.FirstName">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row justify-content-center">
+                        <div class="col-6">
+                            <label class="form-label" for="LastName">Last Name (required)</label>
+                            @*@Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label" })*@
+                            <div class="">
+                                <input id="LastName" name="LastName" required type="text" class="form-control" value="@Model.LastName">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row justify-content-center">
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Birthdate, htmlAttributes: new { @class = "control-label" })
+                            <div class="">
+                                <input id="Birthdate" name="Birthdate" type="date" class="form-control" value="@Model.Birthdate.Value.ToString("yyyy-MM-dd")">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <div class="text-center">
+                    <p>When you're ready, hit Save. Don't worry, you can edit this later!</p>
+                </div>
+
+                <div class="form-group row d-flex justify-content-center">
+                    <div class="col-6 text-center mb-2">
+                        <input type="button" value="Save" id="saveButton" class="btn btn-gold" />
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+
+@{
+    string tutorialListIsHidden = "";
+
+    if (string.IsNullOrWhiteSpace(Model.FirstName) || string.IsNullOrWhiteSpace(Model.LastName))
+    {
+        tutorialListIsHidden = "display:none;";
+    }
+}
+
+<div id="tutorialList" class="row mt-4 text-center" style="@tutorialListIsHidden">
+
+    <hr />
+
+    <h4 class="mt-4">Now what? Well, there's a few things you can do.</h4>
+
+    <div class="row row-gallery row-cols-1 row-cols-md-auto justify-content-center g-4 mb-4 mt-2">
+
+        <div class="col column-gallery">
+            <div class="card h-100">
+
+                <div class="card-img-section mb-2">
+                    <div class="img-wrapper-card">
+                        <img src="~/Images/Friendship.svg" class="card-img-top mx-auto" alt="Frind friends">
+                    </div>
+                </div>
+
+                <div class="card-body pt-0">
+                    <h5 class="card-title">1. Find Friends</h5>
+                    <p class="card-text align-middle">
+                        Try sending friend requests to people you know from Friends tab.
+                        Once they accept your request, you'll be able to view their wish lists and see what they want!
+                    </p>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center">
+                        @Html.ActionLink("Find Friends", "Index", "Person", null, new { @class = "btn btn-gray-dark" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col column-gallery">
+            <div class="card h-100">
+
+                <div class="card-img-section mb-2">
+                    <div class="img-wrapper-card">
+                        <img src="~/Images/ToyCar.svg" class="card-img-top mx-auto" alt="Make wish lists">
+                    </div>
+                </div>
+
+                <div class="card-body pt-0">
+                    <h5 class="card-title">2. Make Wish Lists</h5>
+                    <p class="card-text align-middle">
+                        Create wish lists for your birthday, Christmas, a bridal shower, or any event you can imagine.
+                        Start by clicking the Lists tab and hitting "Create A New List". Only your friends will be able to view your lists--no strangers!
+                    </p>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center">
+                        @Html.ActionLink("Make Wish Lists", "Index", "WishList", null, new { @class = "btn btn-gray-dark" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col column-gallery">
+            <div class="card h-100">
+
+                <div class="card-img-section mb-2">
+                    <div class="img-wrapper-card">
+                        <img src="~/Images/Events.svg" class="card-img-top mx-auto" alt="Check Events">
+                    </div>
+                </div>
+
+                <div class="card-body pt-0">
+                    <h5 class="card-title">3. Check Events</h5>
+                    <p class="card-text align-middle">
+                        Usually when you visit BeeGifted, you'll be directed to the Home page.
+                        There you'll find a list of upcoming birthdays and events created by your friends.
+                        For now, those events are determined by wish lists, but we hope to add other events in the future.
+                    </p>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center">
+                        @Html.ActionLink("Check Events", "Index", "Home", null, new { @class = "btn btn-gray-dark" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col column-gallery">
+            <div class="card h-100">
+
+                <div class="card-img-section mb-2">
+                    <div class="img-wrapper-card">
+                        <img src="~/Images/Floating.svg" class="card-img-top mx-auto" alt="Notifications">
+                    </div>
+                </div>
+
+                <div class="card-body pt-0">
+                    <h5 class="card-title">4. Explore</h5>
+                    <p class="card-text align-middle">
+                        You can find links to your Account Info, Notifications, Transactions, and more on the navigation bar
+                        at the top of your screen. Keep an eye out for notifications, it could be a friend request!
+                    </p>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center">
+                        @Html.ActionLink("Go To Notifications", "Index", "Notification", null, new { @class = "btn btn-gray-dark" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+    $(document).ready(function ValidateForm() {
+
+        $("#saveButton").click(function (e) {
+
+            e.preventDefault();
+            var isValid = $("#basic-form").valid();  // <- TEST VALIDATION
+            if (!isValid) {
+                //    alert("is not valid");
+            } else {
+                var form = $("#basic-form");
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (data) {
+                    if (Boolean(data.successful)) {
+                        //alert("Success");
+                        // Show next steps
+                        $('#tutorialList').show();
+
+                        var target = $('#tutorialList');
+                        if (target.length) {
+                            $('html,body').animate({
+                                scrollTop: target.offset().top
+                            }, 1000);
+                        }
+
+                    } else {
+                        // Show errors
+                        alert("There was an error processing your request. Please try again.");
+                    }
+                })
+                    .fail(function () {
+                        alert("There was an error processing your request. Please try again.");
+                    });
+            }
+        });
+
+        var today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+
+        jQuery.validator.addMethod("pastDate", function (value, element) {
+
+            var dateString = today.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).split("/").reverse().join("-");
+
+            //alert(value + " is before than " + dateString + "? Answer: " + (value <= dateString));
+            return this.optional(element) || (value <= dateString);
+        }, "Date must be in the past.");
+
+        $("#basic-form").validate({
+            debug: true,
+            errorClass: "error fail-alert",
+            rules: {
+                FirstName: {
+                    required: true
+                },
+                LastName: {
+                    required: true
+                },
+                Birthdate: {
+                    pastDate: true
+                }
+            },
+            messages: {
+                FirstName: {
+                    required: "Please enter a first name.",
+                    validateNullOrWhiteSpace: "Please enter a first name."
+                },
+                LastName: {
+                    required: "Please enter a last name.",
+                    validateNullOrWhiteSpace: "Please enter a last name."
+                },
+                Birthdate: {
+                    pastDate: "Date must be no later than " + today.toLocaleDateString('en-us', options) + "."
+                }
+            }
+        });
+    });
+
+</script>
+
+
+<style>
+
+    body {
+        color: #2E2E2E;
+    }
+
+    h4 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 32px;
+    }
+
+    .feature-image {
+        width: 25vw;
+        height: auto;
+        padding: 50px;
+    }
+
+    .Massive-Text {
+        font-size: 72px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #2E2E2E
+    }
+
+    div.gray-box {
+        background-color: #F1F2F3;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .gold-text {
+        color: #E0B840;
+    }
+
+    .img-wrapper {
+        overflow: hidden;
+        width: 250px;
+        height: 250px;
+        border-bottom: 1px solid rgba(143, 143, 143, .5);
+    }
+
+    .img-wrapper-card {
+        overflow: hidden;
+        width: 275px;
+        height: 275px;
+        border-bottom: 1px solid rgba(143, 143, 143, .5);
+        border-radius: 0px;
+    }
+
+    .card-img-top {
+        width: 275px;
+        height: auto;
+        aspect-ratio: 1.0;
+        object-fit: cover;
+        /*transform: scale(1.08);
+        transform-origin: 50% 50%;*/
+        overflow: hidden;
+        background-color: rgba(224, 184, 64, .25);
+    }
+
+    .icon {
+        height: 1.2em;
+    }
+
+    .card-title {
+    }
+
+    .card-text {
+        margin-bottom: 0px;
+    }
+
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 2px 6px 6px rgba(143, 143, 143, 0.75);
+        max-width: 275px;
+    }
+</style>
