@@ -76,6 +76,45 @@ namespace GiftRegistry.WebMVC.Controllers
             return View(model);
         }
 
+        // POST: Edit
+        [HttpPost]
+        [ActionName("EditNoRedirect")]
+        [ValidateAntiForgeryToken]
+        public JsonResult Edit_NoRedirect(PersonEdit model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+            }
+
+            var imageService = CreateImageService();
+            if (model.ImageID == -1)
+            {
+                model.Image = imageService.GetLatestImageForUser();
+
+                if (model.Image is null)
+                {
+                    // Invalid, get a default image
+                    model.Image = imageService.CreateAndReturnRandomImage(false);
+                }
+            }
+            else
+            {
+                model.Image = imageService.GetImageByID(model.ImageID);
+            }
+
+            var service = CreatePersonService();
+            if (service.UpdatePerson(model))
+            {
+                TempData["SaveResult"] = "Your person was updated.";
+                return Json(new { successful = true }, JsonRequestBehavior.AllowGet);
+            }
+
+            ModelState.AddModelError("", "Your person could not be updated.");
+            model.Birthdate = (model.Birthdate is null) ? DateTime.Now : model.Birthdate;
+            return Json(new { successful = false }, JsonRequestBehavior.AllowGet);
+        }
+
         // ADD FRIENDS LIST ONLY
 
         // GET: Person
